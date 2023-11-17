@@ -1,14 +1,11 @@
-# Ask the user for two numbers
-# Ask the user for an operation to perform
-# Perform the operation on the two numbers
-# Output the result
-
 def prompt(message)
-  Kernel.puts("=> #{message}")
+  puts("=> #{message}")
 end
 
+# Better integer validation
+
 def valid_number?(num)
-  num.to_i() != 0
+  num.to_i
 end
 
 def operation_to_message(op)
@@ -28,9 +25,9 @@ prompt("Welcome to Calculator! Enter your name: ")
 
 name = ""
 loop do
-  name = Kernel.gets().chomp()
+  name = gets.chomp
 
-  if name.empty?()
+  if name.empty?
     prompt("Make sure to use a valid name.")
   else
     break
@@ -39,12 +36,14 @@ end
 
 prompt("Hi #{name}")
 
+# Ask the user for two numbers
+
 loop do # main loop
   number1 = ""
 
   loop do
     prompt("What's the first number?")
-    number1 = Kernel.gets().chomp()
+    number1 = gets.chomp
 
     if valid_number?(number1)
       break
@@ -57,7 +56,7 @@ loop do # main loop
 
   loop do
     prompt("What's the second number?")
-    number2 = Kernel.gets().chomp()
+    number2 = gets.chomp
 
     if valid_number?(number2)
       break
@@ -65,6 +64,8 @@ loop do # main loop
       prompt("Hmm.. that doesn't look like a valid number")
     end
   end
+
+  # Ask the user for an operation to perform
 
   operator_prompt = <<-MSG
     What operation would you like to perform?
@@ -77,7 +78,7 @@ MSG
 
   operator = ""
   loop do
-    operator = Kernel.gets().chomp()
+    operator = gets.chomp
 
     if %w(1 2 3 4).include?(operator)
       break
@@ -88,23 +89,31 @@ MSG
 
   prompt("#{operation_to_message(operator)} the two numbers...")
 
+  # Perform the operation on the two numbers
+
   result = case operator
     when "1"
-      number1.to_i() + number2.to_i()
+      number1.to_i + number2.to_i
     when "2"
-      number1.to_i() - number2.to_i()
+      number1.to_i - number2.to_i
     when "3"
-      number1.to_i() * number2.to_i()
+      number1.to_i * number2.to_i
     when "4"
-      number1.to_f() / number2.to_f()
+      number1.to_f / number2.to_f
     end
 
-  prompt("The result is #{result}")
+  # Output the result
+
+  if number2.to_f == 0 && result == Float::INFINITY
+    prompt("Can't divide by zero")
+  else
+    prompt("The result is #{result}")
+  end
 
   prompt("Do you want to perform another calculation? (Y to calculate again)")
 
-  answer = Kernel.gets().chomp()
-  break unless answer.downcase().start_with?("y")
+  answer = gets.chomp
+  break unless answer.downcase.start_with?("y")
 end
 
 prompt("Thank you for using the calculator. Good bye!")
@@ -113,7 +122,7 @@ prompt("Thank you for using the calculator. Good bye!")
 
 Calculator Bonus Features
 
-1. Better integer validation
+1.
 
 The current method of validating the input for a number is very weak. It's also not fully accurate, as you cannot enter a 0. Come up with a better way of validating input for integers.
 
