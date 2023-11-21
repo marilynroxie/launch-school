@@ -1,3 +1,6 @@
+require "yaml"
+MESSAGES = YAML.load_file("messages.yml")
+
 def prompt(message)
   puts("=> #{message}")
 end
@@ -21,14 +24,14 @@ def operation_to_message(op)
   end
 end
 
-prompt("Welcome to Calculator! Enter your name: ")
+prompt(MESSAGES["welcome"])
 
 name = ""
 loop do
   name = gets.chomp
 
   if name.empty?
-    prompt("Make sure to use a valid name.")
+    prompt(MESSAGES["valid_name"])
   else
     break
   end
@@ -48,7 +51,7 @@ loop do # main loop
     if valid_number?(number1)
       break
     else
-      prompt("Hmm.. that doesn't look like a valid number")
+      prompt(MESSAGES["valid_number"])
     end
   end
 
@@ -61,20 +64,20 @@ loop do # main loop
     if valid_number?(number2)
       break
     else
-      prompt("Hmm.. that doesn't look like a valid number")
+      prompt(MESSAGES["valid_number"])
     end
   end
 
   # Ask the user for an operation to perform
 
-  operator_prompt = <<-MSG
-    What operation would you like to perform?
-    1) add
-    2) subtract
-    3) multiply
-    4) divide
-MSG
-  prompt(operator_prompt)
+  #   operator_prompt = <<-MSG
+  #     What operation would you like to perform?
+  #     1) add
+  #     2) subtract
+  #     3) multiply
+  #     4) divide
+  # MSG
+  prompt(MESSAGES["operator_prompt"])
 
   operator = ""
   loop do
@@ -83,11 +86,11 @@ MSG
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt("Must choose 1, 2, 3, or 4")
+      prompt(MESSAGES["valid_choice"])
     end
   end
 
-  prompt("#{operation_to_message(operator)} the two numbers...")
+  # prompt("#{operation_to_message(operator)} the two numbers...")
 
   # Perform the operation on the two numbers
 

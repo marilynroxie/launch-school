@@ -1,0 +1,10 @@
+welcome: "Welcome to Calculator! Enter your name: "
+valid_name: "Make sure to use a valid name."
+valid_number: "Hmm...that doesn't look like a valid number"
+operator_prompt: |
+  What operation would you like to perform?
+  1) add
+  2) subtract
+  3) multiply
+  4) divide
+valid_choice: "Must choose 1, 2, 3, or 4"
