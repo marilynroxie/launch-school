@@ -1,7 +1,7 @@
-def triangle(n)
-  space = n - 1
+def triangle(num)
+  space = num - 1
   asterisk = 1
-  n.times do |i|
+  num.times do |i|
     puts (" " * space) + ("*" * asterisk)
     space -= 1
     asterisk += 1
@@ -13,10 +13,10 @@ triangle(9)
 
 # Further exploration
 
-def inverted_triangle(n)
-  n.downto(1) do
-    puts "*" * n
-    n -= 1
+def inverted_triangle(num)
+  num.downto(1) do
+    puts "*" * num
+    num -= 1
   end
 end
 

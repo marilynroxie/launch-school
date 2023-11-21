@@ -4,5 +4,4 @@ def repeat(str, num)
   end
 end
 
-
 repeat('Hello', 3)

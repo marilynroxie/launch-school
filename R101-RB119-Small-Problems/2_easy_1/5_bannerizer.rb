@@ -1,9 +1,9 @@
 def print_in_box(text)
   lines = text.length
-  first = "+-"
-  last = "-+"
-  bar = "|"
-  hyphen = "-"
+  first = '+-'
+  last = '-+'
+  bar = '|'
+  hyphen = '-'
 
   print first
 
@@ -11,13 +11,13 @@ def print_in_box(text)
     print hyphen
   end
   print last
-  puts " "
+  puts ' '
 
-  puts bar + " " * lines + "  #{bar}"
+  puts bar + ' ' * lines + "  #{bar}"
 
   puts "#{bar} #{text} #{bar} "
 
-  puts bar + " " * lines + "  #{bar}"
+  puts bar + ' ' * lines + "  #{bar}"
 
   print first
   lines.times do
@@ -27,5 +27,5 @@ def print_in_box(text)
   puts last
 end
 
-print_in_box("To boldly go where no one has gone before.")
-print_in_box("")
+print_in_box('To boldly go where no one has gone before.')
+print_in_box('')
