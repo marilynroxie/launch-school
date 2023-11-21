@@ -1,6 +1,6 @@
-puts "What is your age?"
+puts 'What is your age?'
 age = gets.to_i
-puts "At what age would you like to retire?"
+puts 'At what age would you like to retire?'
 retire = gets.to_i
 years = retire - age
 current_year = Time.now.year
