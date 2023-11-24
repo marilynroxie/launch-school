@@ -53,9 +53,8 @@ loop do # main loop
   number1 = ""
 
   loop do
-    prompt("What's the first number?")
+    prompt format(MESSAGES["what_number"], "first")
     number1 = gets.chomp
-    p number1.class
     if valid_number?(number1)
       number1 = number1.include?(".") ? number1.to_f : number1.to_i
       break
@@ -67,9 +66,8 @@ loop do # main loop
   number2 = ""
 
   loop do
-    prompt("What's the second number?")
+    prompt format(MESSAGES["what_number"], "second")
     number2 = gets.chomp
-    p number2.class
     if valid_number?(number2)
       number2 = number2.include?(".") ? number2.to_f : number2.to_i
       break

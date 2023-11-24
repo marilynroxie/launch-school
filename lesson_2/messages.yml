@@ -1,6 +1,7 @@
 welcome: "Welcome to Calculator! Enter your name: "
 valid_name: "Make sure to use a valid name."
 hi: "Hi %s"
+what_number: "What's the %s number?"
 valid_number: "Hmm...that doesn't look like a valid number"
 operator_prompt: |
   What operation would you like to perform?
