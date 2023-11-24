@@ -1,6 +1,12 @@
 require "yaml"
 MESSAGES = YAML.load_file("messages.yml")
 
+# Todo
+# Account for float calculations accurately
+# Allow numbers like .5 to be converted to 0.5
+# Save case statement in variable or hash
+# Add translations
+
 def prompt(message)
   puts("=> #{message}")
 end
@@ -91,7 +97,8 @@ loop do # main loop
 
   result = case operator
     when "1"
-      number1.to_i + number2.to_i
+      result = number1.to_i + number2.to_i
+      result % 1 == 0 ? result.to_f : result
     when "2"
       number1.to_i - number2.to_i
     when "3"
@@ -101,8 +108,7 @@ loop do # main loop
       result % 1 == 0 ? result.to_i : result
     end
 
-  # Handle zero division and onutput the result
-
+  # Handle zero division and output the result
   if (number2.to_i.zero? && result.infinite?) || result.to_f.nan?
     prompt(MESSAGES["zero_division"])
   else
@@ -117,4 +123,4 @@ loop do # main loop
   system "clear"
 end
 
-prompt(MESSAGES["thank_you"])
+prompt format(MESSAGES["thank_you"], name)
