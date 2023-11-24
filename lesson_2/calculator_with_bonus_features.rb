@@ -99,19 +99,6 @@ loop do # main loop
 
   # Perform the operation on the two numbers
 
-  # result = case operator
-  #   when "1"
-  #     result = number1.to_i + number2.to_i
-  #     result % 1 == 0 ? result.to_f : result
-  #   when "2"
-  #     number1.to_i - number2.to_i
-  #   when "3"
-  #     number1.to_i * number2.to_i
-  #   when "4"
-  #     result = number1.to_f / number2.to_f
-  #     result % 1 == 0 ? result.to_i : result
-  #   end
-
   result = case operator
     when "1"
       number1 + number2
