@@ -14,7 +14,7 @@ end
 # Integer and float validation
 
 def valid_number?(input)
-  /^-?\d+(?:\.\d+)?/.match?(input)
+  /^-?(?:\d+(?:\.\d*)?|\.\d+)$/.match?(input)
 end
 
 def operation_to_message(operation)
@@ -55,8 +55,9 @@ loop do # main loop
   loop do
     prompt("What's the first number?")
     number1 = gets.chomp
-
+    p number1.class
     if valid_number?(number1)
+      number1 = number1.include?(".") ? number1.to_f : number1.to_i
       break
     else
       prompt(MESSAGES["valid_number"])
@@ -68,8 +69,9 @@ loop do # main loop
   loop do
     prompt("What's the second number?")
     number2 = gets.chomp
-
+    p number2.class
     if valid_number?(number2)
+      number2 = number2.include?(".") ? number2.to_f : number2.to_i
       break
     else
       prompt(MESSAGES["valid_number"])
@@ -97,14 +99,26 @@ loop do # main loop
 
   # Perform the operation on the two numbers
 
+  # result = case operator
+  #   when "1"
+  #     result = number1.to_i + number2.to_i
+  #     result % 1 == 0 ? result.to_f : result
+  #   when "2"
+  #     number1.to_i - number2.to_i
+  #   when "3"
+  #     number1.to_i * number2.to_i
+  #   when "4"
+  #     result = number1.to_f / number2.to_f
+  #     result % 1 == 0 ? result.to_i : result
+  #   end
+
   result = case operator
     when "1"
-      result = number1.to_i + number2.to_i
-      result % 1 == 0 ? result.to_f : result
+      number1 + number2
     when "2"
-      number1.to_i - number2.to_i
+      number1 - number2
     when "3"
-      number1.to_i * number2.to_i
+      number1 * number2
     when "4"
       result = number1.to_f / number2.to_f
       result % 1 == 0 ? result.to_i : result
