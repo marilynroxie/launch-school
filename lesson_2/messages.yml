@@ -1,5 +1,6 @@
 welcome: "Welcome to Calculator! Enter your name: "
 valid_name: "Make sure to use a valid name."
+hi: "Hi %s"
 valid_number: "Hmm...that doesn't look like a valid number"
 operator_prompt: |
   What operation would you like to perform?
@@ -8,3 +9,7 @@ operator_prompt: |
   3) multiply
   4) divide
 valid_choice: "Must choose 1, 2, 3, or 4"
+zero_division: "Can't divide by zero"
+result: "The result is %s"
+another_calc: "Do you want to perform another calculation? (Y to calculate again)"
+thank_you: "Thank you for using the calculator. Good bye!"

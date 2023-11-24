@@ -20,7 +20,7 @@ def operation_to_message(op)
   when "1"
     "Adding"
   when "2"
-    "Substracting"
+    "Subtracting"
   when "3"
     "Multiplying"
   when "4"
@@ -41,7 +41,7 @@ loop do
   end
 end
 
-prompt("Hi #{name}")
+prompt format(MESSAGES["hi"], name)
 
 # Ask the user for two numbers
 
@@ -74,13 +74,6 @@ loop do # main loop
 
   # Ask the user for an operation to perform
 
-  #   operator_prompt = <<-MSG
-  #     What operation would you like to perform?
-  #     1) add
-  #     2) subtract
-  #     3) multiply
-  #     4) divide
-  # MSG
   prompt(MESSAGES["operator_prompt"])
 
   operator = ""
@@ -110,19 +103,19 @@ loop do # main loop
       result % 1 == 0 ? result.to_i : result
     end
 
-  # Output the result
+  # Handle zero division and onutput the result
 
   if (number2.to_i.zero? && result.infinite?) || result.to_f.nan?
-    prompt("Can't divide by zero")
+    prompt(MESSAGES["zero_division"])
   else
-    prompt("The result is #{result}")
+    prompt format(MESSAGES["result"], result)
     p result.class
   end
 
-  prompt("Do you want to perform another calculation? (Y to calculate again)")
+  prompt(MESSAGES["another_calc"])
 
   answer = gets.chomp
   break unless answer.downcase.start_with?("y")
 end
 
-prompt("Thank you for using the calculator. Good bye!")
+prompt(MESSAGES["thank_you"])
