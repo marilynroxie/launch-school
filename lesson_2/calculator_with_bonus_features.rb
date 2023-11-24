@@ -2,8 +2,6 @@ require "yaml"
 MESSAGES = YAML.load_file("messages.yml")
 
 # Todo
-# Account for float calculations accurately
-# Allow numbers like .5 to be converted to 0.5
 # Save case statement in variable or hash?
 # Add translations
 
@@ -36,7 +34,7 @@ prompt(MESSAGES["welcome"])
 
 name = ""
 loop do
-  name = gets.chomp
+  name = gets.chomp.strip.capitalize
 
   if name.empty?
     prompt(MESSAGES["valid_name"])
@@ -114,7 +112,6 @@ loop do # main loop
     prompt(MESSAGES["zero_division"])
   else
     prompt format(MESSAGES["result"], result)
-    p result.class
   end
 
   prompt(MESSAGES["another_calc"])
