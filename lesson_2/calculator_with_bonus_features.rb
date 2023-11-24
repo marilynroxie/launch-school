@@ -94,7 +94,7 @@ loop do # main loop
     end
   end
 
-  # prompt("#{operation_to_message(operator)} the two numbers...")
+  prompt("#{operation_to_message(operator)} the two numbers...")
 
   # Perform the operation on the two numbers
 
@@ -106,7 +106,8 @@ loop do # main loop
     when "3"
       number1.to_i * number2.to_i
     when "4"
-      number1.to_f / number2.to_f
+      result = number1.to_f / number2.to_f
+      result % 1 == 0 ? result.to_i : result
     end
 
   # Output the result
@@ -115,6 +116,7 @@ loop do # main loop
     prompt("Can't divide by zero")
   else
     prompt("The result is #{result}")
+    p result.class
   end
 
   prompt("Do you want to perform another calculation? (Y to calculate again)")
