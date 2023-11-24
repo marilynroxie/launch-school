@@ -5,14 +5,14 @@ def prompt(message)
   puts("=> #{message}")
 end
 
-# Better integer validation
+# Better integer validation; need to add functionality for performing operations with decimals
 
 def integer?(input)
   /^-?\d+$/.match(input)
 end
 
-def number?(input)
-  integer?(input) || float?(input)
+def float?(input)
+  /\d/.match(input) && /^-?\d*\.?\d*$/.match(input)
 end
 
 def operation_to_message(op)
@@ -52,7 +52,7 @@ loop do # main loop
     prompt("What's the first number?")
     number1 = gets.chomp
 
-    if integer?(number1)
+    if integer?(number1) || float?(number1)
       break
     else
       prompt(MESSAGES["valid_number"])
@@ -65,7 +65,7 @@ loop do # main loop
     prompt("What's the second number?")
     number2 = gets.chomp
 
-    if integer?(number2)
+    if integer?(number2) || float?(number2)
       break
     else
       prompt(MESSAGES["valid_number"])
