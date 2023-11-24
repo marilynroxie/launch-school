@@ -4,7 +4,7 @@ MESSAGES = YAML.load_file("messages.yml")
 # Todo
 # Account for float calculations accurately
 # Allow numbers like .5 to be converted to 0.5
-# Save case statement in variable or hash
+# Save case statement in variable or hash?
 # Add translations
 
 def prompt(message)
@@ -80,7 +80,7 @@ loop do # main loop
 
   # Ask the user for an operation to perform
 
-  prompt(MESSAGES["operator_prompt"])
+  prompt format(MESSAGES["operator_prompt"], number1, number2)
 
   operator = ""
   loop do
@@ -93,7 +93,7 @@ loop do # main loop
     end
   end
 
-  prompt("#{operation_to_message(operator)} the two numbers...")
+  prompt format(MESSAGES["calculating"], operation_to_message(operator))
 
   # Perform the operation on the two numbers
 

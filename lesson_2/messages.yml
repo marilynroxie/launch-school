@@ -4,11 +4,15 @@ hi: "Hi %s"
 valid_number: "Hmm...that doesn't look like a valid number"
 operator_prompt: |
   What operation would you like to perform?
+
+  Your numbers are %s and %s.
+
   1) add
   2) subtract
   3) multiply
   4) divide
 valid_choice: "Must choose 1, 2, 3, or 4"
+calculating: "%s the two numbers..."
 zero_division: "Can't divide by zero"
 result: "The result is %s"
 another_calc: "Do you want to perform another calculation? (Y to calculate again)"
