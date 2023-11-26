@@ -1,3 +1,10 @@
+welcome: |
+  Welcome to Calculator!
+     Type en for English or jp for Japanese:
+
+   Calculatorへようこそ！
+     英語を選ぶ場合はen、日本語を選ぶ場合はjpを入力してください：
+invalid_input: "Sorry! That's not a valid input."
 en:
   enter_name: "Enter your name: "
   valid_name: "Make sure to use a valid name."
@@ -15,7 +22,11 @@ en:
     3) multiply
     4) divide
   valid_choice: "Must choose 1, 2, 3, or 4."
-  calculating: "%s the two numbers..."
+  1: "Adding"
+  2: "Subtracting"
+  3: "Multiplying"
+  4: "Dividing"
+  calculating: " the two numbers..."
   zero_division: "Can't divide by zero."
   result: "The result is %s."
   another_calc: "Do you want to perform another calculation? (Y to calculate again, N to stop calculating)"
@@ -38,6 +49,10 @@ jp:
     3) 掛け算
     4) 割り算
   valid_choice: "1、2、3、または4を選択してください。"
+  1: "足し算"
+  2: "引き算"
+  3: "掛け算"
+  4: "割り算"
   calculating: "%s中..."
   zero_division: "ゼロで割ることはできません。"
   result: "結果は%sです。"

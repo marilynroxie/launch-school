@@ -13,18 +13,14 @@ system 'clear'
 # Initialize user language
 
 loop do
-  puts 'Welcome to Calculator!
-  Type en for English or jp for Japanese:
-
-Calculatorへようこそ！
-  英語を選ぶ場合はen、日本語を選ぶ場合はjpを入力してください：'
+  puts MESSAGES['welcome']
   lang = gets.chomp.strip.downcase
   if %w(en jp).include?(lang)
     LANGUAGE = lang
     break
   else
     system 'clear'
-    puts("Sorry! That's not a valid input.")
+    puts MESSAGES['invalid_input']
   end
 end
 
@@ -44,16 +40,12 @@ def valid_number?(input)
 end
 
 def operation_to_message(operation)
-  case operation
-  when '1'
-    'Adding'
-  when '2'
-    'Subtracting'
-  when '3'
-    'Multiplying'
-  when '4'
-    'Dividing'
-  end
+  operation = {
+    '1' => '1',
+    '2' => '2',
+    '3' => '3',
+    '4' => '4'
+  }[operation]
 end
 
 system 'clear'
@@ -126,16 +118,16 @@ loop do # Main loop
   # Perform the operation on the two numbers
 
   result = case operator
-           when '1'
-             number1 + number2
-           when '2'
-             number1 - number2
-           when '3'
-             number1 * number2
-           when '4'
-             result = number1.to_f / number2.to_f
-             result % 1 == 0 ? result.to_i : result.to_f
-           end
+    when '1'
+      number1 + number2
+    when '2'
+      number1 - number2
+    when '3'
+      number1 * number2
+    when '4'
+      result = number1.to_f / number2.to_f
+      result % 1 == 0 ? result.to_i : result.to_f
+    end
 
   # Handle zero division and output the result
 
