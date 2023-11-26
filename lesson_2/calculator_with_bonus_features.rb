@@ -1,7 +1,6 @@
 # Todo
-# Save case statement in variable or hash?
+# Update operation_to_message, add language functionality
 # Finish translations
-# Update operation to message based on language
 # Round decimal places
 
 require 'yaml'
@@ -40,12 +39,16 @@ def valid_number?(input)
 end
 
 def operation_to_message(operation)
-  operation = {
-    '1' => '1',
-    '2' => '2',
-    '3' => '3',
-    '4' => '4'
-  }[operation]
+  case operation
+  when '1'
+    'Adding'
+  when '2'
+    'Subtracting'
+  when '3'
+    'Multiplying'
+  when '4'
+    'Dividing'
+  end
 end
 
 system 'clear'
@@ -118,16 +121,16 @@ loop do # Main loop
   # Perform the operation on the two numbers
 
   result = case operator
-    when '1'
-      number1 + number2
-    when '2'
-      number1 - number2
-    when '3'
-      number1 * number2
-    when '4'
-      result = number1.to_f / number2.to_f
-      result % 1 == 0 ? result.to_i : result.to_f
-    end
+           when '1'
+             number1 + number2
+           when '2'
+             number1 - number2
+           when '3'
+             number1 * number2
+           when '4'
+             result = number1.to_f / number2.to_f
+             result % 1 == 0 ? result.to_i : result.to_f
+           end
 
   # Handle zero division and output the result
 
@@ -144,13 +147,14 @@ loop do # Main loop
     answer = gets.chomp.strip.downcase
     p answer
     if %w(yes y).include?(answer)
+      system 'clear'
       break
     elsif %w(no n).include?(answer)
       prompt('thank_you', name)
       exit
     else
       system 'clear'
-      puts("Sorry! That's not a valid input.")
+      prompt('valid_calc')
     end
   end
 end

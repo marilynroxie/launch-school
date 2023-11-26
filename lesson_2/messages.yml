@@ -26,10 +26,11 @@ en:
   2: "Subtracting"
   3: "Multiplying"
   4: "Dividing"
-  calculating: " the two numbers..."
+  calculating: "%s the two numbers..."
   zero_division: "Can't divide by zero."
   result: "The result is %s."
   another_calc: "Do you want to perform another calculation? (Y to calculate again, N to stop calculating)"
+  valid_calc: "Sorry! That's not valid input."
   thank_you: "Thank you for using the calculator, %s. Good bye!"
 
 jp:
@@ -57,4 +58,5 @@ jp:
   zero_division: "ゼロで割ることはできません。"
   result: "結果は%sです。"
   another_calc: "別の計算を行いますか？（Yで再度計算）"
+  valid_calc: "申し訳ありません！それは無効な入力です。"
   thank_you: "%sさん、計算機をご利用いただきありがとうございました。さようなら！"
