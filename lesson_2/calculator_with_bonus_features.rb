@@ -3,7 +3,6 @@
 # Finish translations
 # Update operation to message based on language
 # Round decimal places
-# Add N to exit program explicitly
 
 require 'yaml'
 
@@ -144,17 +143,18 @@ loop do # main loop
     prompt('result', result)
   end
 
-  prompt('another_calc')
-
-  answer = gets.chomp
-  break if answer.downcase.start_with?('n')
-  #   if answer.downcase.start_with?('y')
-  #   elsif answer.downcase.start_with?('n')
-  #     break
-  #   else
-  #     puts "I don't recognize that input"
-  #   end
-  #   system 'clear'
+  loop do
+    prompt('another_calc')
+    answer = gets.chomp.strip.downcase
+    p answer
+    if %w(yes y).include?(answer)
+      break
+    elsif %w(no n).include?(answer)
+      prompt('thank_you', name)
+      exit
+    else
+      system 'clear'
+      puts("Sorry! That's not a valid input.")
+    end
+  end
 end
-
-prompt('thank_you', name)
