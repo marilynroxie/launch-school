@@ -58,6 +58,8 @@ end
 
 system 'clear'
 
+# Obtain name and greet user
+
 prompt('enter_name')
 
 name = ''
@@ -75,7 +77,7 @@ prompt('hi', name)
 
 # Ask the user for two numbers
 
-loop do # main loop
+loop do # Main loop
   number1 = ''
 
   loop do
@@ -142,6 +144,8 @@ loop do # main loop
   else
     prompt('result', result)
   end
+
+  # Ask to perform another calculation or not
 
   loop do
     prompt('another_calc')
