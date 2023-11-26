@@ -131,7 +131,7 @@ loop do # Main loop
   if (number2.to_i.zero? && result.infinite?) || result.to_f.nan?
     prompt('zero_division')
   elsif result.is_a?(Float)
-    prompt('result', result.round(2).to_s.chop)
+    prompt('result', result.round(2))
   else
     prompt('result', result)
   end
