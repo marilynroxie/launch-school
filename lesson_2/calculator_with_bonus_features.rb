@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 # Todo
 # Save case statement in variable or hash?
 # Finish translations
@@ -21,11 +19,13 @@ loop do
 
 Calculatorへようこそ！
   英語を選ぶ場合はen、日本語を選ぶ場合はjpを入力してください：'
-  LANGUAGE = gets.chomp.strip.downcase
-  if %w(en jp).include?(LANGUAGE)
+  lang = gets.chomp.strip.downcase
+  if %w(en jp).include?(lang)
+    LANGUAGE = lang
     break
   else
-    puts("Sorry, that's not an option. Type en for English or jp for Japanese: ")
+    system 'clear'
+    puts("Sorry! That's not a valid input.")
   end
 end
 
@@ -125,16 +125,16 @@ loop do # main loop
   # Perform the operation on the two numbers
 
   result = case operator
-    when '1'
-      number1 + number2
-    when '2'
-      number1 - number2
-    when '3'
-      number1 * number2
-    when '4'
-      result = number1.to_f / number2.to_f
-      result % 1 == 0 ? result.to_i : result.to_f
-    end
+           when '1'
+             number1 + number2
+           when '2'
+             number1 - number2
+           when '3'
+             number1 * number2
+           when '4'
+             result = number1.to_f / number2.to_f
+             result % 1 == 0 ? result.to_i : result.to_f
+           end
 
   # Handle zero division and output the result
 
@@ -147,8 +147,14 @@ loop do # main loop
   prompt('another_calc')
 
   answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
-  system 'clear'
+  break if answer.downcase.start_with?('n')
+  #   if answer.downcase.start_with?('y')
+  #   elsif answer.downcase.start_with?('n')
+  #     break
+  #   else
+  #     puts "I don't recognize that input"
+  #   end
+  #   system 'clear'
 end
 
 prompt('thank_you', name)
