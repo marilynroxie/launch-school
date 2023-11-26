@@ -1,6 +1,5 @@
 # Todo
 # Finish translations
-# Round decimal places
 
 require 'yaml'
 
@@ -131,6 +130,8 @@ loop do # Main loop
 
   if (number2.to_i.zero? && result.infinite?) || result.to_f.nan?
     prompt('zero_division')
+  elsif result.is_a?(Float)
+    prompt('result', result.round(2).to_s.chop)
   else
     prompt('result', result)
   end
@@ -141,10 +142,10 @@ loop do # Main loop
     prompt('another_calc')
     answer = gets.chomp.strip.downcase
     p answer
-    if %w(yes y).include?(answer)
+    if %w(yes y はい うん).include?(answer)
       system 'clear'
       break
-    elsif %w(no n).include?(answer)
+    elsif %w(no n いいえ).include?(answer)
       prompt('thank_you', name)
       exit
     else
