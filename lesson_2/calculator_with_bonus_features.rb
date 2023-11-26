@@ -41,8 +41,7 @@ end
 # Accessing operations in yaml
 
 def operation_to_message(operation)
-  messages = MESSAGES[LANGUAGE]['operations']
-  messages[operation]
+  MESSAGES[LANGUAGE]['operations'][operation]
 end
 
 system 'clear'
