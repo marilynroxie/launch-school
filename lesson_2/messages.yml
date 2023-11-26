@@ -1,20 +1,45 @@
-welcome: "Welcome to Calculator! Enter your name: "
-valid_name: "Make sure to use a valid name."
-hi: "Hi %s"
-what_number: "What's the %s number?"
-valid_number: "Hmm...that doesn't look like a valid number"
-operator_prompt: |
-  What operation would you like to perform?
+en:
+  enter_name: "Enter your name: "
+  valid_name: Make sure to use a valid name.
+  hi: Hi %s
+  first_number: What's the first number?
+  second_number: What's the second number?
+  valid_number: Hmm...that doesn't look like a valid number.
+  operator_prompt: |
+    What operation would you like to perform?
 
-  Your numbers are %s and %s.
+    Your numbers are %s and %s.
 
-  1) add
-  2) subtract
-  3) multiply
-  4) divide
-valid_choice: "Must choose 1, 2, 3, or 4"
-calculating: "%s the two numbers..."
-zero_division: "Can't divide by zero"
-result: "The result is %s"
-another_calc: "Do you want to perform another calculation? (Y to calculate again)"
-thank_you: "Thank you for using the calculator, %s. Good bye!"
+    1) add
+    2) subtract
+    3) multiply
+    4) divide
+  valid_choice: "Must choose 1, 2, 3, or 4."
+  calculating: "%s the two numbers..."
+  zero_division: Can't divide by zero.
+  result: The result is %s.
+  another_calc: Do you want to perform another calculation? (Y to calculate again)
+  thank_you: "Thank you for using the calculator, %s. Good bye!"
+
+jp:
+  enter_name: "お名前は？: "
+  valid_name: 有効な名前を使用してください。
+  hi: こんにちは %sさん。
+  first_number: 最初の数字は何ですか？
+  second_number: 二番目の数字は何ですか？
+  valid_number: うーん...それは有効な数字のようには見えませんね。
+  operator_prompt: |
+    どの操作を実行しますか？
+
+    あなたの数字は%sと%sです。
+
+    1) 足し算
+    2) 引き算
+    3) 掛け算
+    4) 割り算
+  valid_choice: 1、2、3、または4を選択してください。
+  calculating: "%s中..."
+  zero_division: ゼロで割ることはできません。
+  result: 結果は%sです。
+  another_calc: 別の計算を行いますか？（Yで再度計算）
+  thank_you: "%sさん、計算機をご利用いただきありがとうございました。さようなら！"

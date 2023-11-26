@@ -1,14 +1,40 @@
-require 'yaml'
-MESSAGES = YAML.load_file('messages.yml')
+# encoding: UTF-8
 
 # Todo
 # Save case statement in variable or hash?
-# Add translations
-# Finish rufo config for case/when
+# Finish translations
+# Update operation to message based on language
+# Round decimal places
+# Add N to exit program explicitly
+
+require 'yaml'
+
+MESSAGES = YAML.load_file('messages.yml')
 
 system 'clear'
 
-def prompt(message)
+# Initialize user language
+
+loop do
+  puts 'Welcome to Calculator!
+  Type en for English or jp for Japanese:
+
+Calculatorへようこそ！
+  英語を選ぶ場合はen、日本語を選ぶ場合はjpを入力してください：'
+  LANGUAGE = gets.chomp.strip.downcase
+  if %w(en jp).include?(LANGUAGE)
+    break
+  else
+    puts("Sorry, that's not an option. Type en for English or jp for Japanese: ")
+  end
+end
+
+def messages(message, lang = 'en')
+  MESSAGES[lang][message]
+end
+
+def prompt(key, *args)
+  message = messages(key, LANGUAGE) % args
   puts("=> #{message}")
 end
 
@@ -31,20 +57,22 @@ def operation_to_message(operation)
   end
 end
 
-prompt(MESSAGES['welcome'])
+system 'clear'
+
+prompt('enter_name')
 
 name = ''
 loop do
   name = gets.chomp.strip.capitalize
 
   if name.empty?
-    prompt(MESSAGES['valid_name'])
+    prompt('valid_name')
   else
     break
   end
 end
 
-prompt format(MESSAGES['hi'], name)
+prompt('hi', name)
 
 # Ask the user for two numbers
 
@@ -52,26 +80,26 @@ loop do # main loop
   number1 = ''
 
   loop do
-    prompt format(MESSAGES['what_number'], 'first')
+    prompt('first_number')
     number1 = gets.chomp
     if valid_number?(number1)
       number1 = number1.include?('.') ? number1.to_f : number1.to_i
       break
     else
-      prompt(MESSAGES['valid_number'])
+      prompt('valid_number')
     end
   end
 
   number2 = ''
 
   loop do
-    prompt format(MESSAGES['what_number'], 'second')
+    prompt('second_number')
     number2 = gets.chomp
     if valid_number?(number2)
       number2 = number2.include?('.') ? number2.to_f : number2.to_i
       break
     else
-      prompt(MESSAGES['valid_number'])
+      prompt('valid_number')
     end
   end
 
@@ -79,7 +107,7 @@ loop do # main loop
 
   # Ask the user for an operation to perform
 
-  prompt format(MESSAGES['operator_prompt'], number1, number2)
+  prompt('operator_prompt', number1, number2)
 
   operator = ''
   loop do
@@ -88,11 +116,11 @@ loop do # main loop
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt(MESSAGES['valid_choice'])
+      prompt('valid_choice')
     end
   end
 
-  prompt format(MESSAGES['calculating'], operation_to_message(operator))
+  prompt('calculating', operation_to_message(operator))
 
   # Perform the operation on the two numbers
 
@@ -109,17 +137,18 @@ loop do # main loop
     end
 
   # Handle zero division and output the result
+
   if (number2.to_i.zero? && result.infinite?) || result.to_f.nan?
-    prompt(MESSAGES['zero_division'])
+    prompt('zero_division')
   else
-    prompt format(MESSAGES['result'], result)
+    prompt('result', result)
   end
 
-  prompt(MESSAGES['another_calc'])
+  prompt('another_calc')
 
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
   system 'clear'
 end
 
-prompt format(MESSAGES['thank_you'], name)
+prompt('thank_you', name)
