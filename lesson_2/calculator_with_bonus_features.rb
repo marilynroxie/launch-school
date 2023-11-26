@@ -1,5 +1,4 @@
 # Todo
-# Update operation_to_message, add language functionality
 # Finish translations
 # Round decimal places
 
@@ -23,6 +22,8 @@ loop do
   end
 end
 
+# Defining the structure of messages and prompts used throughout program
+
 def messages(message, lang = 'en')
   MESSAGES[lang][message]
 end
@@ -38,17 +39,11 @@ def valid_number?(input)
   /^-?(?:\d+(?:\.\d*)?|\.\d+)$/.match?(input)
 end
 
+# Accessing operations in yaml
+
 def operation_to_message(operation)
-  case operation
-  when '1'
-    'Adding'
-  when '2'
-    'Subtracting'
-  when '3'
-    'Multiplying'
-  when '4'
-    'Dividing'
-  end
+  messages = MESSAGES[LANGUAGE]['operations']
+  messages[operation]
 end
 
 system 'clear'
