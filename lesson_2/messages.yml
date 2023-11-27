@@ -32,12 +32,12 @@ en:
   result: "The result is %s."
   another_calc: "Do you want to perform another calculation? (Y to calculate again, N to stop calculating)"
   valid_calc: "Sorry! That's not valid input."
-  thank_you: "Thank you for using the calculator, %s. Good bye!"
+  thank_you: "Thank you for using the calculator, %s. Goodbye!"
 
 jp:
   enter_name: "お名前は？: "
   valid_name: "有効な名前を使用してください。"
-  hi: "こんにちは %sさん。"
+  hi: "こんにちは、%sさん。"
   first_number: "最初の数字は何ですか？"
   second_number: "二番目の数字は何ですか？"
   valid_number: "うーん...それは有効な数字のようには見えませんね。"
