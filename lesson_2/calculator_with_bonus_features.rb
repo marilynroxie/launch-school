@@ -40,8 +40,8 @@ end
 
 # Accessing operations in yaml
 
-def operation_to_message(operation)
-  MESSAGES[LANGUAGE]['operations'][operation]
+def operation_to_message(operator)
+  MESSAGES[LANGUAGE]['operations'][operator.to_i]
 end
 
 system 'clear'
@@ -103,6 +103,7 @@ loop do # Main loop
     operator = gets.chomp
 
     if %w(1 2 3 4).include?(operator)
+      p operator
       break
     else
       prompt('valid_choice')

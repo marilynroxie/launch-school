@@ -23,10 +23,10 @@ en:
     4) divide
   valid_choice: "Must choose 1, 2, 3, or 4."
   operations:
-    "1": "Adding"
-    "2": "Subtracting"
-    "3": "Multiplying"
-    "4": "Dividing"
+    1: "Adding"
+    2: "Subtracting"
+    3: "Multiplying"
+    4: "Dividing"
   calculating: "%s the two numbers..."
   zero_division: "Can't divide by zero."
   result: "The result is %s."
@@ -52,10 +52,10 @@ jp:
     4) 割り算
   valid_choice: "1、2、3、または4を選択してください。"
   operations:
-    "1": "足し算"
-    "2": "引き算"
-    "3": "掛け算"
-    "4": "割り算"
+    1: "足し算"
+    2: "引き算"
+    3: "掛け算"
+    4: "割り算"
   calculating: "%s中..."
   zero_division: "ゼロで割ることはできません。"
   result: "結果は%sです。"
