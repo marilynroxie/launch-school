@@ -115,7 +115,9 @@ loop do # Main loop
     end
   end
 
+  system 'clear'
   prompt('calculating', operation_to_message(operator))
+  sleep 0.1
 
   # Perform the operation on the two numbers
 
@@ -135,9 +137,8 @@ loop do # Main loop
              result % 1 == 0 ? result.to_i : result.to_f
            end
 
-  puts "#{number1} #{mathsym} #{number2}"
-  puts "..."
-  sleep 0.2
+  prompt('display_calc', number1, mathsym, number2)
+  sleep 0.1
 
   # Handle zero division and output the result
 
