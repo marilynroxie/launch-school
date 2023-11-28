@@ -121,15 +121,23 @@ loop do # Main loop
 
   result = case operator
            when '1'
+             mathsym = "+"
              number1 + number2
            when '2'
+             mathsym = "-"
              number1 - number2
            when '3'
+             mathsym = "*"
              number1 * number2
            when '4'
+             mathsym = "/"
              result = number1.to_f / number2.to_f
              result % 1 == 0 ? result.to_i : result.to_f
            end
+
+  puts "#{number1} #{mathsym} #{number2}"
+  puts "..."
+  sleep 0.2
 
   # Handle zero division and output the result
 
