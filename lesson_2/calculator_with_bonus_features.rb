@@ -47,23 +47,25 @@ def operation_to_message(operator)
   MESSAGES[LANGUAGE]['operations'][operator.to_i]
 end
 
+# Method for getting name
+
+def get_name
+  loop do
+    prompt('enter_name')
+    name = gets.chomp.strip.capitalize
+    if name.empty?
+      prompt('valid_name')
+    else
+      return name
+    end
+  end
+end
+
 system 'clear'
 
 # Obtain name and greet user
 
-prompt('enter_name')
-
-name = ''
-loop do
-  name = gets.chomp.strip.capitalize
-
-  if name.empty?
-    prompt('valid_name')
-  else
-    break
-  end
-end
-
+name = get_name
 system 'clear'
 prompt('hi', name)
 
