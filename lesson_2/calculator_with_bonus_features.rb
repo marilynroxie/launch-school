@@ -64,6 +64,7 @@ loop do
   end
 end
 
+system 'clear'
 prompt('hi', name)
 
 # Ask the user for two numbers
@@ -106,7 +107,6 @@ loop do # Main loop
     operator = gets.chomp
 
     if %w(1 2 3 4).include?(operator)
-      p operator
       break
     else
       prompt('valid_choice')
