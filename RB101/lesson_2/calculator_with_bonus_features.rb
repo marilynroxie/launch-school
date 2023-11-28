@@ -1,4 +1,5 @@
 # Todo
+# Move both getting number and case operator into their own methods
 # Finish translations
 
 require 'yaml'
