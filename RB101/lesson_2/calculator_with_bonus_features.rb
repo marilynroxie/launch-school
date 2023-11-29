@@ -1,5 +1,4 @@
 # Todo
-# Move case operator into its own method
 # Finish translations
 
 require 'yaml'
@@ -114,6 +113,26 @@ def operation(operator, number1, number2)
   end
 end
 
+# Method for asking to perform another calculation
+
+def calc_again(name)
+   loop do
+    prompt('another_calc')
+    answer = gets.chomp.strip.downcase
+    p answer
+    if %w(yes y はい うん).include?(answer)
+      system 'clear'
+      break
+    elsif %w(no n いいえ).include?(answer)
+      prompt('thank_you', name)
+      exit
+    else
+      system 'clear'
+      prompt('valid_calc')
+    end
+  end
+end
+
 system 'clear'
 
 # Obtain name and greet user
@@ -171,19 +190,6 @@ loop do
 
   # Ask to perform another calculation or not
 
-  loop do
-    prompt('another_calc')
-    answer = gets.chomp.strip.downcase
-    p answer
-    if %w(yes y はい うん).include?(answer)
-      system 'clear'
-      break
-    elsif %w(no n いいえ).include?(answer)
-      prompt('thank_you', name)
-      exit
-    else
-      system 'clear'
-      prompt('valid_calc')
-    end
-  end
+  calc_again(name)
+
 end
