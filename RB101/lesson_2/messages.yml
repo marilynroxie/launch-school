@@ -9,9 +9,8 @@ en:
   enter_name: "Enter your name: "
   valid_name: "Make sure to use a valid name."
   hi: "Hi %s"
-  what_number: "What's the %s number?"
-  first_number: "What's the first number?"
-  second_number: "What's the second number?"
+  first_number: "What is the first number?"
+  second_number: "What is the second number?"
   valid_number: "Hmm...that doesn't look like a valid number."
   operator_prompt: |
     What operation would you like to perform?

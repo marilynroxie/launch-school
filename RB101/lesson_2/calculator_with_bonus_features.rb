@@ -85,11 +85,9 @@ prompt('hi', name)
 # Ask the user for two numbers
 
 loop do
-  prompt('what_number', "first")
-  # prompt('first_number')
+  prompt('first_number')
   number1 = get_number
-  prompt('what_number', "second")
-  # prompt('second_number')
+  prompt('second_number')
   number2 = get_number
 
   system 'clear'
