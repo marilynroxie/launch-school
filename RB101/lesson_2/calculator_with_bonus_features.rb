@@ -1,5 +1,5 @@
 # Todo
-# Move both getting number and case operator into their own methods
+# Move case operator into its own method
 # Finish translations
 
 require 'yaml'
@@ -16,7 +16,7 @@ loop do
   if %w(en english).include?(lang)
     LANGUAGE = "en"
     break
-  elsif %w(jp japanese).include?(lang)
+  elsif %w(jp japanese 日本語).include?(lang)
     LANGUAGE = "jp"
     break
   else
