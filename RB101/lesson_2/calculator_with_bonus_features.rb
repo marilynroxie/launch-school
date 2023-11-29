@@ -73,6 +73,47 @@ def get_number
   end
 end
 
+# Methods for performing calculations
+
+def add(number1, number2)
+  number1 + number2
+end
+
+def subtract(number1, number2)
+  number1 - number2
+end
+
+def multiply(number1, number2)
+  number1 * number2
+end
+
+def divide(number1, number2)
+  result = number1.to_f / number2.to_f
+  result % 1 == 0 ? result.to_i : result.to_f
+end
+
+# Method for setting mathematical sign
+
+def mathsign(operator)
+  case operator
+  when '1' then "+"
+  when '2' then "-"
+  when '3' then "*"
+  when '4' then "/"
+  end
+end
+
+# Method for performing operation
+
+def operation(operator, number1, number2)
+  case operator
+  when '1' then add(number1, number2)
+  when '2' then subtract(number1, number2)
+  when '3' then multiply(number1, number2)
+  when '4' then divide(number1, number2)
+  end
+end
+
 system 'clear'
 
 # Obtain name and greet user
@@ -113,23 +154,9 @@ loop do
 
   # Perform the operation on the two numbers
 
-  result = case operator
-           when '1'
-             mathsym = "+"
-             number1 + number2
-           when '2'
-             mathsym = "-"
-             number1 - number2
-           when '3'
-             mathsym = "*"
-             number1 * number2
-           when '4'
-             mathsym = "/"
-             result = number1.to_f / number2.to_f
-             result % 1 == 0 ? result.to_i : result.to_f
-           end
-
-  prompt('display_calc', number1, mathsym, number2)
+  sign = mathsign(operator)
+  result = operation(operator, number1, number2)
+  prompt('display_calc', number1, sign, number2)
   sleep 0.1
 
   # Handle zero division and output the result
