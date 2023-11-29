@@ -63,13 +63,18 @@ end
 
 # Method for getting number
 
-def get_number
+def get_number(number)
   number = gets.chomp
-  if valid_number?(number)
-    number.include?('.') ? number.to_f : number.to_i
-  else
-    prompt('valid_number')
+  loop do
+    if valid_number?(number)
+      number.include?('.') ? number = number.to_f : number = number.to_i
+      break
+    else
+      prompt('valid_number')
+      number = gets.chomp
+    end
   end
+  number
 end
 
 # Methods for performing calculations
@@ -113,6 +118,18 @@ def operation(operator, number1, number2)
   end
 end
 
+# Method for handling zero division error and outputing result
+
+def zero_or_result(result, number1, number2)
+  if (number2.to_i.zero? && result.infinite?) || result.to_f.nan?
+    prompt('zero_division')
+  elsif result.is_a?(Float)
+    prompt('result', result.round(2))
+  else
+    prompt('result', result)
+  end
+end
+
 # Method for asking to perform another calculation
 
 def calc_again(name)
@@ -146,9 +163,9 @@ prompt('hi', name)
 
 loop do
   prompt('first_number')
-  number1 = get_number
+  number1 = get_number(number1)
   prompt('second_number')
-  number2 = get_number
+  number2 = get_number(number2)
 
   system 'clear'
 
@@ -180,13 +197,7 @@ loop do
 
   # Handle zero division and output the result
 
-  if (number2.to_i.zero? && result.infinite?) || result.to_f.nan?
-    prompt('zero_division')
-  elsif result.is_a?(Float)
-    prompt('result', result.round(2))
-  else
-    prompt('result', result)
-  end
+  zero_or_result(result, number1, number2)
 
   # Ask to perform another calculation or not
 
