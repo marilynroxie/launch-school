@@ -62,6 +62,17 @@ def get_name
   end
 end
 
+# Method for getting number
+
+def get_number
+  number = gets.chomp
+  if valid_number?(number)
+    number.include?('.') ? number.to_f : number.to_i
+  else
+    prompt('valid_number')
+  end
+end
+
 system 'clear'
 
 # Obtain name and greet user
@@ -70,34 +81,16 @@ name = get_name
 system 'clear'
 prompt('hi', name)
 
+# Main loop begins
 # Ask the user for two numbers
 
-loop do # Main loop
-  number1 = ''
-
-  loop do
-    prompt('first_number')
-    number1 = gets.chomp
-    if valid_number?(number1)
-      number1 = number1.include?('.') ? number1.to_f : number1.to_i
-      break
-    else
-      prompt('valid_number')
-    end
-  end
-
-  number2 = ''
-
-  loop do
-    prompt('second_number')
-    number2 = gets.chomp
-    if valid_number?(number2)
-      number2 = number2.include?('.') ? number2.to_f : number2.to_i
-      break
-    else
-      prompt('valid_number')
-    end
-  end
+loop do
+  prompt('what_number', "first")
+  # prompt('first_number')
+  number1 = get_number
+  prompt('what_number', "second")
+  # prompt('second_number')
+  number2 = get_number
 
   system 'clear'
 
