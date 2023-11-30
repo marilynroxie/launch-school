@@ -1,5 +1,7 @@
 # Todo
 # Finish translations
+# Replace case statement with hash lookup
+# Fix shadowed argument issue raised in Rubocop
 
 require 'yaml'
 
@@ -63,7 +65,7 @@ end
 
 # Method for getting number
 
-def get_number(number)
+def get_number(*)
   number = gets.chomp
   loop do
     if valid_number?(number)
@@ -148,7 +150,7 @@ end
 # Method for asking to perform another calculation
 
 def calc_again(name)
-   loop do
+  loop do
     prompt('another_calc')
     answer = gets.chomp.strip.downcase
     p answer
@@ -208,5 +210,4 @@ loop do
   # Ask to perform another calculation or not
 
   calc_again(name)
-
 end
