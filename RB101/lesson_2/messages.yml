@@ -8,7 +8,7 @@ invalid_input: "=> Sorry! That's not a valid input."
 en:
   enter_name: "Enter your name: "
   valid_name: "Make sure to use a valid name."
-  hi: "Hi %s"
+  hi: "Hi %s!"
   first_number: "What is the first number?"
   second_number: "What is the second number?"
   valid_number: "Hmm...that doesn't look like a valid number."

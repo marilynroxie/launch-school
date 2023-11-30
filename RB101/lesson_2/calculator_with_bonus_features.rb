@@ -1,7 +1,6 @@
 # Todo
 # Finish translations
 # Replace case statement with hash lookup
-# Fix display of result when zero division happens
 
 require 'yaml'
 
@@ -137,15 +136,18 @@ end
 
 # Method for handling zero division
 
-def zero_division(result, number2)
-  (number2.to_i.zero? && result.infinite?) || result.to_f.nan? ?
-  prompt('zero_division') : result
+def zero_division(operator, number2)
+  operator == "4" && number2.to_i.zero?
 end
 
 # Method for outputing result
 
 def equals(result)
-  result.is_a?(Float) ? prompt('result', result.round(2)) : prompt('result', result)
+  if result.is_a?(Float)
+    prompt('result', result.round(2))
+  else
+    prompt('result', result)
+  end
 end
 
 # Method for asking to perform another calculation
@@ -154,7 +156,6 @@ def calc_again(name)
   loop do
     prompt('another_calc')
     answer = gets.chomp.strip.downcase
-    p answer
     if %w(yes y はい うん).include?(answer)
       system 'clear'
       break
@@ -206,8 +207,12 @@ loop do
 
   # Handle zero division and output the result
 
-  zero_division(result, number2)
-  equals(result)
+  zero_division_error = zero_division(operator, number2)
+  if zero_division_error == true
+    prompt('zero_division')
+  else
+    equals(result)
+  end
 
   # Ask to perform another calculation or not
 
