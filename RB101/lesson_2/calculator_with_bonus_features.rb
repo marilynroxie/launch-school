@@ -77,6 +77,21 @@ def get_number(number)
   number
 end
 
+# Method for deciding which calculation to perform
+
+def get_operator(operator)
+  loop do
+    operator = gets.chomp
+
+    if %w(1 2 3 4).include?(operator)
+      break
+    else
+      prompt('valid_choice')
+    end
+  end
+  operator
+end
+
 # Methods for performing calculations
 
 def add(number1, number2)
@@ -98,7 +113,7 @@ end
 
 # Method for setting mathematical sign
 
-def mathsign(operator)
+def math_sign(operator)
   case operator
   when '1' then "+"
   when '2' then "-"
@@ -172,25 +187,16 @@ loop do
   # Ask the user for an operation to perform
 
   prompt('operator_prompt', number1, number2)
-
-  operator = ''
-  loop do
-    operator = gets.chomp
-
-    if %w(1 2 3 4).include?(operator)
-      break
-    else
-      prompt('valid_choice')
-    end
-  end
+  operator = get_operator(operator)
 
   system 'clear'
+
   prompt('calculating', operation_to_message(operator))
   sleep 0.1
 
   # Perform the operation on the two numbers
 
-  sign = mathsign(operator)
+  sign = math_sign(operator)
   result = operation(operator, number1, number2)
   prompt('display_calc', number1, sign, number2)
   sleep 0.1
