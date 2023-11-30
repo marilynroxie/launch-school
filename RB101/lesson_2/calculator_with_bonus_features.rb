@@ -1,7 +1,7 @@
 # Todo
 # Finish translations
 # Replace case statement with hash lookup
-# Fix shadowed argument issue raised in Rubocop
+# Fix display of result when zero division happens
 
 require 'yaml'
 
@@ -135,16 +135,17 @@ def operation(operator, number1, number2)
   end
 end
 
-# Method for handling zero division error and outputing result
+# Method for handling zero division
 
-def zero_or_result(result, number1, number2)
-  if (number2.to_i.zero? && result.infinite?) || result.to_f.nan?
-    prompt('zero_division')
-  elsif result.is_a?(Float)
-    prompt('result', result.round(2))
-  else
-    prompt('result', result)
-  end
+def zero_division(result, number2)
+  (number2.to_i.zero? && result.infinite?) || result.to_f.nan? ?
+  prompt('zero_division') : result
+end
+
+# Method for outputing result
+
+def equals(result)
+  result.is_a?(Float) ? prompt('result', result.round(2)) : prompt('result', result)
 end
 
 # Method for asking to perform another calculation
@@ -205,7 +206,8 @@ loop do
 
   # Handle zero division and output the result
 
-  zero_or_result(result, number1, number2)
+  zero_division(result, number2)
+  equals(result)
 
   # Ask to perform another calculation or not
 
