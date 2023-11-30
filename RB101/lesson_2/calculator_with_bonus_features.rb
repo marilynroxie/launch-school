@@ -1,6 +1,5 @@
 # Todo
 # Finish translations
-# Replace case statement with hash lookup
 
 require 'yaml'
 
@@ -138,7 +137,7 @@ end
 # Method for handling zero division
 
 def zero_division(operator, number2)
-  operator == "4" && number2.to_i.zero?
+  operator == "4" && number2.zero?
 end
 
 # Method for outputing result
