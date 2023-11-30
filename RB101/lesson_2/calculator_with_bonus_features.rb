@@ -115,12 +115,13 @@ end
 # Method for setting mathematical sign
 
 def math_sign(operator)
-  case operator
-  when '1' then "+"
-  when '2' then "-"
-  when '3' then "*"
-  when '4' then "/"
-  end
+  number_signs = {
+    '1' => "+",
+    '2' => "-",
+    '3' => "*",
+    '4' => "/"
+  }
+  number_signs[operator]
 end
 
 # Method for performing operation
