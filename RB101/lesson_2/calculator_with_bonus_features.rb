@@ -61,14 +61,14 @@ end
 # Method for getting number
 
 def get_number(*)
-  number = gets.chomp.tr('０-９', '0-9')
+  number = gets.chomp.strip.tr('０-９', '0-9')
   loop do
     if valid_number?(number)
       number.include?('.') ? number = number.to_f : number = number.to_i
       break
     else
       prompt('valid_number')
-      number = gets.chomp
+      number = gets.chomp.strip.tr('０-９', '0-9')
     end
   end
   number
