@@ -140,7 +140,12 @@ end
 # Method for outputing result
 
 def equals(result)
-  result.is_a?(Float) ? prompt('result', result.round(2)) : prompt('result', result)
+  if result.is_a?(Float)
+    prompt('result',
+           result.round(2))
+  else
+    prompt('result', result)
+  end
 end
 
 # Method for asking to perform another calculation
@@ -178,21 +183,18 @@ loop do
   number1 = get_number(number1)
   prompt('second_number')
   number2 = get_number(number2)
-
   system 'clear'
 
   # Ask the user for an operation to perform
 
   prompt('operator_prompt', number1, number2)
   operator = get_operator(operator)
-
   system 'clear'
-
-  prompt('calculating', operation_to_message(operator))
-  sleep 0.1
 
   # Perform the operation on the two numbers
 
+  prompt('calculating', operation_to_message(operator))
+  sleep 0.1
   sign = math_sign(operator)
   result = operation(operator, number1, number2)
   prompt('display_calc', number1, sign, number2)
