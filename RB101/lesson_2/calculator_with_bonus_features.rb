@@ -61,7 +61,7 @@ end
 # Method for getting number
 
 def get_number(*)
-  number = gets.chomp
+  number = gets.chomp.tr('０-９', '0-9')
   loop do
     if valid_number?(number)
       number.include?('.') ? number = number.to_f : number = number.to_i
@@ -78,7 +78,7 @@ end
 
 def get_operator(operator)
   loop do
-    operator = gets.chomp
+    operator = gets.chomp.tr('０-９', '0-9')
 
     if %w(1 2 3 4).include?(operator)
       break

@@ -35,7 +35,7 @@ en:
   valid_calc: "Sorry! That's not valid input."
   thank_you: "Thank you for using the calculator, %s. Goodbye!"
 jp:
-  enter_name: "お名前は？: "
+  enter_name: "あなたのお名前は："
   valid_name: "有効な名前を使用してください。"
   hi: "こんにちは、%sさん。"
   first_number: "最初の数字は何ですか？"
