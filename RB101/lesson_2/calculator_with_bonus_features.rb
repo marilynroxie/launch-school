@@ -140,11 +140,7 @@ end
 # Method for outputing result
 
 def equals(result)
-  if result.is_a?(Float)
-    prompt('result', result.round(2))
-  else
-    prompt('result', result)
-  end
+  result.is_a?(Float) ? prompt('result', result.round(2)) : prompt('result', result)
 end
 
 # Method for asking to perform another calculation
