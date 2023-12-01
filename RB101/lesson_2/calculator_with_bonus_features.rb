@@ -53,11 +53,8 @@ def get_name
   loop do
     prompt('enter_name')
     name = gets.chomp.strip.capitalize
-    if name.empty?
-      prompt('valid_name')
-    else
-      return name
-    end
+    break name unless name.empty?
+    prompt('valid_name')
   end
 end
 
