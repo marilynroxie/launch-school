@@ -114,8 +114,8 @@ def math_sign(operator)
   number_signs = {
     '1' => "+",
     '2' => "-",
-    '3' => "*",
-    '4' => "/"
+    '3' => "×",
+    '4' => "÷"
   }
   number_signs[operator]
 end

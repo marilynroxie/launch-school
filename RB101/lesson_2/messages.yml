@@ -6,7 +6,7 @@ welcome: |
      英語を選ぶ場合はen、日本語を選ぶ場合はjpを入力してください：
 invalid_input: "=> Sorry! That's not a valid input."
 en:
-  enter_name: "Enter your name: "
+  enter_name: "Please enter your name: "
   valid_name: "Make sure to use a valid name."
   hi: "Hi %s!"
   first_number: "What is the first number?"
@@ -35,31 +35,31 @@ en:
   valid_calc: "Sorry! That's not valid input."
   thank_you: "Thank you for using the calculator, %s. Goodbye!"
 jp:
-  enter_name: "あなたのお名前は："
+  enter_name: "あなたのお名前を入力してください："
   valid_name: "有効な名前を使用してください。"
   hi: "こんにちは、%sさん。"
   first_number: "最初の数字は何ですか？"
-  second_number: "二番目の数字は何ですか？"
-  valid_number: "うーん...それは有効な数字のようには見えませんね。"
+  second_number: "次の数字は何ですか？"
+  valid_number: "うーん...無効な数字です。"
   operator_prompt: |
     どの操作を実行しますか？
 
     数字は%sと%sです。
 
-    1) 足し算
-    2) 引き算
-    3) 掛け算
-    4) 割り算
+    1) 加算
+    2) 減算
+    3) 乗算
+    4) 除算
   valid_choice: "1、2、3、または4を選択してください。"
   operations:
-    1: "足し算"
-    2: "引き算"
-    3: "掛け算"
-    4: "割り算"
+    1: "足す"
+    2: "引く"
+    3: "掛ける"
+    4: "割る"
   display_calc: "%s %s %s"
-  calculating: "%s中..."
+  calculating: "数字を%s..."
   zero_division: "ゼロで割ることはできません。"
-  result: "結果は%sです。"
-  another_calc: "別の計算を行いますか？（Yで再計算、Nで計算を終了）"
-  valid_calc: "申し訳ありません！それは無効な入力です。"
+  result: "計算結果は%sです。"
+  another_calc: "別の計算を行いますか？　（Yで再計算、Nで計算を終了）"
+  valid_calc: "申し訳ありません！　無効な入力です。"
   thank_you: "%sさん、計算機をご利用いただきありがとうございました。さようなら！"
