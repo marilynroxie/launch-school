@@ -201,11 +201,7 @@ loop do
   # Handle zero division and output the result
 
   zero_division_error = zero_division(operator, number2)
-  if zero_division_error == true
-    prompt('zero_division')
-  else
-    equals(result)
-  end
+  zero_division_error == true ? prompt('zero_division') : equals(result)
 
   # Ask to perform another calculation or not
 
