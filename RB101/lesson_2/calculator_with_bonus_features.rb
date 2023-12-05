@@ -41,6 +41,11 @@ def valid_number?(input)
   /^-?(?:\d+(?:\.\d*)?|\.\d+)$/.match?(input)
 end
 
+def math_sign(operator)
+  MESSAGES[LANGUAGE]['math_signs'][operator.to_i]
+  # MESSAGES[LANGUAGE]['math_signs'][operator.to_i]
+end
+
 # Accessing operations in yaml
 
 def operation_to_message(operator)
@@ -110,15 +115,15 @@ end
 
 # Method for setting mathematical sign
 
-def math_sign(operator)
-  number_signs = {
-    '1' => "+",
-    '2' => "-",
-    '3' => "×",
-    '4' => "÷"
-  }
-  number_signs[operator]
-end
+# def math_sign(operator)
+#   number_signs = {
+#     '1' => "+",
+#     '2' => "-",
+#     '3' => "×",
+#     '4' => "÷"
+#   }
+#   number_signs[operator]
+# end
 
 # Method for performing operation
 
@@ -195,9 +200,8 @@ loop do
 
   prompt('calculating', operation_to_message(operator))
   sleep 0.1
-  sign = math_sign(operator)
   result = operation(operator, number1, number2)
-  prompt('display_calc', number1, sign, number2)
+  prompt('display_calc', number1, math_sign(operator), number2)
   sleep 0.1
 
   # Handle zero division and output the result

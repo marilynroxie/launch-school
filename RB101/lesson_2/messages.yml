@@ -3,7 +3,7 @@ welcome: |
      Type en for English or jp for Japanese:
    Calculatorへようこそ！
      英語をの場合は「en」、日本語の場合は「jp」を入力してください：
-invalid_input: "=> Sorry! That's not a valid input."
+invalid_input: "=> Sorry! That's not valid input."
 en:
   enter_name: "Please enter your name: "
   valid_name: "Please enter a valid name."
@@ -26,6 +26,11 @@ en:
     2: "Subtracting"
     3: "Multiplying"
     4: "Dividing"
+  math_signs:
+    1: "+"
+    2: "-"
+    3: "×"
+    4: "÷"
   display_calc: "%s %s %s"
   calculating: "%s the two numbers..."
   zero_division: "Can't divide by zero."
