@@ -38,6 +38,8 @@ def valid_number?(input)
   /^-?(?:\d+(?:\.\d*)?|\.\d+)$/.match?(input)
 end
 
+# Setting math signs
+
 def math_sign(operator)
   MESSAGES[LANGUAGE]['math_signs'][operator.to_i]
 end
