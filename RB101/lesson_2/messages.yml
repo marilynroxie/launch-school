@@ -1,7 +1,7 @@
 welcome: |
   => Welcome to Calculator!
      Type en for English or jp for Japanese:
-   Calculatorへようこそ！
+   電卓へようこそ！
      英語をの場合は「en」、日本語の場合は「jp」を入力してください：
 invalid_input: "=> Sorry! That's not valid input."
 en:
@@ -42,11 +42,11 @@ jp:
   enter_name: "あなたのお名前を入力してください："
   valid_name: "有効な名前を使用してください。"
   hi: "こんにちは、%sさん！"
-  first_number: "最初の数字は何ですか？"
-  second_number: "次の数字は何ですか？"
-  valid_number: "うーん...無効な数字です。"
+  first_number: "最初の数字は何ですか。"
+  second_number: "次の数字は何ですか。"
+  valid_number: "うーん…無効な数字です。"
   operator_prompt: |
-    どの操作を実行しますか？
+    どの操作を実行しますか。
 
     数字は%sと%sです。
 
@@ -61,9 +61,9 @@ jp:
     3: "掛ける"
     4: "割る"
   display_calc: "%s %s %s"
-  calculating: "数字を%s..."
+  calculating: "数字を%s…"
   zero_division: "ゼロで割ることはできません。"
   result: "計算結果は%sです。"
-  another_calc: "別の計算を行いますか？　（Yで再計算、Nで計算を終了）"
-  valid_calc: "申し訳ありません！　無効な入力です。"
-  thank_you: "%sさん、計算機をご利用いただきありがとうございました。さようなら！"
+  another_calc: "別の計算を行いますか。（Yで再計算、Nで計算を終了）"
+  valid_calc: "申し訳ございません。無効な入力でした。"
+  thank_you: "%sさん、電卓をご利用いただき、誠にありがとうございました。またね！"
