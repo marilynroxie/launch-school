@@ -1,6 +1,3 @@
-# Todo
-# Finish translations
-
 require 'yaml'
 
 MESSAGES = YAML.load_file('messages.yml')
@@ -43,7 +40,6 @@ end
 
 def math_sign(operator)
   MESSAGES[LANGUAGE]['math_signs'][operator.to_i]
-  # MESSAGES[LANGUAGE]['math_signs'][operator.to_i]
 end
 
 # Accessing operations in yaml
@@ -84,7 +80,6 @@ end
 def get_operator(operator)
   loop do
     operator = gets.chomp.tr('０-９', '0-9')
-
     if %w(1 2 3 4).include?(operator)
       break
     else
@@ -94,33 +89,14 @@ def get_operator(operator)
   operator
 end
 
-# Methods for performing calculations
-
-def add(number1, number2)
-  number1 + number2
-end
-
-def subtract(number1, number2)
-  number1 - number2
-end
-
-def multiply(number1, number2)
-  number1 * number2
-end
-
-def divide(number1, number2)
-  result = number1.to_f / number2.to_f
-  result % 1 == 0 ? result.to_i : result.to_f
-end
-
-# Method for performing operation
+# Method for performing calculations
 
 def operation(operator, number1, number2)
   case operator
-  when '1' then add(number1, number2)
-  when '2' then subtract(number1, number2)
-  when '3' then multiply(number1, number2)
-  when '4' then divide(number1, number2)
+  when '1' then number1 + number2
+  when '2' then number1 - number2
+  when '3' then number1 * number2
+  when '4' then number1.to_f / number2.to_f
   end
 end
 
@@ -133,6 +109,7 @@ end
 # Method for outputing result
 
 def equals(result)
+  result = result % 1 == 0 ? result.to_i : result.to_f
   if result.is_a?(Float)
     prompt('result',
            result.round(2))
