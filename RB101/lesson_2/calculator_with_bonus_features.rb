@@ -113,8 +113,7 @@ end
 def equals(result)
   result = result % 1 == 0 ? result.to_i : result.to_f
   if result.is_a?(Float)
-    prompt('result',
-           result.round(2))
+    prompt('result', result.round(2))
   else
     prompt('result', result)
   end
