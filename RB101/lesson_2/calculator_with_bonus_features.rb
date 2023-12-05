@@ -113,18 +113,6 @@ def divide(number1, number2)
   result % 1 == 0 ? result.to_i : result.to_f
 end
 
-# Method for setting mathematical sign
-
-# def math_sign(operator)
-#   number_signs = {
-#     '1' => "+",
-#     '2' => "-",
-#     '3' => "×",
-#     '4' => "÷"
-#   }
-#   number_signs[operator]
-# end
-
 # Method for performing operation
 
 def operation(operator, number1, number2)
