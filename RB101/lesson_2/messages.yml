@@ -1,13 +1,12 @@
 welcome: |
   => Welcome to Calculator!
      Type en for English or jp for Japanese:
-
    Calculatorへようこそ！
-     英語を選ぶ場合はen、日本語を選ぶ場合はjpを入力してください：
+     英語をの場合は「en」、日本語の場合は「jp」を入力してください：
 invalid_input: "=> Sorry! That's not a valid input."
 en:
   enter_name: "Please enter your name: "
-  valid_name: "Make sure to use a valid name."
+  valid_name: "Please enter a valid name."
   hi: "Hi %s!"
   first_number: "What is the first number?"
   second_number: "What is the second number?"
@@ -37,7 +36,7 @@ en:
 jp:
   enter_name: "あなたのお名前を入力してください："
   valid_name: "有効な名前を使用してください。"
-  hi: "こんにちは、%sさん。"
+  hi: "こんにちは、%sさん！"
   first_number: "最初の数字は何ですか？"
   second_number: "次の数字は何ですか？"
   valid_number: "うーん...無効な数字です。"
