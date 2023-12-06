@@ -1,4 +1,6 @@
-# Todo - forbid non-numeric input
+# Todo
+# Forbid non-numeric input
+# Handle whether APR is entered as whole number or decimal appropriately
 
 require 'yaml'
 
