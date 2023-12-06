@@ -5,7 +5,7 @@ enter_apr: |
   What's your annual percentage rate (APR)?
   Example 2.5 for 2.5%% or 5 for 5%%.
 loan_duration: "What's the duration of your loan in years?"
-payment: "Your monthly payment is $%s."
+payment: "Your monthly payment is %s."
 another_calc: "Perform another calculation? Enter Y to continue, and N to exit."
 valid_calc: "Sorry! That's not valid input."
 thank_you: "Thank you for using the Mortgage Calculator!"

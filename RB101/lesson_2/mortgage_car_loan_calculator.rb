@@ -18,7 +18,7 @@ def set_loan
   loop do
     prompt('enter_amount')
     loan_amount = gets.chomp.strip
-    if loan_amount.to_s.empty? || loan_amount.to_f < 0
+    if loan_amount.to_s.empty? || loan_amount.to_f <= 0
       prompt('positive')
     else
       break
@@ -46,7 +46,7 @@ def set_duration
   loop do
     prompt('loan_duration')
     loan_duration = gets.chomp.strip
-    if loan_duration.empty? || loan_duration.to_f < 0
+    if loan_duration.empty? || loan_duration.to_f <= 0
       prompt('positive')
     else
       break
