@@ -14,7 +14,7 @@ end
 def set_loan
   prompt('enter_amount')
   loan_amount = gets.chomp
-  if loan_amount.empty? || loan_amount.to_f < 0
+  if loan_amount.to_s.empty? || loan_amount.to_f < 0
     prompt('positive')
   end
   loan_amount.to_f
@@ -22,12 +22,25 @@ end
 
 def set_apr
   prompt('enter_apr')
-  gets.chomp.to_f
+  apr = gets.chomp
+  if apr.empty? || apr.to_f < 0
+    prompt('positive')
+  end
+  apr.to_f
 end
 
 def set_duration
-  prompt('loan_duration')
-  gets.chomp.to_i
+  loan_duration = ''
+  loop do
+    prompt('loan_duration')
+    loan_duration = gets.chomp.strip
+    if loan_duration.empty? || loan_duration.to_f < 0
+      prompt('positive')
+    else
+      break
+    end
+  end
+  loan_duration.to_i
 end
 
 def monthly(apr)
@@ -36,7 +49,7 @@ def monthly(apr)
 end
 
 def monthly_payment(loan_amount, monthly_interest, months)
-  monthly_payment = loan_amount * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
+  monthly_payment = loan_amount * (monthly_interest / (1 - ((1 + monthly_interest) ** (-months))))
   monthly_payment = monthly_payment.to_f.round(2)
   prompt('payment', monthly_payment)
 end
