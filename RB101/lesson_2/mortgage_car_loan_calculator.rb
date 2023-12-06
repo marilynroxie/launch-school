@@ -1,3 +1,5 @@
+# Todo - forbid non-numeric input
+
 require 'yaml'
 
 MESSAGES = YAML.load_file('loan_messages.yml')
@@ -12,19 +14,29 @@ def prompt(key, *args)
 end
 
 def set_loan
-  prompt('enter_amount')
-  loan_amount = gets.chomp
-  if loan_amount.to_s.empty? || loan_amount.to_f < 0
-    prompt('positive')
+  loan_amount = ''
+  loop do
+    prompt('enter_amount')
+    loan_amount = gets.chomp.strip
+    if loan_amount.to_s.empty? || loan_amount.to_f < 0
+      prompt('positive')
+    else
+      break
+    end
   end
   loan_amount.to_f
 end
 
 def set_apr
-  prompt('enter_apr')
-  apr = gets.chomp
-  if apr.empty? || apr.to_f < 0
-    prompt('positive')
+  apr = ''
+  loop do
+    prompt('enter_apr')
+    apr = gets.chomp.strip
+    if apr.empty? || apr.to_f < 0
+      prompt('positive')
+    else
+      break
+    end
   end
   apr.to_f
 end
@@ -54,9 +66,26 @@ def monthly_payment(loan_amount, monthly_interest, months)
   prompt('payment', monthly_payment)
 end
 
-loop do
-  prompt('welcome')
+def calc_again
+  answer = ''
+  loop do
+    prompt('another_calc')
+    answer = gets.chomp.strip.downcase
+    if %w(yes y).include?(answer)
+      return true
+    elsif %w(no n).include?(answer)
+      prompt('thank_you')
+      exit
+    else
+      system 'clear'
+      prompt('valid_calc')
+    end
+  end
+end
 
+loop do
+  system 'clear'
+  prompt('welcome')
   loan_amount = set_loan
   apr = set_apr
   loan_duration = set_duration
@@ -64,4 +93,6 @@ loop do
   monthly_interest = monthly(apr)
   months = loan_duration * 12
   monthly_payment(loan_amount, monthly_interest, months)
+
+  calc_again
 end
