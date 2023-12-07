@@ -33,7 +33,7 @@ def valid_number?(input)
 end
 
 def math_sign(operator)
-  MESSAGES[LANGUAGE]['math_signs'][operator.to_i]
+  MESSAGES['math_signs'][operator.to_i]
 end
 
 def operation_to_message(operator)

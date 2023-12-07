@@ -14,6 +14,11 @@ jp_opt:
   - "日本語"
   - "にほんご"
 invalid_input: "=> Sorry! That's not valid input."
+math_signs:
+  1: "+"
+  2: "-"
+  3: "×"
+  4: "÷"
 en:
   enter_name: "Please enter your name: "
   valid_name: "Please enter a valid name."
@@ -36,11 +41,6 @@ en:
     2: "Subtracting"
     3: "Multiplying"
     4: "Dividing"
-  math_signs:
-    1: "+"
-    2: "-"
-    3: "×"
-    4: "÷"
   display_calc: "%s %s %s"
   calculating: "%s the two numbers..."
   zero_division: "Can't divide by zero."
@@ -76,11 +76,6 @@ jp:
     2: "引く"
     3: "掛ける"
     4: "割る"
-  math_signs:
-    1: "+"
-    2: "-"
-    3: "×"
-    4: "÷"
   display_calc: "%s %s %s"
   calculating: "数字を%s…"
   zero_division: "ゼロで割ることはできません。"
