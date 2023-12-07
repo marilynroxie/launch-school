@@ -2,12 +2,10 @@ def valid_int(integer)
   loop do
     puts ">> Please enter an integer greater than 0: "
     integer = gets.chomp.to_i
-    p integer
-    p integer.to_i.to_s
-    if integer.to_i.to_s != "0"
-      break
-    else
+    if integer.to_i.to_s == "0"
       puts ">> Enter a valid integer"
+    else
+      break
     end
   end
   integer
