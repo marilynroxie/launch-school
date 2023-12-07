@@ -7,8 +7,8 @@ total = (bill + tip).round(2)
 
 # Includes Further Exploration
 
-puts 'The tip is ' + format('$%.2f', tip)
-puts 'The total is ' + format('$%.2f', total)
+puts "The tip is #{format('$%.2f', tip)}"
+puts "The total is #{format('$%.2f', total)}"
 
 # Original
 

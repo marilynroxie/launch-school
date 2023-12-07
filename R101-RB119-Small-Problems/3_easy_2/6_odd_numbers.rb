@@ -1,3 +1,3 @@
-for i in 1..99
+(1..99).each do |i|
   puts i if i.odd?
 end
