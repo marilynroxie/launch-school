@@ -1,5 +1,4 @@
 # Todo
-# Forbid non-numeric input
 # Handle whether APR is entered as whole number or decimal appropriately
 
 require 'yaml'
@@ -20,7 +19,7 @@ def set_loan
   loop do
     prompt('enter_amount')
     loan_amount = gets.chomp.strip
-    if loan_amount.to_s.empty? || loan_amount.to_f <= 0
+    if loan_amount.to_s.empty? || loan_amount.to_f <= 0 || loan_amount.to_i.to_s == loan_amount.to_i
       prompt('positive')
     else
       break
