@@ -4,8 +4,6 @@ MESSAGES = YAML.load_file('messages.yml')
 
 system 'clear'
 
-# Initialize user language
-
 loop do
   puts MESSAGES['welcome']
   lang = gets.chomp.strip.downcase
@@ -21,8 +19,6 @@ loop do
   end
 end
 
-# Defining the structure of messages and prompts used throughout program
-
 def messages(message, lang = 'en')
   MESSAGES[lang][message]
 end
@@ -32,25 +28,17 @@ def prompt(key, *args)
   puts("=> #{message}")
 end
 
-# Integer and float validation
-
 def valid_number?(input)
   /^-?(?:\d+(?:\.\d*)?|\.\d+)$/.match?(input)
 end
-
-# Setting math signs
 
 def math_sign(operator)
   MESSAGES[LANGUAGE]['math_signs'][operator.to_i]
 end
 
-# Accessing operations in yaml
-
 def operation_to_message(operator)
   MESSAGES[LANGUAGE]['operations'][operator.to_i]
 end
-
-# Method for getting name
 
 def get_name
   loop do
@@ -60,8 +48,6 @@ def get_name
     prompt('valid_name')
   end
 end
-
-# Method for getting number
 
 def get_number(*)
   number = gets.chomp.strip.tr('０-９', '0-9')
@@ -77,8 +63,6 @@ def get_number(*)
   number
 end
 
-# Method for deciding which calculation to perform
-
 def get_operator(operator)
   loop do
     operator = gets.chomp.tr('０-９', '0-9')
@@ -91,8 +75,6 @@ def get_operator(operator)
   operator
 end
 
-# Method for performing calculations
-
 def operation(operator, number1, number2)
   case operator
   when '1' then number1 + number2
@@ -102,13 +84,9 @@ def operation(operator, number1, number2)
   end
 end
 
-# Method for handling zero division
-
 def zero_division(operator, number2)
   operator == "4" && number2.zero?
 end
-
-# Method for outputing result
 
 def equals(result)
   result % 1 < 0.000001 && 1 - (result % 1) < 0.000001
@@ -118,8 +96,6 @@ def equals(result)
     prompt('result', result)
   end
 end
-
-# Method for asking to perform another calculation
 
 def calc_again(name)
   loop do
@@ -140,14 +116,9 @@ end
 
 system 'clear'
 
-# Obtain name and greet user
-
 name = get_name
 system 'clear'
 prompt('hi', name)
-
-# Main loop begins
-# Ask the user for two numbers
 
 loop do
   prompt('first_number')
@@ -156,13 +127,9 @@ loop do
   number2 = get_number(number2)
   system 'clear'
 
-  # Ask the user for an operation to perform
-
   prompt('operator_prompt', number1, number2)
   operator = get_operator(operator)
   system 'clear'
-
-  # Perform the operation on the two numbers
 
   prompt('calculating', operation_to_message(operator))
   sleep 0.1
@@ -170,12 +137,8 @@ loop do
   prompt('display_calc', number1, math_sign(operator), number2)
   sleep 0.1
 
-  # Handle zero division and output the result
-
   zero_division_error = zero_division(operator, number2)
   zero_division_error == true ? prompt('zero_division') : equals(result)
-
-  # Ask to perform another calculation or not
 
   calc_again(name)
 end
