@@ -111,7 +111,7 @@ end
 # Method for outputing result
 
 def equals(result)
-  result = result % 1 == 0 ? result.to_i : result.to_f
+  result % 1 < 0.000001 && 1 - (result % 1) < 0.000001
   if result.is_a?(Float)
     prompt('result', result.round(2))
   else
