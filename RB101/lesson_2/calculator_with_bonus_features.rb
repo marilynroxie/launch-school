@@ -89,7 +89,7 @@ def zero_division(operator, number2)
 end
 
 def equals(result)
-  result % 1 < 0.000001 && 1 - (result % 1) < 0.000001
+  result % 1 < 0.000001 && 1 - (result % 1) < 0.000001 ? result.to_i : result.to_f
   if result.is_a?(Float)
     prompt('result', result.round(2))
   else
