@@ -7,10 +7,10 @@ system 'clear'
 loop do
   puts MESSAGES['welcome']
   lang = gets.chomp.strip.downcase
-  if %w(en english).include?(lang)
+  if MESSAGES['en_opt'].include?(lang)
     LANGUAGE = "en"
     break
-  elsif %w(jp japanese 日本語).include?(lang)
+  elsif MESSAGES['jp_opt'].include?(lang)
     LANGUAGE = "jp"
     break
   else

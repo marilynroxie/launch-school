@@ -3,6 +3,16 @@ welcome: |
      Type en for English or jp for Japanese:
    電卓へようこそ！
      英語をの場合は「en」、日本語の場合は「jp」を入力してください：
+en_opt:
+  - "en"
+  - "english"
+  - "英語"
+  - "えいご"
+jp_opt:
+  - "jp"
+  - "japanese"
+  - "日本語"
+  - "にほんご"
 invalid_input: "=> Sorry! That's not valid input."
 en:
   enter_name: "Please enter your name: "
