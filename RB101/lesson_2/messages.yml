@@ -60,6 +60,11 @@ jp:
     2: "引く"
     3: "掛ける"
     4: "割る"
+  math_signs:
+    1: "+"
+    2: "-"
+    3: "×"
+    4: "÷"
   display_calc: "%s %s %s"
   calculating: "数字を%s…"
   zero_division: "ゼロで割ることはできません。"
