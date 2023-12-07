@@ -1,7 +1,7 @@
 def triangle(num)
   space = num - 1
   asterisk = 1
-  num.times do |i|
+  num.times do |_i|
     puts (" " * space) + ("*" * asterisk)
     space -= 1
     asterisk += 1

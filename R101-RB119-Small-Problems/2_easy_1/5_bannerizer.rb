@@ -13,11 +13,11 @@ def print_in_box(text)
   print last
   puts ' '
 
-  puts bar + ' ' * lines + "  #{bar}"
+  puts bar + (' ' * lines) + "  #{bar}"
 
   puts "#{bar} #{text} #{bar} "
 
-  puts bar + ' ' * lines + "  #{bar}"
+  puts bar + (' ' * lines) + "  #{bar}"
 
   print first
   lines.times do

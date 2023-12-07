@@ -1,5 +1,5 @@
 def is_odd?(num)
-  num % 2 != 0
+  num.odd?
 end
 
 puts is_odd?(2)    # => false

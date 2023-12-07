@@ -1,6 +1,6 @@
 def stringy(num)
   arr = []
-  for i in 1..num
+  (1..num).each do |i|
     arr << '1' if i.odd?
     arr << '0' if i.even?
   end
