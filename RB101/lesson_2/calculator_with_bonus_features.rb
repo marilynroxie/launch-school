@@ -101,10 +101,10 @@ def calc_again(name)
   loop do
     prompt('another_calc')
     answer = gets.chomp.strip.downcase
-    if %w(yes y はい うん).include?(answer)
+    if MESSAGES[LANGUAGE]['calc_options_pos'].include?(answer)
       system 'clear'
       break
-    elsif %w(no n いいえ).include?(answer)
+    elsif MESSAGES[LANGUAGE]['calc_options_neg'].include?(answer)
       prompt('thank_you', name)
       exit
     else

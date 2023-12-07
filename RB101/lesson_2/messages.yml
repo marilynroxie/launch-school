@@ -36,6 +36,12 @@ en:
   zero_division: "Can't divide by zero."
   result: "The result is %s."
   another_calc: "Do you want to perform another calculation? (Y to calculate again, N to stop calculating)"
+  calc_options_pos:
+    - "yes"
+    - "y"
+  calc_options_neg:
+    - "no"
+    - "n"
   valid_calc: "Sorry! That's not valid input."
   thank_you: "Thank you for using the calculator, %s. Goodbye!"
 jp:
@@ -70,5 +76,14 @@ jp:
   zero_division: "ゼロで割ることはできません。"
   result: "計算結果は%sです。"
   another_calc: "別の計算を行いますか。（Yで再計算、Nで計算を終了）"
+  calc_options_pos:
+    - "yes"
+    - "y"
+    - "はい"
+    - "うん"
+  calc_options_neg:
+    - "no"
+    - "n"
+    - "いいえ"
   valid_calc: "申し訳ございません。無効な入力でした。"
   thank_you: "%sさん、電卓をご利用いただき、誠にありがとうございました。またね！"
