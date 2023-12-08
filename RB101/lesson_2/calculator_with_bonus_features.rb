@@ -135,7 +135,8 @@ loop do
   prompt('calculating', operation_to_message(operator))
   sleep 0.1
   result = operation(operator, number1, number2)
-  puts format(MESSAGES['display_calc'], number1, math_sign(operator), number2)
+  printf(MESSAGES['display_calc'], number1, math_sign(operator), number2)
+
   sleep 0.1
 
   zero_division_error = zero_division(operator, number2)

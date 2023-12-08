@@ -19,7 +19,9 @@ math_signs:
   2: "-"
   3: "×"
   4: "÷"
-display_calc: "%s %s %s"
+display_calc: |
+  %s %s %s
+
 en:
   enter_name: "Please enter your name: "
   valid_name: "Please enter a valid name."
