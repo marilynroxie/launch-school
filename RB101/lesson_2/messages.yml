@@ -19,6 +19,7 @@ math_signs:
   2: "-"
   3: "×"
   4: "÷"
+display_calc: "%s %s %s"
 en:
   enter_name: "Please enter your name: "
   valid_name: "Please enter a valid name."
@@ -41,7 +42,6 @@ en:
     2: "Subtracting"
     3: "Multiplying"
     4: "Dividing"
-  display_calc: "%s %s %s"
   calculating: "%s the two numbers..."
   zero_division: "Can't divide by zero."
   result: "The result is %s."
@@ -76,7 +76,6 @@ jp:
     2: "引く"
     3: "掛ける"
     4: "割る"
-  display_calc: "%s %s %s"
   calculating: "数字を%s…"
   zero_division: "ゼロで割ることはできません。"
   result: "計算結果は%sです。"
