@@ -33,7 +33,7 @@ def set_apr
   loop do
     prompt('enter_apr')
     apr = gets.chomp.strip
-    if apr.empty? || apr.to_f < 0
+    if apr.empty? || apr.to_f <= 0
       prompt('positive')
     else
       break
@@ -63,7 +63,7 @@ end
 
 def monthly_payment(loan_amount, monthly_interest, months)
   monthly_payment = loan_amount * (monthly_interest / (1 - ((1 + monthly_interest) ** (-months))))
-  monthly_payment = monthly_payment.to_f.round(2)
+  monthly_payment = monthly_payment.to_f.ceil(2)
   prompt('payment', monthly_payment)
 end
 
@@ -93,6 +93,7 @@ loop do
 
   monthly_interest = monthly(apr)
   months = loan_duration * 12
+  sleep 0.1
   monthly_payment(loan_amount, monthly_interest, months)
 
   calc_again
