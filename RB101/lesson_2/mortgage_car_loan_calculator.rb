@@ -36,8 +36,9 @@ def set_loan
   return loan_amount.to_f, currency
 end
 
+
 def valid_number?(input)
-  /^-?(?:\d+(?:\.\d*)?|\.\d+)$/.match?(input)
+  /^(?:\d+(?:\.\d*)?|\.\d+)$/.match?(input)
 end
 
 def set_apr
@@ -45,10 +46,10 @@ def set_apr
   loop do
     prompt('enter_apr')
     apr = gets.chomp.strip
-    if valid_number?(apr) == false || apr.to_f <= -1
-      prompt('positive')
-    else
+    if valid_number?(apr) == true
       break
+    else
+      prompt('positive')
     end
   end
   apr.to_f
