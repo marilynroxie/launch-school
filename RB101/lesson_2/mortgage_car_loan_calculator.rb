@@ -46,10 +46,10 @@ def set_apr
   loop do
     prompt('enter_apr')
     apr = gets.chomp.strip
-    if valid_apr?(apr) == true
-      break
-    else
+    if valid_apr?(apr) == false
       prompt('positive')
+    else
+      break
     end
   end
   apr.to_f
@@ -75,9 +75,9 @@ def monthly(apr)
 end
 
 def monthly_payment(loan_amount, monthly_interest, months)
-  monthly_payment = loan_amount * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
-  monthly_payment = monthly_payment.nan? || monthly_payment.zero? ? loan_amount / months : monthly_payment
-  prompt('payment', monthly_payment.to_f.round(2))
+  monthly_payment = loan_amount[0] * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
+  monthly_payment = monthly_payment.nan? || monthly_payment.zero? ? loan_amount[0] / months : monthly_payment
+  prompt('payment', loan_amount[1], monthly_payment.to_f.round(2))
 end
 
 def calc_again
@@ -102,13 +102,12 @@ loop do
   prompt('welcome')
   loan_amount = set_loan
   apr = set_apr
-  p apr
   loan_duration = set_duration
 
   monthly_interest = monthly(apr)
   months = loan_duration * 12
   sleep 0.1
-  monthly_payment(loan_amount[0], monthly_interest, months)
+  monthly_payment(loan_amount, monthly_interest, months)
 
   calc_again
 end
