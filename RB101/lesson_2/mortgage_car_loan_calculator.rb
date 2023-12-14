@@ -1,7 +1,8 @@
 # Todo
 # Handle whether APR is entered as whole number or decimal appropriately
+# E.g. .2 should convert to 2%
 # Display currency in final output when available
-# Allow APR as 0
+# Shorten line lengths
 
 require 'yaml'
 
@@ -36,9 +37,8 @@ def set_loan
   return loan_amount.to_f, currency
 end
 
-
-def valid_number?(input)
-  /^(?:\d+(?:\.\d*)?|\.\d+)$/.match?(input)
+def valid_apr?(apr)
+  /^(?:\d+(?:\.\d*)?|\.\d+)$/.match?(apr)
 end
 
 def set_apr
@@ -46,7 +46,7 @@ def set_apr
   loop do
     prompt('enter_apr')
     apr = gets.chomp.strip
-    if valid_number?(apr) == true
+    if valid_apr?(apr) == true
       break
     else
       prompt('positive')
@@ -76,11 +76,8 @@ end
 
 def monthly_payment(loan_amount, monthly_interest, months)
   monthly_payment = loan_amount * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
-  if monthly_payment.nan? || monthly_payment.zero?
-    monthly_payment = loan_amount / months
-  end
-  monthly_payment = monthly_payment.to_f.ceil(2)
-  prompt('payment', monthly_payment)
+  monthly_payment = monthly_payment.nan? || monthly_payment.zero? ? loan_amount / months : monthly_payment
+  prompt('payment', monthly_payment.to_f.round(2))
 end
 
 def calc_again
@@ -105,6 +102,7 @@ loop do
   prompt('welcome')
   loan_amount = set_loan
   apr = set_apr
+  p apr
   loan_duration = set_duration
 
   monthly_interest = monthly(apr)
