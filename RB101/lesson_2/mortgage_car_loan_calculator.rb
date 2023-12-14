@@ -1,7 +1,6 @@
 # Todo
 # Handle whether APR is entered as whole number or decimal appropriately
 # E.g. .2 should convert to 2%
-# Display currency in final output when available
 # Shorten line lengths
 
 require 'yaml'
@@ -17,6 +16,10 @@ def prompt(key, *args)
   puts("=> #{message}")
 end
 
+def valid_loan?(loan_amount)
+  loan_amount.empty? || loan_amount.to_f <= 0 || loan_amount.to_i.to_s == loan_amount.to_i
+end
+
 def set_loan
   loan_amount = ''
   currency = ''
@@ -24,17 +27,13 @@ def set_loan
   loop do
     prompt('enter_amount')
     input = gets.chomp.strip
-
+    # Regex to capture currency and separate it from raw loan amount
     currency = input[/^\p{Sc}/] || ''
     loan_amount = input.gsub(/\p{Sc}|\p{P}/, '')
-
-    if loan_amount.empty? || loan_amount.to_f <= 0 || loan_amount.to_i.to_s == loan_amount.to_i
-      prompt('positive')
-    else
-      break
-    end
+    valid_loan?(loan_amount) ? prompt('positive') : break
   end
-  return loan_amount.to_f, currency
+  # Sets array with loan amount and currency
+  return currency, loan_amount.to_f
 end
 
 def valid_apr?(apr)
@@ -46,11 +45,7 @@ def set_apr
   loop do
     prompt('enter_apr')
     apr = gets.chomp.strip
-    if valid_apr?(apr) == false
-      prompt('positive')
-    else
-      break
-    end
+    valid_apr?(apr) ? break : prompt('positive')
   end
   apr.to_f
 end
@@ -75,9 +70,9 @@ def monthly(apr)
 end
 
 def monthly_payment(loan_amount, monthly_interest, months)
-  monthly_payment = loan_amount[0] * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
-  monthly_payment = monthly_payment.nan? || monthly_payment.zero? ? loan_amount[0] / months : monthly_payment
-  prompt('payment', loan_amount[1], monthly_payment.to_f.round(2))
+  monthly_payment = loan_amount[1] * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
+  monthly_payment = monthly_payment.nan? || monthly_payment.zero? ? loan_amount[1] / months : monthly_payment
+  prompt('payment', loan_amount[0], monthly_payment.to_f.round(2))
 end
 
 def calc_again
@@ -106,6 +101,8 @@ loop do
 
   monthly_interest = monthly(apr)
   months = loan_duration * 12
+  sleep 0.1
+  prompt('calculating')
   sleep 0.1
   monthly_payment(loan_amount, monthly_interest, months)
 
