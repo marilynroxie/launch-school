@@ -70,7 +70,11 @@ end
 
 def monthly_payment(loan_amount, monthly_interest, months)
   monthly_payment = loan_amount[1] * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
-  monthly_payment = monthly_payment.nan? || monthly_payment.zero? ? loan_amount[1] / months : monthly_payment
+  if monthly_payment.nan? || monthly_payment.zero?
+    monthly_payment = loan_amount[1] / months
+  else
+    monthly_payment
+  end
   prompt('payment', loan_amount[0], monthly_payment.to_f.round(2))
 end
 
