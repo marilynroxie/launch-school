@@ -1,6 +1,4 @@
 # Todo
-# Handle whether APR is entered as whole number or decimal appropriately
-# E.g. .2 should convert to 2%
 # Shorten line lengths
 
 require 'yaml'
@@ -30,7 +28,7 @@ def set_loan
     # Regex to capture currency and separate it from raw loan amount
     currency = input[/^\p{Sc}/] || ''
     loan_amount = input.gsub(/\p{Sc}|\p{P}/, '')
-    valid_loan?(loan_amount) ? prompt('positive') : break
+    input[0] == '-' || valid_loan?(loan_amount) ? prompt('positive') : break
   end
   # Sets array with loan amount and currency
   return currency, loan_amount.to_f
@@ -65,8 +63,9 @@ def set_duration
 end
 
 def monthly(apr)
-  apr = apr.to_f / 100
-  apr / 12
+  apr = apr.to_f
+  apr = apr < 1 ? apr * 100 : apr
+  (apr / 100) / 12
 end
 
 def monthly_payment(loan_amount, monthly_interest, months)
