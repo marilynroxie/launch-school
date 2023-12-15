@@ -26,7 +26,7 @@ def set_loan
     prompt('enter_amount')
     input = gets.chomp.strip
     # Regex to capture currency and separate it from raw loan amount
-    currency = input[/^\p{Sc}/] || ''
+    currency = input[/\p{Sc}/] || ''
     loan_amount = input.gsub(/\p{Sc}|\p{P}/, '')
     input[0] == '-' || valid_loan?(loan_amount) ? prompt('positive') : break
   end
