@@ -1,5 +1,6 @@
 # Todo
-# Shorten line lengths
+# Convert valid loan check to regex
+# Shorten line length on monthly payment formula
 
 require 'yaml'
 
@@ -14,12 +15,12 @@ def prompt(key, *args)
   puts("=> #{message}")
 end
 
-def valid_loan?(loan_amount)
-  loan_amount.empty? || loan_amount.to_f <= 0 || loan_amount.to_i.to_s == loan_amount.to_i
+def valid_loan?(loan)
+  loan.empty? || loan.to_f <= 0 || loan.to_i.to_s == loan.to_i
 end
 
 def set_loan
-  loan_amount = ''
+  loan = ''
   currency = ''
 
   loop do
@@ -27,11 +28,11 @@ def set_loan
     input = gets.chomp.strip
     # Regex to capture currency and separate it from raw loan amount
     currency = input[/\p{Sc}/] || ''
-    loan_amount = input.gsub(/\p{Sc}|\p{P}/, '')
-    input[0] == '-' || valid_loan?(loan_amount) ? prompt('positive') : break
+    loan = input.gsub(/\p{Sc}|\p{P}/, '')
+    input[0] == '-' || valid_loan?(loan) ? prompt('positive') : break
   end
   # Sets array with loan amount and currency
-  return currency, loan_amount.to_f
+  return currency, loan.to_f
 end
 
 def valid_apr?(apr)
@@ -68,14 +69,14 @@ def monthly(apr)
   (apr / 100) / 12
 end
 
-def monthly_payment(loan_amount, monthly_interest, months)
-  monthly_payment = loan_amount[1] * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
+def monthly_payment(loan, monthly_interest, months)
+  monthly_payment = loan[1] * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
   if monthly_payment.nan? || monthly_payment.zero?
-    monthly_payment = loan_amount[1] / months
+    monthly_payment = loan[1] / months
   else
     monthly_payment
   end
-  prompt('payment', loan_amount[0], monthly_payment.to_f.round(2))
+  prompt('payment', loan[0], monthly_payment.to_f.round(2))
 end
 
 def calc_again
@@ -98,7 +99,7 @@ end
 loop do
   system 'clear'
   prompt('welcome')
-  loan_amount = set_loan
+  loan = set_loan
   apr = set_apr
   loan_duration = set_duration
 
@@ -107,7 +108,7 @@ loop do
   sleep 0.1
   prompt('calculating')
   sleep 0.1
-  monthly_payment(loan_amount, monthly_interest, months)
+  monthly_payment(loan, monthly_interest, months)
 
   calc_again
 end
