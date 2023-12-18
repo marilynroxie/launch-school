@@ -27,7 +27,7 @@ def set_loan
     input = gets.chomp.strip
     # Regex to capture currency and separate it from raw loan amount
     currency = input[/\p{Sc}/] || ''
-    loan = input.gsub(/\p{Sc}|\p{P}/, '')
+    loan = input.gsub(/[^\d.,]/, '')
     input[0] == '-' || valid_loan?(loan) ? prompt('positive') : break
   end
   # Sets array with loan amount and currency
@@ -107,6 +107,10 @@ loop do
   months = loan_duration * 12
   sleep 0.1
   prompt('calculating')
+  sleep 0.1
+  loan_disp = format("%.2f", loan[1])
+  prompt('summary', loan_disp, apr, loan_duration)
+
   sleep 0.1
   monthly_payment(loan, monthly_interest, months)
 
