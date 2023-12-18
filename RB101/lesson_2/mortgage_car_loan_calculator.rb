@@ -35,7 +35,7 @@ def set_loan
 end
 
 def valid_apr?(apr)
-  /^(?:\d+(?:\.\d*)?|\.\d+)$/.match?(apr)
+  /^(?:\d+(?:\.\d*)?|\.\d+)%?$/.match?(apr)
 end
 
 def set_apr
