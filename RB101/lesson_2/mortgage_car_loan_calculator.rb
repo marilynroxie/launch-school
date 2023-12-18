@@ -108,7 +108,7 @@ loop do
   sleep 0.1
   prompt('calculating')
   sleep 0.1
-  loan_disp = format("%.2f", loan[1])
+  loan_disp = "#{loan[0]}#{format('%.2f', loan[1])}"
   prompt('summary', loan_disp, apr, loan_duration)
 
   sleep 0.1
