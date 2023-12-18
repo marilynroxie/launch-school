@@ -7,7 +7,7 @@ enter_apr: |
 loan_duration: "What's the duration of your loan in years?"
 calculating: "Calculating..."
 summary: "With a loan of %s, APR of %s%%, and a period of %s years:"
-payment: "Your monthly payment is %s%s."
+payment: "Your monthly payment is %s."
 another_calc: "Perform another calculation? Enter Y to continue, and N to exit."
 valid_calc: "Sorry! That's not valid input."
 thank_you: "Thank you for using the Mortgage Calculator!"

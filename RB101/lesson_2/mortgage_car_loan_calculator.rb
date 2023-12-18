@@ -1,6 +1,5 @@
 # Todo
 # Convert valid loan check to regex
-# Fix the fact that commas are not handled correctly in monthly payment
 
 require 'yaml'
 
@@ -77,7 +76,8 @@ def monthly_payment(loan, monthly_interest, months)
   else
     monthly_payment
   end
-  prompt('payment', loan[0], monthly_payment.to_f.round(2))
+  prompt('payment',
+         "#{loan[0]}#{format('%.2f', monthly_payment.to_f.round(2))}")
 end
 
 def calc_again
