@@ -1,4 +1,6 @@
-welcome: "Welcome to the Mortgage Calculator!"
+enter_name: "Please enter your name: "
+valid_name: "Please enter a valid name."
+welcome: "Welcome to the Mortgage Calculator, %s!"
 enter_amount: "What's your loan amount?"
 positive: "Please enter a positive number."
 enter_apr: |
@@ -10,4 +12,4 @@ summary: "With a loan of %s, APR of %s%%, and a period of %s years:"
 payment: "Your monthly payment is %s."
 another_calc: "Perform another calculation? Enter Y to continue, and N to exit."
 valid_calc: "Sorry! That's not valid input."
-thank_you: "Thank you for using the Mortgage Calculator!"
+thank_you: "Thank you for using the Mortgage Calculator, %s!"

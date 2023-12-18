@@ -1,4 +1,5 @@
 # Todo
+# Allow months input for loan?
 # Convert valid loan check to regex
 
 require 'yaml'
@@ -12,6 +13,15 @@ end
 def prompt(key, *args)
   message = messages(key) % args
   puts("=> #{message}")
+end
+
+def get_name
+  loop do
+    prompt('enter_name')
+    name = gets.chomp.strip.capitalize
+    break name unless name.empty?
+    prompt('valid_name')
+  end
 end
 
 def valid_loan?(loan)
@@ -80,7 +90,7 @@ def monthly_payment(loan, monthly_interest, months)
          "#{loan[0]}#{format('%.2f', monthly_payment.to_f.round(2))}")
 end
 
-def calc_again
+def calc_again(name)
   answer = ''
   loop do
     prompt('another_calc')
@@ -88,7 +98,7 @@ def calc_again
     if %w(yes y).include?(answer)
       return true
     elsif %w(no n).include?(answer)
-      prompt('thank_you')
+      prompt('thank_you', name)
       exit
     else
       system 'clear'
@@ -97,15 +107,19 @@ def calc_again
   end
 end
 
-loop do
   system 'clear'
-  prompt('welcome')
+  name = get_name
+  system 'clear'
+  prompt('welcome', name)
+
+loop do
   loan = set_loan
   apr = set_apr
   loan_duration = set_duration
 
   monthly_interest = monthly(apr)
   months = loan_duration * 12
+  system 'clear'
   sleep 0.1
   prompt('calculating')
   sleep 0.1
@@ -113,5 +127,5 @@ loop do
   sleep 0.1
   monthly_payment(loan, monthly_interest, months)
 
-  calc_again
+  calc_again(name)
 end
