@@ -1,6 +1,5 @@
 # Todo
 # Convert valid loan check to regex
-# Shorten line length on monthly payment formula
 
 require 'yaml'
 
@@ -70,7 +69,8 @@ def monthly(apr)
 end
 
 def monthly_payment(loan, monthly_interest, months)
-  monthly_payment = loan[1] * (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
+  factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
+  monthly_payment = loan[1] * factor
   if monthly_payment.nan? || monthly_payment.zero?
     monthly_payment = loan[1] / months
   else
