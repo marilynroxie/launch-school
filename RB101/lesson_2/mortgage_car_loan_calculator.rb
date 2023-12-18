@@ -1,5 +1,6 @@
 # Todo
 # Convert valid loan check to regex
+# Fix the fact that commas are not handled correctly in monthly payment
 
 require 'yaml'
 
@@ -27,7 +28,7 @@ def set_loan
     input = gets.chomp.strip
     # Regex to capture currency and separate it from raw loan amount
     currency = input[/\p{Sc}/] || ''
-    loan = input.gsub(/[^\d.,]/, '')
+    loan = input.gsub(/[^\d.]/, '')
     input[0] == '-' || valid_loan?(loan) ? prompt('positive') : break
   end
   # Sets array with loan amount and currency
