@@ -1,7 +1,3 @@
-# Todo
-# Allow months input for loan?
-# Convert valid loan check to regex
-
 require 'yaml'
 
 MONTHS_IN_YEAR = 12
