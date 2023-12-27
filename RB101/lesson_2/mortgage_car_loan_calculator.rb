@@ -62,11 +62,12 @@ def set_duration
     loan_duration = gets.chomp.strip
     if loan_duration.empty? || loan_duration.to_f <= 0
       prompt('positive')
+    elsif /\.\d{3,}/.match?(loan_duration.to_s) == true
+      prompt('decimal_warn')
     else
       break
     end
   end
-  # loan_duration.to_i
   loan_duration.include?(".") ? loan_duration.to_f.round(2) : loan_duration.to_i
 end
 
