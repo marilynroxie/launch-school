@@ -5,8 +5,10 @@ enter_amount: "What's your loan amount?"
 positive: "Please enter a positive number."
 enter_apr: |
   What's your annual percentage rate (APR)?
-  Example 2.5 for 2.5%% or 5 for 5%%.
-loan_duration: "What's the duration of your loan in years?"
+  Example: 2.5 for 2.5%%, or 5 for 5%%.
+loan_duration: |
+  What's the duration of your loan in years, or years and months?
+  Example: 2 for 2 years, or 2.3 for 2 years and 3 months.
 calculating: "Calculating..."
 summary: "With a loan of %s, APR of %s%%, and a period of %s years:"
 payment: "Your monthly payment is %s."

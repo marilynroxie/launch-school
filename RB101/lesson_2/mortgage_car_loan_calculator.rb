@@ -67,7 +67,7 @@ def set_duration
     end
   end
   # loan_duration.to_i
-  loan_duration.include?(".") ? loan_duration.to_f : loan_duration.to_i
+  loan_duration.include?(".") ? loan_duration.to_f.round(2) : loan_duration.to_i
 end
 
 def monthly(apr)
@@ -81,7 +81,7 @@ def months(loan_duration)
     months = loan_duration * MONTHS_IN_YEAR
   else
     years, months = loan_duration.to_s.split('.').map(&:to_i)
-    months = years * MONTHS_IN_YEAR + months
+    months = (years * MONTHS_IN_YEAR) + months
   end
   months
 end
