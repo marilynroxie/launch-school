@@ -95,9 +95,10 @@ def calc_again(name)
   loop do
     prompt('another_calc')
     answer = gets.chomp.strip.downcase
-    if %w(yes y).include?(answer)
+    if MESSAGES['options_pos'].include?(answer)
+      system 'clear'
       return true
-    elsif %w(no n).include?(answer)
+    elsif MESSAGES['options_neg'].include?(answer)
       prompt('thank_you', name)
       exit
     else
@@ -107,10 +108,10 @@ def calc_again(name)
   end
 end
 
-  system 'clear'
-  name = get_name
-  system 'clear'
-  prompt('welcome', name)
+system 'clear'
+name = get_name
+system 'clear'
+prompt('welcome', name)
 
 loop do
   loan = set_loan
