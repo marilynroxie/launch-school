@@ -63,6 +63,7 @@ def set_duration
     if loan_duration.empty? || loan_duration.to_f <= 0
       prompt('positive')
     elsif /\.\d{3,}/.match?(loan_duration.to_s) == true
+      system 'clear'
       prompt('decimal_warn')
     else
       break
@@ -133,9 +134,17 @@ loop do
   sleep 0.1
   prompt('calculating')
   sleep 0.1
-  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, loan_duration)
+  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, loan_duration,
+         months)
+  if months == 1
+    prompt('month_display',
+           months)
+  else
+    prompt('months_display', months)
+  end
   sleep 0.1
   monthly_payment(loan, monthly_interest, months)
+  p months
 
   calc_again(name)
 end
