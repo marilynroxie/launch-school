@@ -4,6 +4,7 @@
 
 require 'yaml'
 
+MONTHS_IN_YEAR = 12
 MESSAGES = YAML.load_file('loan_messages.yml')
 
 def messages(message)
@@ -75,7 +76,7 @@ end
 def monthly(apr)
   apr = apr.to_f
   apr = apr < 1 ? apr * 100 : apr
-  (apr / 100) / 12
+  (apr / 100) / MONTHS_IN_YEAR
 end
 
 def monthly_payment(loan, monthly_interest, months)
@@ -119,7 +120,7 @@ loop do
   loan_duration = set_duration
 
   monthly_interest = monthly(apr)
-  months = loan_duration * 12
+  months = loan_duration * MONTHS_IN_YEAR
   system 'clear'
   sleep 0.1
   prompt('calculating')
