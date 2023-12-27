@@ -66,13 +66,24 @@ def set_duration
       break
     end
   end
-  loan_duration.to_i
+  # loan_duration.to_i
+  loan_duration.include?(".") ? loan_duration.to_f : loan_duration.to_i
 end
 
 def monthly(apr)
   apr = apr.to_f
   apr = apr < 1 ? apr * 100 : apr
   (apr / 100) / MONTHS_IN_YEAR
+end
+
+def months(loan_duration)
+  if loan_duration.is_a?(Integer)
+    months = loan_duration * MONTHS_IN_YEAR
+  else
+    years, months = loan_duration.to_s.split('.').map(&:to_i)
+    months = years * MONTHS_IN_YEAR + months
+  end
+  months
 end
 
 def monthly_payment(loan, monthly_interest, months)
@@ -116,7 +127,7 @@ loop do
   loan_duration = set_duration
 
   monthly_interest = monthly(apr)
-  months = loan_duration * MONTHS_IN_YEAR
+  months = months(loan_duration)
   system 'clear'
   sleep 0.1
   prompt('calculating')
