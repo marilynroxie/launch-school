@@ -1,3 +1,6 @@
+# Todo
+# Put loan and payment displays in separate methods to keep main loop cleaner?
+
 require 'yaml'
 
 MONTHS_IN_YEAR = 12
@@ -62,7 +65,7 @@ def set_duration
     loan_duration = gets.chomp.strip
     if loan_duration.empty? || loan_duration.to_f <= 0
       prompt('positive')
-    elsif /\.[1-9]|\.10|\.11|^\d+(\.0)?$/.match?(loan_duration.to_s) == false
+    elsif /\.([2-9]|10|11)$|\.1(?!0\d)?$/.match?(loan_duration.to_s) == false
       system 'clear'
       prompt('decimal_warn')
     else

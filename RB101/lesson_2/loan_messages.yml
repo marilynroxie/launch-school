@@ -8,8 +8,10 @@ enter_apr: |
   Example: 2.5 for 2.5%%, or 5 for 5%%.
 loan_duration: |
   What's the duration of your loan in years, or years and months?
-  Example: 2 for 2 years, or 2.11 for 2 years and 11 months.
-decimal_warn: "Please limit your input of months to two decimal places, with .1 for 1 month at minimum."
+  Example: 2 for 2 years, 0.3 for 3 months, or 5.11 for 5 years and 11 months.
+decimal_warn: |
+  You can input months after the decimal place from .1 to .11
+  Use .1 for 1 month minimum and .11 for 11 months maximum.
 calculating: "Calculating..."
 summary: "With a loan of %s, APR of %s%%, and a period of %s years...:"
 month_display: "(%s month...)"
