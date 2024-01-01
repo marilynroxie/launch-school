@@ -1,8 +1,5 @@
 require 'yaml'
 
-# Todo
-# Address Rubocop violations for set_loan_years line length
-
 MONTHS_IN_YEAR = 12
 MESSAGES = YAML.load_file('loan_messages.yml')
 
@@ -75,8 +72,7 @@ def set_loan_years
       prompt('number_warn')
     elsif years.to_i == 0
       prompt('zero_years')
-      answer = gets.chomp.downcase
-      break if MESSAGES['options_pos'].include?(answer)
+      break if MESSAGES['options_pos'].include?(gets.chomp.downcase)
     else
       break
     end
