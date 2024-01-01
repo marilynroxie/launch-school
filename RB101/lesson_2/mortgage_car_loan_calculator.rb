@@ -113,11 +113,27 @@ def loan_duration(years, months)
   duration
 end
 
-def monthly_payment(loan, monthly_interest, loan_duration)
-  factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-loan_duration))))
+def calc_summary(loan, apr, years, months, loan_length)
+  system 'clear'
+  sleep 0.1
+  prompt('calculating')
+  sleep 0.1
+  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, years,
+         months)
+  if years == 0 && months == 1
+    prompt('month_display',
+           loan_length)
+  else
+    prompt('months_display', loan_length)
+  end
+  sleep 0.1
+end
+
+def monthly_payment(loan, monthly_interest, loan_length)
+  factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-loan_length))))
   monthly_payment = loan[1] * factor
   if monthly_payment.nan? || monthly_payment.zero?
-    monthly_payment = loan[1] / loan_duration
+    monthly_payment = loan[1] / loan_length
   else
     monthly_payment
   end
@@ -153,22 +169,9 @@ loop do
   apr = set_apr
   years = set_loan_years
   months = set_loan_months(years)
-  loan_duration = loan_duration(years, months)
+  loan_length = loan_duration(years, months)
   monthly_interest = monthly(apr)
-  system 'clear'
-  sleep 0.1
-  prompt('calculating')
-  sleep 0.1
-  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, years,
-         months)
-  if years == 0 && months == 1
-    prompt('month_display',
-           loan_duration)
-  else
-    prompt('months_display', loan_duration)
-  end
-  sleep 0.1
-  monthly_payment(loan, monthly_interest, loan_duration)
-
+  calc_summary(loan, apr, years, months, loan_length)
+  monthly_payment(loan, monthly_interest, loan_length)
   calc_again(name)
 end
