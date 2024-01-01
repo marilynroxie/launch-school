@@ -1,8 +1,7 @@
 require 'yaml'
 
 # Todo
-# Address Rubocop violations for condition size in years
-# and line length in loan years and months
+# Address Rubocop violations for set_loan_years line length
 
 MONTHS_IN_YEAR = 12
 MESSAGES = YAML.load_file('loan_messages.yml')
@@ -35,11 +34,11 @@ def set_value
 
   loop do
     prompt('enter_amount')
-    input = gets.chomp.strip
+    value = gets.chomp.strip
     # Regex to capture currency and separate it from raw loan amount
-    currency = input[/\p{Sc}/] || ''
-    loan = input.gsub(/[^\d.]/, '')
-    input[0] == '-' || valid_loan?(loan) ? prompt('number_warn') : break
+    currency = value[/\p{Sc}/] || ''
+    loan = value.gsub(/[^\d.]/, '')
+    value.to_f.negative? || valid_loan?(loan) ? prompt('amount_warn') : break
   end
   # Sets array with loan amount and currency
   return currency, loan.to_f
@@ -68,11 +67,10 @@ def set_loan_years
   loop do
     prompt('loan_years')
     years = gets.chomp
-    if years.empty? || years.to_i < 0 || valid_num?(years) == false
-      system 'clear'
+    system 'clear'
+    if valid_num?(years) == false
       prompt('number_warn')
-    elsif years.to_i.zero?
-      system 'clear'
+    elsif years.to_i == 0
       prompt('zero_years')
       answer = gets.chomp.downcase
       break if MESSAGES['options_pos'].include?(answer)
@@ -88,12 +86,10 @@ def set_loan_months(years)
   loop do
     prompt('loan_months', years)
     months = gets.chomp
-    if months.empty? || !months.to_i.between?(0,
-                                              11) || valid_num?(months) == false
-      system 'clear'
+    system 'clear'
+    if !months.to_i.between?(0, 11) || valid_num?(months) == false
       prompt('months_warn')
     elsif years == 0 && months.to_i == 0
-      system 'clear'
       prompt('zero_months_warn')
     else
       break

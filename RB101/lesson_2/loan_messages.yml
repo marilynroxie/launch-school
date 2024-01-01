@@ -2,7 +2,7 @@ enter_name: "Please enter your name: "
 valid_name: "Please enter a valid name."
 welcome: "Welcome to the Mortgage Calculator, %s!"
 enter_amount: "What's your loan amount?"
-number_warn: "Please enter 0 or higher."
+amount_warn: "Please enter more than 0."
 enter_apr: |
   What's your annual percentage rate (APR)?
   Example: 2.5 for 2.5%%, or 5 for 5%%.
@@ -10,6 +10,7 @@ loan_years: |
   What's the duration of your loan in years?
   You'll add months (if any) in the next step.
   Example: 2 for 2 years, 0 for 0 years if you plan to add only months.
+number_warn: "Please enter 0 or higher."
 zero_years: |
   Did you mean to enter 0 years?
   Enter Y if you wish to continue with 0 years, or any key other key to start over.
