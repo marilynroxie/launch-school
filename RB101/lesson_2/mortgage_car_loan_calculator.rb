@@ -16,9 +16,11 @@ def prompt(key, *args)
 end
 
 def get_name
+  system 'clear'
   loop do
     prompt('enter_name')
     name = gets.chomp.strip.capitalize
+    system 'clear'
     break name unless name.empty?
     prompt('valid_name')
   end
@@ -35,6 +37,7 @@ def set_value
   loop do
     prompt('enter_amount')
     value = gets.chomp.strip
+    system 'clear'
     # Regex to capture currency and separate it from raw loan amount
     currency = value[/\p{Sc}/] || ''
     loan = value.gsub(/[^\d.]/, '')
@@ -58,8 +61,8 @@ def set_apr
   apr.to_f
 end
 
-def valid_num?(input)
-  /^\d+$/.match?(input)
+def valid_num?(num)
+  /^\d+$/.match?(num)
 end
 
 def set_loan_years
@@ -159,9 +162,7 @@ def calc_again(name)
   end
 end
 
-system 'clear'
 name = get_name
-system 'clear'
 prompt('welcome', name)
 
 loop do
