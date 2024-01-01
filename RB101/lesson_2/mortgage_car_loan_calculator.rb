@@ -1,7 +1,8 @@
-# Todo
-# Put loan and payment displays in separate methods to keep main loop cleaner?
-
 require 'yaml'
+
+# Todo
+# Address Rubocop violations for condition size in years
+# and line length in loan years and months
 
 MONTHS_IN_YEAR = 12
 MESSAGES = YAML.load_file('loan_messages.yml')
@@ -28,7 +29,7 @@ def valid_loan?(loan)
   loan.empty? || loan.to_f <= 0 || loan.to_i.to_s == loan.to_i
 end
 
-def set_loan
+def set_value
   loan = ''
   currency = ''
 
@@ -38,7 +39,7 @@ def set_loan
     # Regex to capture currency and separate it from raw loan amount
     currency = input[/\p{Sc}/] || ''
     loan = input.gsub(/[^\d.]/, '')
-    input[0] == '-' || valid_loan?(loan) ? prompt('positive') : break
+    input[0] == '-' || valid_loan?(loan) ? prompt('number_warn') : break
   end
   # Sets array with loan amount and currency
   return currency, loan.to_f
@@ -58,21 +59,47 @@ def set_apr
   apr.to_f
 end
 
-def set_duration
-  loan_duration = ''
+def valid_num?(input)
+  /^\d+$/.match?(input)
+end
+
+def set_loan_years
+  years = ''
   loop do
-    prompt('loan_duration')
-    loan_duration = gets.chomp.strip
-    if loan_duration.empty? || loan_duration.to_f <= 0
-      prompt('positive')
-    elsif /\.([2-9]|10|11)$|\.1(?!0\d)?$/.match?(loan_duration.to_s) == false
+    prompt('loan_years')
+    years = gets.chomp
+    if years.empty? || years.to_i < 0 || valid_num?(years) == false
       system 'clear'
-      prompt('decimal_warn')
+      prompt('number_warn')
+    elsif years.to_i.zero?
+      system 'clear'
+      prompt('zero_years')
+      answer = gets.chomp.downcase
+      break if MESSAGES['options_pos'].include?(answer)
     else
       break
     end
   end
-  loan_duration.include?(".") ? loan_duration.to_f.round(2) : loan_duration.to_i
+  years.to_i
+end
+
+def set_loan_months(years)
+  months = ''
+  loop do
+    prompt('loan_months', years)
+    months = gets.chomp
+    if months.empty? || !months.to_i.between?(0,
+                                              11) || valid_num?(months) == false
+      system 'clear'
+      prompt('months_warn')
+    elsif years == 0 && months.to_i == 0
+      system 'clear'
+      prompt('zero_months_warn')
+    else
+      break
+    end
+  end
+  months.to_i
 end
 
 def monthly(apr)
@@ -81,21 +108,20 @@ def monthly(apr)
   (apr / 100) / MONTHS_IN_YEAR
 end
 
-def months(loan_duration)
-  if loan_duration.is_a?(Integer)
-    months = loan_duration * MONTHS_IN_YEAR
+def loan_duration(years, months)
+  if years > 1 && months == 0
+    duration = years * MONTHS_IN_YEAR
   else
-    years, months = loan_duration.to_s.split('.').map(&:to_i)
-    months = (years * MONTHS_IN_YEAR) + months
+    duration = (years * MONTHS_IN_YEAR) + months
   end
-  months
+  duration
 end
 
-def monthly_payment(loan, monthly_interest, months)
-  factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-months))))
+def monthly_payment(loan, monthly_interest, loan_duration)
+  factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-loan_duration))))
   monthly_payment = loan[1] * factor
   if monthly_payment.nan? || monthly_payment.zero?
-    monthly_payment = loan[1] / months
+    monthly_payment = loan[1] / loan_duration
   else
     monthly_payment
   end
@@ -127,27 +153,26 @@ system 'clear'
 prompt('welcome', name)
 
 loop do
-  loan = set_loan
+  loan = set_value
   apr = set_apr
-  loan_duration = set_duration
-
+  years = set_loan_years
+  months = set_loan_months(years)
+  loan_duration = loan_duration(years, months)
   monthly_interest = monthly(apr)
-  months = months(loan_duration)
   system 'clear'
   sleep 0.1
   prompt('calculating')
   sleep 0.1
-  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, loan_duration,
+  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, years,
          months)
-  if months == 1
+  if years == 0 && months == 1
     prompt('month_display',
-           months)
+           loan_duration)
   else
-    prompt('months_display', months)
+    prompt('months_display', loan_duration)
   end
   sleep 0.1
-  monthly_payment(loan, monthly_interest, months)
-  p months
+  monthly_payment(loan, monthly_interest, loan_duration)
 
   calc_again(name)
 end
