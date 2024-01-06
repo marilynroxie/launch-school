@@ -24,7 +24,11 @@ def get_name
 end
 
 def valid_loan?(loan)
-  loan.empty? || loan.to_f <= 0 || loan.to_i.to_s == loan.to_i
+  /^(?!0\d*$)\d+(\.\d{1,2})?$/.match?(loan) && loan.to_f > 0.0
+end
+
+def valid_num?(num)
+  /^\d+$/.match?(num)
 end
 
 def set_value
@@ -37,15 +41,16 @@ def set_value
     system 'clear'
     # Regex to capture currency and separate it from raw loan amount
     currency = value[/\p{Sc}/] || ''
-    loan = value.gsub(/[^\d.]/, '')
-    value.to_f.negative? || valid_loan?(loan) ? prompt('amount_warn') : break
+    loan = value.gsub(/[\p{Sc},]/, '')
+    sleep 1
+    valid_loan?(loan) ? break : prompt('amount_warn')
   end
   # Sets array with loan amount and currency
   return currency, loan.to_f
 end
 
 def valid_apr?(apr)
-  /^(?:\d+(?:\.\d*)?|\.\d+)%?$/.match?(apr)
+  /^(?:\d+(?:\.\d{1,2})?|\.\d{1,2})%?$/.match?(apr)
 end
 
 def set_apr
@@ -53,13 +58,10 @@ def set_apr
   loop do
     prompt('enter_apr')
     apr = gets.chomp.strip
+    system 'clear'
     valid_apr?(apr) ? break : prompt('positive')
   end
   apr.to_f
-end
-
-def valid_num?(num)
-  /^\d+$/.match?(num)
 end
 
 def set_loan_years
