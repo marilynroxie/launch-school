@@ -42,7 +42,6 @@ def set_value
     # Regex to capture currency and separate it from raw loan amount
     currency = value[/\p{Sc}/] || ''
     loan = value.gsub(/[\p{Sc},]/, '')
-    sleep 1
     valid_loan?(loan) ? break : prompt('amount_warn')
   end
   # Sets array with loan amount and currency
@@ -59,7 +58,7 @@ def set_apr
     prompt('enter_apr')
     apr = gets.chomp.strip
     system 'clear'
-    valid_apr?(apr) ? break : prompt('positive')
+    valid_apr?(apr) ? break : prompt('number_warn')
   end
   apr.to_f
 end
