@@ -27,7 +27,7 @@ zero_warn: |
 months_warn: "Invalid number of months!"
 zero_months_warn: "You can't enter 0 months because you entered 0 years!"
 calculating: "Calculating..."
-summary: "With a loan of %s, APR of %s%%, and a period of %s years and %s month(s)...:"
+summary: "With a loan of %s, APR of %s%%, and a period of %s year(s) and %s month(s)...:"
 month_display: "(%s month total...)"
 months_display: "(%s months total...)"
 payment: "Your monthly payment is %s."

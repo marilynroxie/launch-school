@@ -1,3 +1,7 @@
+# Todo
+# Check user meant 0% APR
+# Check with user when loan is over 30 years
+
 require 'yaml'
 
 MONTHS_IN_YEAR = 12
@@ -27,8 +31,8 @@ def valid_loan?(loan)
   /^(?!0\d*$)\d{1,3}(,?\d{3})*(\.\d{1,2})?$/.match?(loan) && loan.to_f > 0.0
 end
 
-def valid_num?(num)
-  /^\d+$/.match?(num)
+def valid_duration?(duration)
+  /^\d+$/.match?(duration)
 end
 
 def set_value
@@ -58,7 +62,7 @@ def set_apr
     prompt('enter_apr')
     apr = gets.chomp.strip
     system 'clear'
-    valid_apr?(apr) ? break : prompt('number_warn')
+    valid_apr?(apr) ? break : prompt('invalid_number_warn')
   end
   apr = apr.to_f
   apr = apr < 1 ? apr * 100 : apr
@@ -70,8 +74,8 @@ def set_loan_years
     prompt('loan_years')
     years = gets.chomp
     system 'clear'
-    if valid_num?(years) == false
-      prompt('number_warn')
+    if valid_duration?(years) == false
+      prompt('invalid_number_warn')
     elsif years.to_i == 0
       prompt('zero_years')
       break if MESSAGES['options_pos'].include?(gets.chomp.downcase)
@@ -88,7 +92,7 @@ def set_loan_months(years)
     prompt('loan_months', years)
     months = gets.chomp
     system 'clear'
-    if !months.to_i.between?(0, 11) || valid_num?(months) == false
+    if !months.to_i.between?(0, 11) || valid_duration?(months) == false
       prompt('months_warn')
     elsif years == 0 && months.to_i == 0
       prompt('zero_months_warn')
