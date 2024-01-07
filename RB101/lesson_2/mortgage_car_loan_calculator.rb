@@ -1,5 +1,4 @@
 # Todo
-# Check user meant 0% APR
 # Check with user when loan is over 30 years
 
 require 'yaml'
@@ -62,7 +61,15 @@ def set_apr
     prompt('enter_apr')
     apr = gets.chomp.strip
     system 'clear'
-    valid_apr?(apr) ? break : prompt('invalid_number_warn')
+    if valid_apr?(apr) == false
+      prompt('invalid_number_warn')
+    elsif apr.to_i == 0
+      prompt('zero_apr')
+      break if MESSAGES['options_pos'].include?(gets.chomp.downcase)
+    else
+      break
+    end
+    # valid_apr?(apr) ? break : prompt('invalid_number_warn')
   end
   apr = apr.to_f
   apr = apr < 1 ? apr * 100 : apr
