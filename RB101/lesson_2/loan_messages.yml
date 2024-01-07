@@ -10,7 +10,7 @@ loan_years: |
   What's the duration of your loan in years?
   You'll add months (if any) in the next step.
   Example: 2 for 2 years, 0 for 0 years if you plan to add only months.
-number_warn: "Please enter 0 or higher."
+invalid_number_warn: "Please enter 0 or higher."
 zero_years: |
   Did you mean to enter 0 years?
   Enter Y if you wish to continue with 0 years, or any key other key to start over.
