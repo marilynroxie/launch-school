@@ -24,7 +24,7 @@ def get_name
 end
 
 def valid_loan?(loan)
-  /^(?!0\d*$)\d+(\.\d{1,2})?$/.match?(loan) && loan.to_f > 0.0
+  /^(?!0\d*$)\d{1,3}(,?\d{3})*(\.\d{1,2})?$/.match?(loan) && loan.to_f > 0.0
 end
 
 def valid_num?(num)
@@ -60,7 +60,8 @@ def set_apr
     system 'clear'
     valid_apr?(apr) ? break : prompt('number_warn')
   end
-  apr.to_f
+  apr = apr.to_f
+  apr = apr < 1 ? apr * 100 : apr
 end
 
 def set_loan_years
@@ -99,8 +100,6 @@ def set_loan_months(years)
 end
 
 def monthly(apr)
-  apr = apr.to_f
-  apr = apr < 1 ? apr * 100 : apr
   (apr / 100) / MONTHS_IN_YEAR
 end
 
