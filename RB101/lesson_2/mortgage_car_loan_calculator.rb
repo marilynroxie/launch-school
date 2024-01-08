@@ -1,6 +1,3 @@
-# Todo
-# Check with user when loan is over 30 years
-
 require 'yaml'
 
 MONTHS_IN_YEAR = 12
@@ -69,7 +66,6 @@ def set_apr
     else
       break
     end
-    # valid_apr?(apr) ? break : prompt('invalid_number_warn')
   end
   apr = apr.to_f
   apr = apr < 1 ? apr * 100 : apr
@@ -83,8 +79,8 @@ def set_loan_years
     system 'clear'
     if valid_duration?(years) == false
       prompt('invalid_number_warn')
-    elsif years.to_i == 0
-      prompt('zero_years')
+    elsif years.to_i == 0 || years.to_i > 30
+      prompt('years_warn', years)
       break if MESSAGES['options_pos'].include?(gets.chomp.downcase)
     else
       break
