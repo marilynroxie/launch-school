@@ -16,7 +16,6 @@ loan_years: |
 invalid_number_warn: "Please enter 0 or higher."
 years_warn: |
   Did you mean to enter %s years?
-
   Enter Y if you wish to continue, or any key other key to start over.
 loan_months: |
   What's the duration of your loan in months?

@@ -60,7 +60,7 @@ def set_apr
     system 'clear'
     if valid_apr?(apr) == false
       prompt('invalid_number_warn')
-    elsif apr.to_i == 0
+    elsif apr.to_f.abs < 0.001
       prompt('zero_apr')
       break if MESSAGES['options_pos'].include?(gets.chomp.downcase)
     else
@@ -68,7 +68,6 @@ def set_apr
     end
   end
   apr = apr.to_f
-  apr = apr < 1 ? apr * 100 : apr
 end
 
 def set_loan_years
@@ -107,7 +106,9 @@ def set_loan_months(years)
 end
 
 def monthly(apr)
-  (apr / 100) / MONTHS_IN_YEAR
+  display_apr = apr < 1 ? apr * 100 : apr
+  monthly_apr = (apr / 100) / MONTHS_IN_YEAR
+  return display_apr, monthly_apr
 end
 
 def loan_duration(years, months)
@@ -119,12 +120,12 @@ def loan_duration(years, months)
   duration
 end
 
-def calc_summary(loan, apr, years, months, loan_length)
+def calc_summary(loan, monthly_interest, years, months, loan_length)
   system 'clear'
   sleep 0.1
   prompt('calculating')
   sleep 0.1
-  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, years,
+  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", monthly_interest[0], years,
          months)
   if years == 0 && months == 1
     prompt('month_display',
@@ -136,7 +137,7 @@ def calc_summary(loan, apr, years, months, loan_length)
 end
 
 def monthly_payment(loan, monthly_interest, loan_length)
-  factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-loan_length))))
+  factor = (monthly_interest[1] / (1 - ((1 + monthly_interest[1])**(-loan_length))))
   monthly_payment = loan[1] * factor
   if monthly_payment.nan? || monthly_payment.zero?
     monthly_payment = loan[1] / loan_length
@@ -175,7 +176,7 @@ loop do
   months = set_loan_months(years)
   loan_length = loan_duration(years, months)
   monthly_interest = monthly(apr)
-  calc_summary(loan, apr, years, months, loan_length)
+  calc_summary(loan, monthly_interest, years, months, loan_length)
   monthly_payment(loan, monthly_interest, loan_length)
   calc_again(name)
 end
