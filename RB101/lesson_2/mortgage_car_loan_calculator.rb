@@ -1,3 +1,7 @@
+# Todo
+# Implement zero_apr check correctly
+# 0%, 0.0, 0, 0.00, 0.0%, 0.00%
+
 require 'yaml'
 
 MONTHS_IN_YEAR = 12
@@ -110,11 +114,11 @@ def set_loan_years
 end
 
 def set_loan_months(years)
+  system 'clear'
   months = ''
   loop do
     prompt('loan_months', years)
     months = gets.chomp
-    system 'clear'
     if !months.to_i.between?(0, 11) || valid_duration?(months) == false
       prompt('months_warn')
     elsif years == 0 && months.to_i == 0
@@ -146,11 +150,7 @@ def calc_summary(loan, apr, years, months, loan_length)
   sleep 0.1
   prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, years,
          months)
-  if years == 0 && months == 1
-    prompt('month_display',
-           loan_length)
-  elsif years == 0 && months > 1
-  else
+  unless years == 0 && months > 1
     prompt('months_display', loan_length)
   end
   sleep 0.1
