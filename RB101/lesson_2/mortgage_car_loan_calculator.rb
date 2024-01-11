@@ -1,3 +1,6 @@
+# Todo
+# Prompt user about conversion when entering very small APR
+
 require 'yaml'
 
 MONTHS_IN_YEAR = 12
@@ -55,27 +58,36 @@ end
 def set_apr
   apr = ''
   loop do
+    system 'clear'
     prompt('enter_apr')
     apr = gets.chomp.strip
-    system 'clear'
     if valid_apr?(apr) == false
       prompt('invalid_number_warn')
-    elsif apr.to_f.abs < 0.001
-      prompt('zero_apr')
+    elsif apr.to_f < 1
+      prompt('small_apr', apr)
       break if MESSAGES['options_pos'].include?(gets.chomp.downcase)
     else
       break
     end
   end
-  apr = apr.to_f
+  apr
+end
+
+def display_apr(apr)
+  if apr.to_f < 1 && !apr.include?("%")
+    apr = apr.to_f * 100
+  else
+    apr = apr.to_f
+  end
+  apr
 end
 
 def set_loan_years
   years = ''
   loop do
+    system 'clear'
     prompt('loan_years')
     years = gets.chomp
-    system 'clear'
     if valid_duration?(years) == false
       prompt('invalid_number_warn')
     elsif years.to_i == 0 || years.to_i > 30
@@ -91,9 +103,9 @@ end
 def set_loan_months(years)
   months = ''
   loop do
+    system 'clear'
     prompt('loan_months', years)
     months = gets.chomp
-    system 'clear'
     if !months.to_i.between?(0, 11) || valid_duration?(months) == false
       prompt('months_warn')
     elsif years == 0 && months.to_i == 0
@@ -105,10 +117,8 @@ def set_loan_months(years)
   months.to_i
 end
 
-def monthly(apr)
-  display_apr = apr < 1 ? apr * 100 : apr
-  monthly_apr = (apr / 100) / MONTHS_IN_YEAR
-  return display_apr, monthly_apr
+def monthly_rate(apr)
+  (apr / 100) / MONTHS_IN_YEAR
 end
 
 def loan_duration(years, months)
@@ -120,12 +130,12 @@ def loan_duration(years, months)
   duration
 end
 
-def calc_summary(loan, monthly_interest, years, months, loan_length)
+def calc_summary(loan, apr, years, months, loan_length)
   system 'clear'
   sleep 0.1
   prompt('calculating')
   sleep 0.1
-  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", monthly_interest[0], years,
+  prompt('summary', "#{loan[0]}#{format('%.2f', loan[1])}", apr, years,
          months)
   if years == 0 && months == 1
     prompt('month_display',
@@ -137,13 +147,8 @@ def calc_summary(loan, monthly_interest, years, months, loan_length)
 end
 
 def monthly_payment(loan, monthly_interest, loan_length)
-  factor = (monthly_interest[1] / (1 - ((1 + monthly_interest[1])**(-loan_length))))
+  factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-loan_length))))
   monthly_payment = loan[1] * factor
-  if monthly_payment.nan? || monthly_payment.zero?
-    monthly_payment = loan[1] / loan_length
-  else
-    monthly_payment
-  end
   prompt('payment',
          "#{loan[0]}#{format('%.2f', monthly_payment.to_f.round(2))}")
 end
@@ -172,11 +177,12 @@ prompt('welcome', name)
 loop do
   loan = set_value
   apr = set_apr
+  apr = display_apr(apr)
   years = set_loan_years
   months = set_loan_months(years)
   loan_length = loan_duration(years, months)
-  monthly_interest = monthly(apr)
-  calc_summary(loan, monthly_interest, years, months, loan_length)
+  monthly_interest = monthly_rate(apr)
+  calc_summary(loan, apr, years, months, loan_length)
   monthly_payment(loan, monthly_interest, loan_length)
   calc_again(name)
 end
