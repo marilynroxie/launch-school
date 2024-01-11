@@ -5,10 +5,11 @@ enter_amount: "What's your loan amount?"
 amount_warn: "Please enter more than 0."
 enter_apr: |
   What's your annual percentage rate (APR)?
-  Example: 2.5 for 2.5%%, or 5 for 5%%.
-small_apr: |
-  Did you mean to enter %s%% APR?
+  Example: 2.5%% for 2.5%%, or 5%% for 5%%.
+apr_conversion: |
+  Did you mean to enter %s? This will become %s%%.
   Enter Y if you wish to continue, or any key other key to start over.
+zero_apr: "Is 0%% APR okay?"
 loan_years: |
   What's the duration of your loan in years?
   You'll add months (if any) in the next step.

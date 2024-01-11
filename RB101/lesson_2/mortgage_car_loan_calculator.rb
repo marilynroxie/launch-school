@@ -1,5 +1,6 @@
 # Todo
 # Prompt user about conversion when entering very small APR
+# Handle 0% APR correctly again
 
 require 'yaml'
 
@@ -63,9 +64,9 @@ def set_apr
     apr = gets.chomp.strip
     if valid_apr?(apr) == false
       prompt('invalid_number_warn')
-    elsif apr.to_f < 1
-      prompt('small_apr', apr)
-      break if MESSAGES['options_pos'].include?(gets.chomp.downcase)
+    elsif (apr.to_f < 1 && !apr.include?("%")) || apr.to_f.zero?
+      small_apr(apr)
+      break if messages('options_pos').include?(gets.chomp.downcase)
     else
       break
     end
@@ -82,6 +83,14 @@ def display_apr(apr)
   apr
 end
 
+def small_apr(apr)
+  if apr.to_f < 1 && !apr.include?("%")
+    prompt('apr_conversion', apr, display_apr(apr))
+  elsif apr.abs < 0.0001
+    prompt('zero_apr')
+  end
+end
+
 def set_loan_years
   years = ''
   loop do
@@ -92,7 +101,7 @@ def set_loan_years
       prompt('invalid_number_warn')
     elsif years.to_i == 0 || years.to_i > 30
       prompt('years_warn', years)
-      break if MESSAGES['options_pos'].include?(gets.chomp.downcase)
+      break if messages('options_pos').include?(gets.chomp.downcase)
     else
       break
     end
@@ -103,9 +112,9 @@ end
 def set_loan_months(years)
   months = ''
   loop do
-    system 'clear'
     prompt('loan_months', years)
     months = gets.chomp
+    system 'clear'
     if !months.to_i.between?(0, 11) || valid_duration?(months) == false
       prompt('months_warn')
     elsif years == 0 && months.to_i == 0
@@ -147,8 +156,12 @@ def calc_summary(loan, apr, years, months, loan_length)
 end
 
 def monthly_payment(loan, monthly_interest, loan_length)
-  factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-loan_length))))
-  monthly_payment = loan[1] * factor
+  if monthly_interest.zero?
+    monthly_payment = loan[1] / loan_length
+  else
+    factor = (monthly_interest / (1 - ((1 + monthly_interest)**(-loan_length))))
+    monthly_payment = loan[1] * factor
+  end
   prompt('payment',
          "#{loan[0]}#{format('%.2f', monthly_payment.to_f.round(2))}")
 end
@@ -158,10 +171,10 @@ def calc_again(name)
   loop do
     prompt('another_calc')
     answer = gets.chomp.strip.downcase
-    if MESSAGES['options_pos'].include?(answer)
+    if messages('options_pos').include?(answer)
       system 'clear'
       return true
-    elsif MESSAGES['options_neg'].include?(answer)
+    elsif messages('options_neg').include?(answer)
       prompt('thank_you', name)
       exit
     else
