@@ -23,7 +23,7 @@ loan_months: |
 
   This will be added to the %s year(s) you entered.
 
-  Use 0 for 0 months minimum and 11 for 11 months maximum.
+  Use 0 for 0 months minimum (only if you entered years) and 11 for 11 months maximum.
 months_warn: "Invalid number of months!"
 zero_months_warn: "You can't enter 0 months because you entered 0 years!"
 calculating: "Calculating..."

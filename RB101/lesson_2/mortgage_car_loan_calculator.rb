@@ -1,7 +1,3 @@
-# Todo
-# Prompt user about conversion when entering very small APR
-# Handle 0% APR correctly again
-
 require 'yaml'
 
 MONTHS_IN_YEAR = 12
@@ -64,8 +60,8 @@ def set_apr
     apr = gets.chomp.strip
     if valid_apr?(apr) == false
       prompt('invalid_number_warn')
-    elsif (apr.to_f < 1 && !apr.include?("%")) || apr.to_f.zero?
-      small_apr(apr)
+    elsif small_apr?(apr)
+      apr_confirm(apr)
       break if messages('options_pos').include?(gets.chomp.downcase)
     else
       break
@@ -83,7 +79,11 @@ def display_apr(apr)
   apr
 end
 
-def small_apr(apr)
+def small_apr?(apr)
+  (apr.to_f < 1 && !apr.include?("%")) || apr.to_f.zero?
+end
+
+def apr_confirm(apr)
   if apr.to_f < 1 && !apr.include?("%")
     prompt('apr_conversion', apr, display_apr(apr))
   elsif apr.abs < 0.0001
@@ -149,6 +149,7 @@ def calc_summary(loan, apr, years, months, loan_length)
   if years == 0 && months == 1
     prompt('month_display',
            loan_length)
+  elsif years == 0 && months > 1
   else
     prompt('months_display', loan_length)
   end
@@ -189,8 +190,7 @@ prompt('welcome', name)
 
 loop do
   loan = set_value
-  apr = set_apr
-  apr = display_apr(apr)
+  apr = display_apr(set_apr)
   years = set_loan_years
   months = set_loan_months(years)
   loan_length = loan_duration(years, months)
