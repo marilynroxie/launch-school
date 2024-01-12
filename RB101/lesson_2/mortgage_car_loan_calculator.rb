@@ -1,7 +1,3 @@
-# Todo
-# Implement zero_apr check correctly
-# 0%, 0.0, 0, 0.00, 0.0%, 0.00%
-
 require 'yaml'
 
 MONTHS_IN_YEAR = 12
@@ -59,12 +55,12 @@ end
 def set_apr
   apr = ''
   loop do
-    system 'clear'
     prompt('enter_apr')
     apr = gets.chomp.strip
+    system 'clear'
     if valid_apr?(apr) == false
       prompt('invalid_number_warn')
-    elsif small_apr?(apr)
+    elsif apr.to_f < 1
       apr_confirm(apr)
       break if messages('options_pos').include?(gets.chomp.downcase)
     else
@@ -83,15 +79,11 @@ def display_apr(apr)
   apr
 end
 
-def small_apr?(apr)
-  (apr.to_f < 1 && !apr.include?("%")) || apr.to_f.zero?
-end
-
 def apr_confirm(apr)
-  if apr.to_f < 1 && !apr.include?("%")
+  if (apr.to_f.abs > 0.0001 && apr.to_f < 1) && !apr.include?("%")
     prompt('apr_conversion', apr, display_apr(apr))
-  elsif apr.abs < 0.0001
-    prompt('zero_apr')
+  else
+    prompt('small_apr', apr.to_f)
   end
 end
 

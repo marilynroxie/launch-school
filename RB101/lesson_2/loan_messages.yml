@@ -9,7 +9,9 @@ enter_apr: |
 apr_conversion: |
   Did you mean to enter %s? This will become %s%%.
   Enter Y if you wish to continue, or any key other key to start over.
-zero_apr: "Is 0%% APR okay?"
+small_apr: |
+  That's a low APR! Is %s%% correct?
+  Enter Y if you wish to continue, or any key other key to start over.
 loan_years: |
   What's the duration of your loan in years?
   You'll add months (if any) in the next step.
@@ -20,15 +22,12 @@ years_warn: |
   Enter Y if you wish to continue, or any key other key to start over.
 loan_months: |
   What's the duration of your loan in months?
-
   This will be added to the %s year(s) you entered.
-
   Use 0 for 0 months minimum (only if you entered years) and 11 for 11 months maximum.
 months_warn: "Invalid number of months!"
 zero_months_warn: "You can't enter 0 months because you entered 0 years!"
 calculating: "Calculating..."
 summary: "With a loan of %s, APR of %s%%, and a period of %s year(s) and %s month(s)...:"
-month_display: "(%s month total...)"
 months_display: "(%s months total...)"
 payment: "Your monthly payment is %s."
 another_calc: "Perform another calculation? Enter Y to continue, and N to exit."
