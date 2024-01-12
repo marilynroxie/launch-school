@@ -90,9 +90,9 @@ end
 def set_loan_years
   years = ''
   loop do
-    system 'clear'
     prompt('loan_years')
     years = gets.chomp
+    system 'clear'
     if valid_duration?(years) == false
       prompt('invalid_number_warn')
     elsif years.to_i == 0 || years.to_i > 30
@@ -106,11 +106,11 @@ def set_loan_years
 end
 
 def set_loan_months(years)
-  system 'clear'
   months = ''
   loop do
     prompt('loan_months', years)
     months = gets.chomp
+    system 'clear'
     if !months.to_i.between?(0, 11) || valid_duration?(months) == false
       prompt('months_warn')
     elsif years == 0 && months.to_i == 0
