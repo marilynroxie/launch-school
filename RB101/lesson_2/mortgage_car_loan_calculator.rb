@@ -76,6 +76,7 @@ def display_apr(apr)
   else
     apr = apr.to_f
   end
+  system 'clear'
   apr
 end
 
