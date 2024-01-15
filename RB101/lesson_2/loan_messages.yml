@@ -15,7 +15,7 @@ enter_apr: |
 
   Examples: 2.5%% for 2.5%%, or 5 for 5%%.
 
-  Note that values under 1 such as 0.6 will resolve as 60%% while 0.6%% will be 0.6%%.
+  Note that values under 1 such as 0.6 will resolve as 60%% while 0.6%% will remain 0.6%%.
 apr_conversion: |
   Did you mean to enter %s? This will become %s%%.
 
