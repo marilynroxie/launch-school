@@ -3,30 +3,41 @@ valid_name: "Please enter a valid name."
 welcome: "Welcome to the Mortgage Calculator, %s!"
 enter_amount: |
   What's your loan amount?
+
   Enter a positive number with optional currency, and up to two optional decimal places.
+
   Examples: $5,000, $600.78, £10,000, 500.
 amount_warn: "Please enter a number above 0 with up to two optional decimal places."
 enter_apr: |
   What's your annual percentage rate (APR)?
+
   Percentage signs are optional.
+
   Examples: 2.5%% for 2.5%%, or 5 for 5%%.
 apr_conversion: |
   Did you mean to enter %s? This will become %s%%.
+
   Enter Y if you wish to continue, or any key other key to start over.
 small_apr: |
   That's a low APR! Is %s%% correct?
+
   Enter Y if you wish to continue, or any key other key to start over.
 loan_years: |
   What's the duration of your loan in years?
+
   You'll add additional months (if any), or months alone, in the next step.
+
   Example: 2 for 2 years, 0 for 0 years if you plan to add only months.
 invalid_number_warn: "Please enter 0 or higher."
 years_warn: |
   Did you mean to enter %s years?
+
   Enter Y if you wish to continue, or any key other key to start over.
 loan_months: |
   What's the duration of your loan in months?
+
   This will be added to the %s year(s) you entered.
+
   Use 0 for 0 months minimum (only if you entered years) and 11 for 11 months maximum.
 months_warn: "Invalid number of months!"
 zero_months_warn: "You can't enter 0 months because you entered 0 years!"
