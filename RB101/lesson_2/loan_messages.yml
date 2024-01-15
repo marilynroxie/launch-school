@@ -45,6 +45,7 @@ calculating: "Calculating..."
 summary: "With a loan of %s, APR of %s%%, and a period of %s year(s) and %s month(s)...:"
 months_display: "(%s months total...)"
 payment: "Your monthly payment is %s."
+small_payment: "Why not pay it all off now?!"
 another_calc: "Perform another calculation? Enter Y to continue, and N to exit."
 options_pos:
   - "yes"

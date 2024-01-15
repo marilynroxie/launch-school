@@ -158,6 +158,7 @@ def monthly_payment(loan, monthly_interest, loan_length)
   end
   prompt('payment',
          "#{loan[0]}#{format('%.2f', monthly_payment.to_f.round(2))}")
+  prompt('small_payment') if monthly_payment < 1
 end
 
 def calc_again(name)
