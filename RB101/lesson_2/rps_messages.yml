@@ -1,0 +1,15 @@
+enter_name: "Please enter your name: "
+valid_name: "Please enter a valid name."
+welcome: "Welcome to Rock Paper Scissors Spock Lizard, %s!"
+selection: |
+  Choose rock, paper, scissors, Spock, or lizard.
+
+  You may enter the full name of the move, or use abbreviations:
+
+  r for rock, p for paper, sc for scissors, sp for Spock, and l for lizard.
+invalid_choice: "That's not a valid choice."
+you_won: "You won!"
+computer_won: "Computer won!"
+tie: "It's a tie!"
+play_again: "Do you want to play again?"
+thank_you: "Thank you for playing, %s. Goodbye!"

@@ -1,46 +1,115 @@
-VALID_CHOICES = %w(rock paper scissors)
+# Todo
+# Fix convert choice to accept full move names again
+# Fix loop with 'play again' starting with y
 
-def prompt(message)
+require 'yaml'
+
+MESSAGES = YAML.load_file('rps_messages.yml')
+VALID_CHOICES = %w(rock paper scissors lizard spock)
+score = { player: 0, computer: 0 }
+
+def messages(message)
+  MESSAGES[message]
+end
+
+def prompt(key, *args)
+  message = messages(key) % args
   puts("=> #{message}")
+end
+
+def get_name
+  system 'clear'
+  loop do
+    prompt('enter_name')
+    name = gets.chomp.strip.capitalize
+    system 'clear'
+    break name unless name.empty?
+    prompt('valid_name')
+  end
+end
+
+def convert_move(move)
+  moves = {
+    'r' => 'rock',
+    'p' => 'paper',
+    'sc' => 'scissors',
+    'li' => 'lizard',
+    'sp' => 'Spock'
+  }
+  moves[move]
+end
+
+def set_choice
+  choice = ''
+
+  loop do
+    prompt('selection')
+    # puts "Choose one: #{VALID_CHOICES.join(', ')}"
+    choice = gets.chomp.downcase
+    system 'clear'
+    choice = convert_move(choice)
+    if VALID_CHOICES.include?(choice) || convert_move(choice)
+      break
+    else
+      prompt('invalid_choice')
+    end
+  end
+  choice
+end
+
+def computer_choice
+  VALID_CHOICES.sample
+end
+
+def display_choices(choice, computer_choice)
+  puts("You chose: #{choice}; Computer chose #{computer_choice}")
 end
 
 def win?(first, second)
   (first == 'rock' && second == 'scissors') || (first == 'paper' && second == 'rock') || (first == 'scissors' && second == 'paper')
 end
 
-def display_results(player, computer)
+def display_results(player, computer, score)
   if win?(player, computer)
-    prompt('You won!')
+    prompt('you_won')
+    score[:player] += 1
   elsif win?(computer, player)
-    prompt('Computer won!')
+    prompt('computer_won')
+    score[:computer] += 1
   else
-    prompt("It's a tie!")
+    prompt('tie')
   end
 end
 
-choice = ''
-loop do
-  system 'clear'
+def play_again(name)
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-    choice = gets.chomp
-
-    if VALID_CHOICES.include?(choice)
+    prompt('play_again')
+    answer = gets.chomp
+    if answer.downcase.start_with?('y')
+      system 'clear'
       break
+    elsif answer.downcase.start_with?('n')
+      prompt('thank_you', name)
+      exit
     else
-      prompt("That's not a valid choice.")
+      system 'clear'
+      prompt('invalid_choice')
     end
   end
-
-  computer_choice = VALID_CHOICES.sample
-
-  puts("You chose: #{choice}; Computer chose #{computer_choice}")
-
-  display_results(choice, computer_choice)
-
-  prompt('Do you want to play again?')
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
 end
 
-prompt('Thank you for playing. Goodbye!')
+name = get_name
+prompt('welcome', name)
+
+loop do
+  loop do
+    until score[:player] == 3 || score[:computer] == 3
+      choice = set_choice
+      computer_choice
+      display_choices(choice, computer_choice)
+      display_results(choice, computer_choice, score)
+      p score
+    end
+    play_again(name)
+  end
+end
