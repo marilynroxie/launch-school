@@ -36,7 +36,11 @@ def convert_move(move)
     'li' => 'lizard',
     'sp' => 'Spock'
   }
-  moves[move]
+  if moves.key?(move)
+    moves[move]
+  elsif moves.value?(move)
+    move
+  end
 end
 
 def set_choice
@@ -48,7 +52,7 @@ def set_choice
     choice = gets.chomp.downcase
     system 'clear'
     choice = convert_move(choice)
-    if VALID_CHOICES.include?(choice) || convert_move(choice)
+    if VALID_CHOICES.include?(choice)
       break
     else
       prompt('invalid_choice')
