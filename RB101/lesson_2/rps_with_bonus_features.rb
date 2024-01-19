@@ -6,7 +6,6 @@ require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
 VALID_CHOICES = %w(rock paper scissors lizard spock)
-score = { player: 0, computer: 0 }
 
 def messages(message)
   MESSAGES[message]
@@ -48,7 +47,6 @@ def set_choice
 
   loop do
     prompt('selection')
-    # puts "Choose one: #{VALID_CHOICES.join(', ')}"
     choice = gets.chomp.downcase
     system 'clear'
     choice = convert_move(choice)
@@ -66,7 +64,7 @@ def computer_choice
 end
 
 def display_choices(choice, computer_choice)
-  puts("You chose: #{choice}; Computer chose #{computer_choice}")
+  prompt('display', choice, computer_choice)
 end
 
 def win?(first, second)
@@ -74,6 +72,7 @@ def win?(first, second)
 end
 
 def display_results(player, computer, score)
+  sleep 0.1
   if win?(player, computer)
     prompt('you_won')
     score[:player] += 1
@@ -106,13 +105,13 @@ name = get_name
 prompt('welcome', name)
 
 loop do
+  score = { player: 0, computer: 0 }
   loop do
     until score[:player] == 3 || score[:computer] == 3
       choice = set_choice
       computer_choice
       display_choices(choice, computer_choice)
       display_results(choice, computer_choice, score)
-      p score
     end
     play_again(name)
   end
