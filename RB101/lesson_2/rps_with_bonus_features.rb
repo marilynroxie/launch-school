@@ -1,4 +1,5 @@
 # Todo
+# Add means of accessing rule explanation
 # Fix convert choice to accept full move names again
 # Fix loop with 'play again' starting with y
 
@@ -24,6 +25,13 @@ def get_name
     system 'clear'
     break name unless name.empty?
     prompt('valid_name')
+  end
+end
+
+def rules
+  ['Scissors cuts Paper', 'Paper covers Rock', 'Rock crushes lizard', 'Lizard poisons Spock', 'Spock smashes Scissors', 'Scissors decapitates Lizard', 'Lizard eats Paper', 'Paper disproves Spock', 'Spock vaporizes Rock', 'Rock crushes Scissors'].each do |c|
+    sleep 0.4
+    puts c
   end
 end
 
@@ -67,8 +75,20 @@ def display_choices(choice, computer_choice)
   prompt('display', choice, computer_choice)
 end
 
+# Put winning moves into a collection.
+# Instead of testing a long series of conditions, you can look up the player's move as a key in a hash.
+# The value of that hash element would be a list of moves that the player's move beats.
+# For instance, if you look up "rock," you should be able to determine that "rock" defeats either "scissors" or "lizard."
+
 def win?(first, second)
-  (first == 'rock' && second == 'scissors') || (first == 'paper' && second == 'rock') || (first == 'scissors' && second == 'paper')
+  winning_moves = {
+    'rock' => ['scissors', 'lizard'],
+    'paper' => ['rock', 'Spock'],
+    'scissors' => ['paper', 'lizard'],
+    'lizard' => ['paper', 'Spock'],
+    'Spock' => ['rock', 'scissors']
+  }
+  # (first == 'rock' && second == 'scissors') || (first == 'paper' && second == 'rock') || (first == 'scissors' && second == 'paper')
 end
 
 def display_results(player, computer, score)
