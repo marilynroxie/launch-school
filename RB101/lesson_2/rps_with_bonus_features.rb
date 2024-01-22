@@ -1,12 +1,10 @@
 # Todo
-# Add means of accessing rule explanation
-# Fix convert choice to accept full move names again
 # Fix loop with 'play again' starting with y
 
 require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
-VALID_CHOICES = %w(rock paper scissors lizard spock)
+VALID_CHOICES = %w(rock r paper p scissors sc lizard l Spock sp)
 
 def messages(message)
   MESSAGES[message]
@@ -29,9 +27,11 @@ def get_name
 end
 
 def rules
-  ['Scissors cuts Paper', 'Paper covers Rock', 'Rock crushes lizard', 'Lizard poisons Spock', 'Spock smashes Scissors', 'Scissors decapitates Lizard', 'Lizard eats Paper', 'Paper disproves Spock', 'Spock vaporizes Rock', 'Rock crushes Scissors'].each do |c|
+  puts 'Rules: '
+  puts ' '
+  ['Scissors cuts Paper...Paper covers Rock', 'Rock crushes Lizard...Lizard poisons Spock', 'Spock smashes Scissors...Scissors decapitates Lizard', 'Lizard eats Paper...Paper disproves Spock', 'Spock vaporizes Rock...Rock crushes Scissors'].each do |rules|
     sleep 0.4
-    puts c
+    puts rules
   end
 end
 
@@ -40,14 +40,15 @@ def convert_move(move)
     'r' => 'rock',
     'p' => 'paper',
     'sc' => 'scissors',
-    'li' => 'lizard',
+    'l' => 'lizard',
     'sp' => 'Spock'
   }
   if moves.key?(move)
-    moves[move]
-  elsif moves.value?(move)
+    move = moves[move]
+  else
     move
   end
+  move
 end
 
 def set_choice
@@ -57,28 +58,25 @@ def set_choice
     prompt('selection')
     choice = gets.chomp.downcase
     system 'clear'
-    choice = convert_move(choice)
-    if VALID_CHOICES.include?(choice)
+    if choice == 'rules'
+      rules
+      puts ''
+    elsif VALID_CHOICES.include?(convert_move(choice))
       break
     else
       prompt('invalid_choice')
     end
   end
-  choice
+  convert_move(choice)
 end
 
-def computer_choice
-  VALID_CHOICES.sample
+def computer
+  convert_move(VALID_CHOICES.sample)
 end
 
 def display_choices(choice, computer_choice)
   prompt('display', choice, computer_choice)
 end
-
-# Put winning moves into a collection.
-# Instead of testing a long series of conditions, you can look up the player's move as a key in a hash.
-# The value of that hash element would be a list of moves that the player's move beats.
-# For instance, if you look up "rock," you should be able to determine that "rock" defeats either "scissors" or "lizard."
 
 def win?(first, second)
   winning_moves = {
@@ -88,7 +86,7 @@ def win?(first, second)
     'lizard' => ['paper', 'Spock'],
     'Spock' => ['rock', 'scissors']
   }
-  # (first == 'rock' && second == 'scissors') || (first == 'paper' && second == 'rock') || (first == 'scissors' && second == 'paper')
+  winning_moves[first].include?(second)
 end
 
 def display_results(player, computer, score)
@@ -129,7 +127,7 @@ loop do
   loop do
     until score[:player] == 3 || score[:computer] == 3
       choice = set_choice
-      computer_choice
+      computer_choice = computer
       display_choices(choice, computer_choice)
       display_results(choice, computer_choice, score)
     end

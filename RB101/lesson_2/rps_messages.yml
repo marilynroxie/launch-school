@@ -3,6 +3,8 @@ valid_name: "Please enter a valid name."
 welcome: |
   Welcome to Rock Paper Scissors Spock Lizard, %s!
 
+  Type rules if you want to see the winning moves.
+
   Whoever reaches three wins becomes the Grand Winner!
 selection: |
   Choose rock, paper, scissors, Spock, or lizard.
