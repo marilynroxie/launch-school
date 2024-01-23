@@ -1,7 +1,3 @@
-# Todo
-# Add regularly updating total score display after each match
-# Add Grand Winner announcement
-
 require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
@@ -79,6 +75,7 @@ def display_results(player, computer, score)
   else
     prompt('tie')
   end
+  prompt('results', score[:player], score[:computer])
 end
 
 def play_again(name)
@@ -108,8 +105,12 @@ loop do
     computer_choice = computer
     display_choices(choice, computer_choice)
     display_results(choice, computer_choice, score)
+    sleep 0.2
   end
-  p score
-  sleep 0.4
+  if score[:player] == 3
+    puts MESSAGES['grand_winner']['player'][0]
+  else
+    puts MESSAGES['grand_winner']['computer'][0]
+  end
   play_again(name)
 end

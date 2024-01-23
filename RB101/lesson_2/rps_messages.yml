@@ -48,6 +48,12 @@ display: "You chose %s. Computer chose %s."
 you_won: "You won!"
 computer_won: "Computer won!"
 tie: "It's a tie!"
+results: "Results: Player: %s | Computer: %s"
+grand_winner:
+  player:
+    - "You are the Grand Winner!"
+  computer:
+    - "The computer is the Grand Winner!"
 play_again: "Do you want to play again?"
 options_pos:
   - "yes"
