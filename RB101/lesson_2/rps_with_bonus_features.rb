@@ -20,7 +20,6 @@ def rules
     sleep 0.4
     puts rule
   end
-  sleep 2
 end
 
 def get_name
@@ -65,14 +64,7 @@ def display_choices(choice, computer_choice)
 end
 
 def win?(first, second)
-  winning_moves = {
-    'rock' => ['scissors', 'lizard'],
-    'paper' => ['rock', 'Spock'],
-    'scissors' => ['paper', 'lizard'],
-    'lizard' => ['paper', 'Spock'],
-    'Spock' => ['rock', 'scissors']
-  }
-  winning_moves[first].include?(second)
+  messages('winning_moves')[first].include?(second)
 end
 
 def display_results(player, computer, score)
@@ -105,7 +97,6 @@ def play_again(name)
   end
 end
 
-rules
 name = get_name
 prompt('welcome', name)
 

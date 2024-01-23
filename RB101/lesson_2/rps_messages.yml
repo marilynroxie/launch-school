@@ -8,8 +8,6 @@ rules: |
   Spock smashes Scissors...Scissors decapitates Lizard
   Lizard eats Paper...Paper disproves Spock
   Spock vaporizes Rock...Rock crushes Scissors
-
-  Whoever reaches three wins total becomes the Grand Winner!
 enter_name: "Please enter your name: "
 valid_name: "Please enter a valid name."
 welcome: "Welcome to Rock Paper Scissors Spock Lizard, %s!"
@@ -20,7 +18,9 @@ selection: |
 
   r for rock, p for paper, sc for scissors, sp for Spock, and l for lizard.
 
-  Type rules if you want to see them again.
+  Type rules if you want to see a breakdown of winning moves.
+
+  Whoever reaches three wins total becomes the Grand Winner!
 invalid_choice: "That's not a valid choice."
 moves:
   r: rock
@@ -28,6 +28,22 @@ moves:
   sc: scissors
   l: lizard
   sp: Spock
+winning_moves:
+  rock:
+    - scissors
+    - lizard
+  paper:
+    - rock
+    - Spock
+  scissors:
+    - paper
+    - lizard
+  lizard:
+    - paper
+    - Spock
+  Spock:
+    - rock
+    - scissors
 display: "You chose %s. Computer chose %s."
 you_won: "You won!"
 computer_won: "Computer won!"
