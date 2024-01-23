@@ -34,19 +34,7 @@ def get_name
 end
 
 def convert_move(move)
-  moves = {
-    'r' => 'rock',
-    'p' => 'paper',
-    'sc' => 'scissors',
-    'l' => 'lizard',
-    'sp' => 'Spock'
-  }
-  if moves.key?(move)
-    move = moves[move]
-  else
-    move
-  end
-  move
+  messages('moves').key?(move) ? messages('moves')[move] : move
 end
 
 def set_choice
