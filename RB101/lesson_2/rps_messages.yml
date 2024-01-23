@@ -54,7 +54,7 @@ grand_winner:
     - "You are the Grand Winner!"
   computer:
     - "The computer is the Grand Winner!"
-play_again: "Do you want to play again?"
+play_again: "Do you want to play again? (Y to play again, N to stop playing)"
 options_pos:
   - "yes"
   - "y"

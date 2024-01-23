@@ -75,6 +75,10 @@ def update_score(player, computer, score)
   end
 end
 
+def display_scoreboard(score)
+  prompt('scoreboard', score[:player], score[:computer])
+end
+
 def display_results(player, computer, score)
   if win?(player, computer)
     prompt('you_won')
@@ -117,14 +121,14 @@ prompt('welcome', name)
 loop do
   score = { player: 0, computer: 0 }
   until score[:player] == 3 || score[:computer] == 3
-    prompt('scoreboard', score[:player], score[:computer])
+    display_scoreboard(score)
     choice = set_choice
     computer_choice = computer
     display_choices(choice, computer_choice)
     update_score(choice, computer_choice, score)
     display_results(choice, computer_choice, score)
   end
-  prompt('scoreboard', score[:player], score[:computer])
+  display_scoreboard(score)
   grand_display(score)
   play_again(name)
 end
