@@ -1,3 +1,6 @@
+# Todo
+# Improve display of persistent scoreboard
+
 require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
@@ -20,6 +23,7 @@ def rules
 end
 
 def get_name
+  system 'clear'
   loop do
     prompt('enter_name')
     name = gets.chomp.strip.capitalize
@@ -72,7 +76,6 @@ def update_score(player, computer, score)
 end
 
 def display_results(player, computer, score)
-  sleep 0.2
   if win?(player, computer)
     prompt('you_won')
   elsif win?(computer, player)
@@ -80,15 +83,14 @@ def display_results(player, computer, score)
   else
     prompt('tie')
   end
-  prompt('results', score[:player], score[:computer])
 end
 
 def grand_display(score)
   sleep 0.4
   if score[:player] == 3
-    puts MESSAGES['grand_winner']['player'][0]
+    puts messages('grand_winner'[0][0])
   else
-    puts MESSAGES['grand_winner']['computer'][0]
+    puts messages('grand_winner'[1][0])
   end
 end
 
@@ -115,12 +117,14 @@ prompt('welcome', name)
 loop do
   score = { player: 0, computer: 0 }
   until score[:player] == 3 || score[:computer] == 3
+    prompt('scoreboard', score[:player], score[:computer])
     choice = set_choice
     computer_choice = computer
     display_choices(choice, computer_choice)
     update_score(choice, computer_choice, score)
     display_results(choice, computer_choice, score)
   end
+  prompt('scoreboard', score[:player], score[:computer])
   grand_display(score)
   play_again(name)
 end
