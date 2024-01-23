@@ -1,6 +1,3 @@
-# Todo
-# Resolve suggestion 'Don't add your incrementing logic to display_results'
-
 require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
@@ -66,14 +63,20 @@ def win?(first, second)
   messages('winning_moves')[first].include?(second)
 end
 
+def update_score(player, computer, score)
+  if win?(player, computer)
+    score[:player] += 1
+  elsif win?(computer, player)
+    score[:computer] += 1
+  end
+end
+
 def display_results(player, computer, score)
   sleep 0.2
   if win?(player, computer)
     prompt('you_won')
-    score[:player] += 1
   elsif win?(computer, player)
     prompt('computer_won')
-    score[:computer] += 1
   else
     prompt('tie')
   end
@@ -115,6 +118,7 @@ loop do
     choice = set_choice
     computer_choice = computer
     display_choices(choice, computer_choice)
+    update_score(choice, computer_choice, score)
     display_results(choice, computer_choice, score)
   end
   grand_display(score)
