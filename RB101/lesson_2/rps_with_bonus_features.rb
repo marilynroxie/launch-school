@@ -1,3 +1,6 @@
+# Todo
+# Resolve suggestion 'Don't add your incrementing logic to display_results'
+
 require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
@@ -42,7 +45,6 @@ def set_choice
     system 'clear'
     if choice == 'rules'
       rules
-      puts ''
     elsif VALID_CHOICES.include?(convert_move(choice))
       break
     else
@@ -65,7 +67,7 @@ def win?(first, second)
 end
 
 def display_results(player, computer, score)
-  sleep 0.1
+  sleep 0.2
   if win?(player, computer)
     prompt('you_won')
     score[:player] += 1
@@ -76,6 +78,15 @@ def display_results(player, computer, score)
     prompt('tie')
   end
   prompt('results', score[:player], score[:computer])
+end
+
+def grand_display(score)
+  sleep 0.4
+  if score[:player] == 3
+    puts MESSAGES['grand_winner']['player'][0]
+  else
+    puts MESSAGES['grand_winner']['computer'][0]
+  end
 end
 
 def play_again(name)
@@ -105,12 +116,7 @@ loop do
     computer_choice = computer
     display_choices(choice, computer_choice)
     display_results(choice, computer_choice, score)
-    sleep 0.2
   end
-  if score[:player] == 3
-    puts MESSAGES['grand_winner']['player'][0]
-  else
-    puts MESSAGES['grand_winner']['computer'][0]
-  end
+  grand_display(score)
   play_again(name)
 end
