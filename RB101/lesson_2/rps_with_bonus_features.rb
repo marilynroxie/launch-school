@@ -79,7 +79,7 @@ def display_scoreboard(score)
   prompt('scoreboard', score[:player], score[:computer])
 end
 
-def display_results(player, computer, score)
+def display_results(player, computer)
   if win?(player, computer)
     prompt('you_won')
   elsif win?(computer, player)
@@ -126,7 +126,7 @@ loop do
     computer_choice = computer
     display_choices(choice, computer_choice)
     update_score(choice, computer_choice, score)
-    display_results(choice, computer_choice, score)
+    display_results(choice, computer_choice)
   end
   display_scoreboard(score)
   grand_display(score)
