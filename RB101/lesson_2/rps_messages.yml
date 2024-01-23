@@ -3,7 +3,7 @@ valid_name: "Please enter a valid name."
 welcome: |
   Welcome to Rock Paper Scissors Spock Lizard, %s!
 
-  Type rules if you want to see the winning moves.
+  Type rules if you want to see the winning moves again.
 
   Whoever reaches three wins becomes the Grand Winner!
 selection: |
@@ -12,6 +12,16 @@ selection: |
   You may enter the full name of the move, or use abbreviations:
 
   r for rock, p for paper, sc for scissors, sp for Spock, and l for lizard.
+rules: |
+  Rock Paper Scissors Spock Lizard
+
+  Rules:
+
+  Scissors cuts Paper...Paper covers Rock
+  Rock crushes Lizard...Lizard poisons Spock
+  Spock smashes Scissors...Scissors decapitates Lizard
+  Lizard eats Paper...Paper disproves Spock
+  Spock vaporizes Rock...Rock crushes Scissors
 invalid_choice: "That's not a valid choice."
 display: "You chose %s. Computer chose %s."
 you_won: "You won!"

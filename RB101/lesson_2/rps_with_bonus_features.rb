@@ -15,23 +15,21 @@ def prompt(key, *args)
   puts("=> #{message}")
 end
 
+def rules
+  messages('rules').each_line do |rule|
+    sleep 0.4
+    puts rule
+  end
+  sleep 2
+end
+
 def get_name
-  system 'clear'
   loop do
     prompt('enter_name')
     name = gets.chomp.strip.capitalize
     system 'clear'
     break name unless name.empty?
     prompt('valid_name')
-  end
-end
-
-def rules
-  puts 'Rules: '
-  puts ' '
-  ['Scissors cuts Paper...Paper covers Rock', 'Rock crushes Lizard...Lizard poisons Spock', 'Spock smashes Scissors...Scissors decapitates Lizard', 'Lizard eats Paper...Paper disproves Spock', 'Spock vaporizes Rock...Rock crushes Scissors'].each do |rules|
-    sleep 0.4
-    puts rules
   end
 end
 
@@ -119,6 +117,7 @@ def play_again(name)
   end
 end
 
+rules
 name = get_name
 prompt('welcome', name)
 
