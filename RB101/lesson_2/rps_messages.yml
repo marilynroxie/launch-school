@@ -49,4 +49,10 @@ you_won: "You won!"
 computer_won: "Computer won!"
 tie: "It's a tie!"
 play_again: "Do you want to play again?"
+options_pos:
+  - "yes"
+  - "y"
+options_neg:
+  - "no"
+  - "n"
 thank_you: "Thank you for playing, %s. Goodbye!"

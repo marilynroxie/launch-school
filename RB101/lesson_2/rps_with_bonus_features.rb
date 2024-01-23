@@ -1,5 +1,6 @@
 # Todo
-# Fix loop with 'play again' starting with y
+# Add regularly updating total score display after each match
+# Add Grand Winner announcement
 
 require 'yaml'
 
@@ -83,11 +84,11 @@ end
 def play_again(name)
   loop do
     prompt('play_again')
-    answer = gets.chomp
-    if answer.downcase.start_with?('y')
+    answer = gets.chomp.downcase
+    if messages('options_pos').include?(answer)
       system 'clear'
       break
-    elsif answer.downcase.start_with?('n')
+    elsif messages('options_neg').include?(answer)
       prompt('thank_you', name)
       exit
     else
@@ -102,13 +103,13 @@ prompt('welcome', name)
 
 loop do
   score = { player: 0, computer: 0 }
-  loop do
-    until score[:player] == 3 || score[:computer] == 3
-      choice = set_choice
-      computer_choice = computer
-      display_choices(choice, computer_choice)
-      display_results(choice, computer_choice, score)
-    end
-    play_again(name)
+  until score[:player] == 3 || score[:computer] == 3
+    choice = set_choice
+    computer_choice = computer
+    display_choices(choice, computer_choice)
+    display_results(choice, computer_choice, score)
   end
+  p score
+  sleep 0.4
+  play_again(name)
 end
