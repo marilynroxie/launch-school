@@ -69,21 +69,21 @@ def display_choices(choice, computer_choice)
   prompt('display', choice, computer_choice)
 end
 
-def win?(first, second)
-  messages('winning_moves')[first].include?(second)
+def win?(player, computer)
+  messages('winning_moves')[player].include?(computer)
 end
 
-def win_move_message(first, second)
-  if win?(first, second)
-    puts(messages('winning_moves_lines')[first].find do |sentence|
-      sentence.include?(second)
+def win_move_message(player, computer)
+  if win?(player, computer)
+    puts(messages('winning_moves_lines')[player].find do |sentence|
+      sentence.include?(computer)
     end)
-  elsif win?(second, first)
-    puts(messages('winning_moves_lines')[second].find do |sentence|
-      sentence.include?(first)
+  elsif win?(computer, player)
+    puts(messages('winning_moves_lines')[computer].find do |sentence|
+      sentence.include?(player)
     end)
   else
-    puts messages('no_effect', first, second)
+    puts messages('no_effect', player, computer)
   end
 end
 
