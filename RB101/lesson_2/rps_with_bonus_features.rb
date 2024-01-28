@@ -73,7 +73,7 @@ def win?(first, second)
   messages('winning_moves')[first].include?(second)
 end
 
-def win_message(first, second)
+def win_move_message(first, second)
   if win?(first, second)
     line = MESSAGES['winning_moves_lines'][first].find do |sentence|
       sentence.include?(second)
@@ -125,9 +125,9 @@ end
 def grand_display(score)
   sleep 0.4
   if score[:player] == 3
-    puts MESSAGES['grand_winner']['player'][0]
+    puts messages('grand_winner')['player'][0]
   else
-    puts MESSAGES['grand_winner']['computer'][0]
+    puts messages('grand_winner')['computer'][0]
   end
   starred_message('line')
   starred_message('total_grand_winners', GRAND_WINNERS[:player],
@@ -163,7 +163,7 @@ loop do
     display_choices(choice, computer_choice)
     update_score(choice, computer_choice, score)
     display_scoreboard(score)
-    win_message(choice, computer_choice)
+    win_move_message(choice, computer_choice)
     display_results(choice, computer_choice)
   end
   grand_update(score)
