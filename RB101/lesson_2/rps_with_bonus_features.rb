@@ -61,12 +61,12 @@ def set_choice
   convert_move(choice)
 end
 
-def computer
+def computer_move
   convert_move(VALID_CHOICES.sample)
 end
 
-def display_choices(choice, computer_choice)
-  prompt('display', choice, computer_choice)
+def display_choices(player, computer)
+  prompt('display', player, computer)
 end
 
 def win?(player, computer)
@@ -157,7 +157,7 @@ loop do
   score = { player: 0, computer: 0 }
   until score[:player] == 3 || score[:computer] == 3
     choice = set_choice
-    computer_choice = computer
+    computer_choice = computer_move
     display_choices(choice, computer_choice)
     update_score(choice, computer_choice, score)
     display_scoreboard(score)
