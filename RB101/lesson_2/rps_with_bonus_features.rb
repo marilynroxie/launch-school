@@ -1,5 +1,5 @@
 # Todo
-# Make description of the winning move work for the computer as well
+# Should winning move description match the order of the moves?
 
 require 'yaml'
 
@@ -76,16 +76,6 @@ def win?(first, second)
   messages('winning_moves')[first].include?(second)
 end
 
-# def win_message(first, second)
-#   if MESSAGES['winning_moves_lines'][first] && first != second
-#     sentences = MESSAGES['winning_moves_lines'][first]
-#     valid_sentence = sentences.find { |sentence| sentence.include?(second) }
-#     puts valid_sentence
-#   else
-#     puts ''
-#   end
-# end
-
 def win_message(first, second)
   if win?(first, second)
     MESSAGES['winning_moves_lines'][first] && first != second
@@ -98,7 +88,7 @@ def win_message(first, second)
     valid_sentence = sentences.find { |sentence| sentence.include?(first) }
     puts valid_sentence
   else
-    puts "#{first} does nothing to #{second}"
+    starred_message('no_effect', first, second)
   end
 end
 
