@@ -67,7 +67,7 @@ winning_moves_lines:
     - Spock smashes Scissors
 no_effect: "%s does nothing to %s!"
 display: "You chose %s. Computer chose %s."
-line: "------------------------------------------------------------"
+line: "---------------------------------------"
 you_won: "You won!"
 computer_won: "Computer won!"
 tie: "It's a tie!"
@@ -77,7 +77,7 @@ grand_winner:
     - "You are the Grand Winner!"
   computer:
     - "The computer is the Grand Winner!"
-total_grand_winners: "Total Grand Winners: Player: %s | Computer: %s"
+total_grand_winners: "Grand Scoreboard: Player: %s | Computer: %s"
 play_again: "Do you want to play again? (Y to play again, N to stop playing)"
 options_pos:
   - "yes"

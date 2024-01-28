@@ -66,7 +66,7 @@ def computer_move
 end
 
 def display_choices(player, computer)
-  prompt('display', player, computer)
+  puts messages('display', player, computer)
 end
 
 def win?(player, computer)
@@ -97,8 +97,7 @@ end
 
 def display_scoreboard(score)
   starred_message('line')
-  starred_message('scoreboard', score[:player],
-                  score[:computer])
+  puts messages('scoreboard', score[:player], score[:computer]).center(44)
   starred_message('line')
 end
 
@@ -128,8 +127,10 @@ def grand_display(score)
     puts messages('grand_winner')['computer'][0]
   end
   starred_message('line')
-  starred_message('total_grand_winners', GRAND_WINNERS[:player],
-                  GRAND_WINNERS[:computer])
+  puts messages('total_grand_winners', GRAND_WINNERS[:player],
+                GRAND_WINNERS[:computer]).center(44)
+  # starred_message('total_grand_winners', GRAND_WINNERS[:player],
+  #                 GRAND_WINNERS[:computer])
   starred_message('line')
 end
 
