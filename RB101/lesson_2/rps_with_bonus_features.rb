@@ -1,6 +1,3 @@
-# Todo
-# Should winning move description match the order of the moves?
-
 require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
@@ -78,15 +75,15 @@ end
 
 def win_message(first, second)
   if win?(first, second)
-    MESSAGES['winning_moves_lines'][first] && first != second
-    sentences = MESSAGES['winning_moves_lines'][first]
-    valid_sentence = sentences.find { |sentence| sentence.include?(second) }
-    puts valid_sentence
+    line = MESSAGES['winning_moves_lines'][first].find do |sentence|
+      sentence.include?(second)
+    end
+    puts line
   elsif win?(second, first)
-    MESSAGES['winning_moves_lines'][second] && second != first
-    sentences = MESSAGES['winning_moves_lines'][second]
-    valid_sentence = sentences.find { |sentence| sentence.include?(first) }
-    puts valid_sentence
+    line = MESSAGES['winning_moves_lines'][second].find do |sentence|
+      sentence.include?(first)
+    end
+    puts line
   else
     starred_message('no_effect', first, second)
   end
