@@ -129,8 +129,6 @@ def grand_display(score)
   starred_message('line')
   puts messages('total_grand_winners', GRAND_WINNERS[:player],
                 GRAND_WINNERS[:computer]).center(44)
-  # starred_message('total_grand_winners', GRAND_WINNERS[:player],
-  #                 GRAND_WINNERS[:computer])
   starred_message('line')
 end
 
