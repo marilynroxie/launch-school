@@ -7,8 +7,8 @@ GRAND_WINNERS = {
   computer: 0
 }
 
-def messages(message)
-  MESSAGES[message]
+def messages(message, *args)
+  args.empty? ? MESSAGES[message] : MESSAGES[message] % args
 end
 
 def prompt(key, *args)
@@ -83,7 +83,7 @@ def win_move_message(first, second)
       sentence.include?(first)
     end)
   else
-    starred_message('no_effect', first, second)
+    puts messages('no_effect', first, second)
   end
 end
 
