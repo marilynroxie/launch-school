@@ -75,12 +75,12 @@ end
 
 def win_move_message(first, second)
   if win?(first, second)
-    line = MESSAGES['winning_moves_lines'][first].find do |sentence|
+    line = messages('winning_moves_lines')[first].find do |sentence|
       sentence.include?(second)
     end
     puts line
   elsif win?(second, first)
-    line = MESSAGES['winning_moves_lines'][second].find do |sentence|
+    line = messages('winning_moves_lines')[second].find do |sentence|
       sentence.include?(first)
     end
     puts line
