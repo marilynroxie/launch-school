@@ -49,6 +49,22 @@ winning_moves:
   Spock:
     - Rock
     - Scissors
+winning_moves_lines:
+  Rock:
+    - Rock crushes Scissors
+    - Rock crushes Lizard
+  Paper:
+    - Paper covers Rock
+    - Paper disproves Spock
+  Scissors:
+    - Scissors cuts Paper
+    - Scissors decapitates Lizard
+  Lizard:
+    - Lizard eats Paper
+    - Lizard poisons Spock
+  Spock:
+    - Spock vaporizes Rock
+    - Spock smashes Scissors
 display: "You chose %s. Computer chose %s."
 line: "------------------------------------------------------------"
 you_won: "You won!"

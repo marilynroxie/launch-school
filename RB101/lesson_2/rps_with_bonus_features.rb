@@ -1,7 +1,5 @@
 # Todo
-# Improve display of persistent scoreboard
-# Differentiating more between prompts and messages?
-# Add description of the winning move
+# Make description of the winning move work for the computer as well
 
 require 'yaml'
 
@@ -78,6 +76,32 @@ def win?(first, second)
   messages('winning_moves')[first].include?(second)
 end
 
+# def win_message(first, second)
+#   if MESSAGES['winning_moves_lines'][first] && first != second
+#     sentences = MESSAGES['winning_moves_lines'][first]
+#     valid_sentence = sentences.find { |sentence| sentence.include?(second) }
+#     puts valid_sentence
+#   else
+#     puts ''
+#   end
+# end
+
+def win_message(first, second)
+  if win?(first, second)
+    MESSAGES['winning_moves_lines'][first] && first != second
+    sentences = MESSAGES['winning_moves_lines'][first]
+    valid_sentence = sentences.find { |sentence| sentence.include?(second) }
+    puts valid_sentence
+  elsif win?(second, first)
+    MESSAGES['winning_moves_lines'][second] && second != first
+    sentences = MESSAGES['winning_moves_lines'][second]
+    valid_sentence = sentences.find { |sentence| sentence.include?(first) }
+    puts valid_sentence
+  else
+    puts "#{first} does nothing to #{second}"
+  end
+end
+
 def update_score(player, computer, score)
   if win?(player, computer)
     score[:player] += 1
@@ -152,6 +176,7 @@ loop do
     display_choices(choice, computer_choice)
     update_score(choice, computer_choice, score)
     display_scoreboard(score)
+    win_message(choice, computer_choice)
     display_results(choice, computer_choice)
   end
   grand_update(score)
