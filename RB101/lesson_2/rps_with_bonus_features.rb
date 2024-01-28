@@ -1,10 +1,13 @@
 # Todo
 # Improve display of persistent scoreboard
+# Add a constant to keep track of grand winners?
+# Differentiating more between prompts and messages?
+# Add description of the winning move
 
 require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
-VALID_CHOICES = %w(rock r paper p scissors sc lizard l Spock sp)
+VALID_CHOICES = %w(Rock R Paper P Scissors Sc Lizard L Spock Sp)
 
 def messages(message)
   MESSAGES[message]
@@ -42,9 +45,9 @@ def set_choice
 
   loop do
     prompt('selection')
-    choice = gets.chomp.downcase
+    choice = gets.chomp.capitalize
     system 'clear'
-    if choice == 'rules'
+    if choice == 'Rules'
       rules
     elsif VALID_CHOICES.include?(convert_move(choice))
       break

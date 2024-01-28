@@ -12,38 +12,38 @@ enter_name: "Please enter your name: "
 valid_name: "Please enter a valid name."
 welcome: "Welcome to Rock Paper Scissors Spock Lizard, %s!"
 selection: |
-  Choose rock, paper, scissors, Spock, or lizard.
+  Choose Rock, Paper, Scissors, Spock, or Lizard.
 
   You may enter the full name of the move, or use abbreviations:
 
-  r for rock, p for paper, sc for scissors, sp for Spock, and l for lizard.
+  r for Rock, p for Paper, sc for Scissors, sp for Spock, and l for Lizard.
 
   Type rules if you want to see a breakdown of winning moves.
 
   Whoever reaches three wins total becomes the Grand Winner!
 invalid_choice: "That's not a valid choice."
 moves:
-  r: rock
-  p: paper
-  sc: scissors
-  l: lizard
-  sp: Spock
+  R: Rock
+  P: Paper
+  Sc: Scissors
+  L: Lizard
+  Sp: Spock
 winning_moves:
-  rock:
-    - scissors
-    - lizard
-  paper:
-    - rock
+  Rock:
+    - Scissors
+    - Lizard
+  Paper:
+    - Rock
     - Spock
-  scissors:
-    - paper
-    - lizard
-  lizard:
-    - paper
+  Scissors:
+    - Paper
+    - Lizard
+  Lizard:
+    - Paper
     - Spock
   Spock:
-    - rock
-    - scissors
+    - Rock
+    - Scissors
 display: "You chose %s. Computer chose %s."
 you_won: "You won!"
 computer_won: "Computer won!"
