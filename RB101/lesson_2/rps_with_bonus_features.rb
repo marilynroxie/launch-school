@@ -1,6 +1,5 @@
 # Todo
 # Improve display of persistent scoreboard
-# Add a constant to keep track of grand winners?
 # Differentiating more between prompts and messages?
 # Add description of the winning move
 
@@ -8,6 +7,10 @@ require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
 VALID_CHOICES = %w(Rock R Paper P Scissors Sc Lizard L Spock Sp)
+GRAND_WINNERS = {
+  player: 0,
+  computer: 0
+}
 
 def messages(message)
   MESSAGES[message]
@@ -95,6 +98,14 @@ def display_results(player, computer)
   end
 end
 
+def grand_update(score)
+  if score[:player] == 3
+    GRAND_WINNERS[:player] += 1
+  else
+    GRAND_WINNERS[:computer] += 1
+  end
+end
+
 def grand_display(score)
   sleep 0.4
   if score[:player] == 3
@@ -102,6 +113,8 @@ def grand_display(score)
   else
     puts MESSAGES['grand_winner']['computer'][0]
   end
+  puts prompt('total_grand_winners', GRAND_WINNERS[:player],
+              GRAND_WINNERS[:computer])
 end
 
 def play_again(name)
@@ -134,6 +147,7 @@ loop do
     display_scoreboard(score)
     display_results(choice, computer_choice)
   end
+  grand_update(score)
   grand_display(score)
   play_again(name)
 end
