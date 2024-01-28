@@ -75,15 +75,13 @@ end
 
 def win_move_message(first, second)
   if win?(first, second)
-    line = messages('winning_moves_lines')[first].find do |sentence|
+    puts(messages('winning_moves_lines')[first].find do |sentence|
       sentence.include?(second)
-    end
-    puts line
+    end)
   elsif win?(second, first)
-    line = messages('winning_moves_lines')[second].find do |sentence|
+    puts(messages('winning_moves_lines')[second].find do |sentence|
       sentence.include?(first)
-    end
-    puts line
+    end)
   else
     starred_message('no_effect', first, second)
   end
