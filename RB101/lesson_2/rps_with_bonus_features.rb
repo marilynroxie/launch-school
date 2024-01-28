@@ -21,6 +21,11 @@ def prompt(key, *args)
   puts("=> #{message}")
 end
 
+def starred_message(key, *args)
+  message = messages(key) % args
+  puts("* #{message} *")
+end
+
 def rules
   messages('rules').each_line do |rule|
     sleep 0.4
@@ -82,19 +87,19 @@ def update_score(player, computer, score)
 end
 
 def display_scoreboard(score)
-  if score[:player] >= 1 || score[:computer] >= 1
-    prompt('scoreboard', score[:player],
-           score[:computer])
-  end
+  starred_message('line')
+  starred_message('scoreboard', score[:player],
+                  score[:computer])
+  starred_message('line')
 end
 
 def display_results(player, computer)
   if win?(player, computer)
-    prompt('you_won')
+    puts messages('you_won')
   elsif win?(computer, player)
-    prompt('computer_won')
+    puts messages('computer_won')
   else
-    prompt('tie')
+    puts messages('tie')
   end
 end
 
@@ -113,8 +118,10 @@ def grand_display(score)
   else
     puts MESSAGES['grand_winner']['computer'][0]
   end
-  puts prompt('total_grand_winners', GRAND_WINNERS[:player],
-              GRAND_WINNERS[:computer])
+  starred_message('line')
+  starred_message('total_grand_winners', GRAND_WINNERS[:player],
+                  GRAND_WINNERS[:computer])
+  starred_message('line')
 end
 
 def play_again(name)
@@ -125,7 +132,7 @@ def play_again(name)
       system 'clear'
       break
     elsif messages('options_neg').include?(answer)
-      prompt('thank_you', name)
+      starred_message('thank_you', name)
       exit
     else
       system 'clear'
@@ -135,7 +142,7 @@ def play_again(name)
 end
 
 name = get_name
-prompt('welcome', name)
+starred_message('welcome', name)
 
 loop do
   score = { player: 0, computer: 0 }

@@ -3,11 +3,16 @@ rules: |
 
   Rules:
 
-  Scissors cuts Paper...Paper covers Rock
-  Rock crushes Lizard...Lizard poisons Spock
-  Spock smashes Scissors...Scissors decapitates Lizard
-  Lizard eats Paper...Paper disproves Spock
-  Spock vaporizes Rock...Rock crushes Scissors
+  Scissors cuts Paper...
+  ...Paper covers Rock
+  Rock crushes Lizard...
+  ...Lizard poisons Spock
+  Spock smashes Scissors...
+  ...Scissors decapitates Lizard
+  Lizard eats Paper...
+  ...Paper disproves Spock
+  Spock vaporizes Rock...
+  Rock crushes Scissors...
 enter_name: "Please enter your name: "
 valid_name: "Please enter a valid name."
 welcome: "Welcome to Rock Paper Scissors Spock Lizard, %s!"
@@ -45,6 +50,7 @@ winning_moves:
     - Rock
     - Scissors
 display: "You chose %s. Computer chose %s."
+line: "------------------------------------------------------------"
 you_won: "You won!"
 computer_won: "Computer won!"
 tie: "It's a tie!"
