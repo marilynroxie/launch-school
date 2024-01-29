@@ -94,7 +94,9 @@ streak:
     The computer has been the Grand Winner %s times in a row!
 
 total_grand_winners: "Grand Scoreboard: Player: %s | Computer: %s"
-play_again: "Do you want to play again? (Y to play again, N to stop playing)"
+play_again: |+
+  Do you want to play again? (Y to play again, N to stop playing)
+
 options_pos:
   - "yes"
   - "y"

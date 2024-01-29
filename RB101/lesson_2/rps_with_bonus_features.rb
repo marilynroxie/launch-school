@@ -175,7 +175,6 @@ loop do
     update_score(choice, computer_choice, score)
     win_move_message(choice, computer_choice)
     display_scoreboard(score)
-    # win_move_message(choice, computer_choice)
     display_results(choice, computer_choice)
   end
   grand_update(score)
