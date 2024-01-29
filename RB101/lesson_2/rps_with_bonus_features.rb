@@ -69,6 +69,7 @@ end
 
 def display_choices(player, computer)
   puts messages('display', player, computer)
+  sleep 0.2
 end
 
 def win?(player, computer)
