@@ -50,8 +50,7 @@ def get_name
   system 'clear'
   loop do
     prompt('enter_name')
-    name = gets.chomp.strip.capitalize
-    system 'clear'
+    name = gets.chomp.strip.split.map(&:capitalize).join(' ')
     break name unless name.empty?
     prompt('valid_name')
   end
