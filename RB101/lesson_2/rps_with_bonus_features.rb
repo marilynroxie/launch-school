@@ -4,7 +4,9 @@ MESSAGES = YAML.load_file('rps_messages.yml')
 VALID_CHOICES = %w(Rock R Paper P Scissors Sc Lizard L Spock Sp)
 GRAND_WINNERS = {
   player: 0,
-  computer: 0
+  computer: 0,
+  player_streak: 0,
+  computer_streak: 0
 }
 
 def messages(message, *args)
@@ -114,8 +116,12 @@ end
 def grand_update(score)
   if score[:player] == 3
     GRAND_WINNERS[:player] += 1
+    GRAND_WINNERS[:player_streak] += 1
+    GRAND_WINNERS[:computer_streak] = 0
   else
     GRAND_WINNERS[:computer] += 1
+    GRAND_WINNERS[:computer_streak] += 1
+    GRAND_WINNERS[:player_streak] = 0
   end
 end
 
@@ -130,6 +136,16 @@ def grand_display(score)
   puts messages('total_grand_winners', GRAND_WINNERS[:player],
                 GRAND_WINNERS[:computer]).center(44)
   starred_message('line')
+end
+
+def streak_display
+  if GRAND_WINNERS[:player_streak] >= 2
+    puts "You've won #{GRAND_WINNERS[:player_streak]} times in a row!"
+  elsif GRAND_WINNERS[:computer_streak] >= 2
+    puts "The computer has won #{GRAND_WINNERS[:computer_streak]} times in a row!"
+  else
+    puts ' '
+  end
 end
 
 def play_again(name)
@@ -165,5 +181,6 @@ loop do
   end
   grand_update(score)
   grand_display(score)
+  streak_display
   play_again(name)
 end
