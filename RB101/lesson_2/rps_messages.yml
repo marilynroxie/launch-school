@@ -68,14 +68,16 @@ winning_moves_lines:
     - Spock vaporizes Rock
     - Spock smashes Scissors
 no_effect: "%s does nothing to %s!"
-display: "You chose %s. Computer chose %s."
-line: "---------------------------------------"
+display: |+
+  You chose %s. Computer chose %s.
+
+separator: "---------------------------------------"
 round_result:
   you_won: |+
-    You won!
+    You won this round!
 
   computer_won: |+
-    Computer won!
+    Computer won this round!
 
   tie: |+
     It's a tie!

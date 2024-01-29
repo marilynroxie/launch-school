@@ -77,12 +77,12 @@ end
 
 def win_move_message(player, computer)
   if win?(player, computer)
-    puts(messages('winning_moves_lines')[player].find do |sentence|
-      sentence.include?(computer)
+    puts(messages('winning_moves_lines')[player].find do |line|
+      line.include?(computer)
     end)
   elsif win?(computer, player)
-    puts(messages('winning_moves_lines')[computer].find do |sentence|
-      sentence.include?(player)
+    puts(messages('winning_moves_lines')[computer].find do |line|
+      line.include?(player)
     end)
   else
     puts messages('no_effect', player, computer)
@@ -98,9 +98,9 @@ def update_score(player, computer, score)
 end
 
 def display_scoreboard(score)
-  starred_message('line')
+  starred_message('separator')
   puts messages('scoreboard', score[:player], score[:computer]).center(44)
-  starred_message('line')
+  starred_message('separator')
 end
 
 def display_results(player, computer)
@@ -132,10 +132,10 @@ def grand_display(score)
   else
     puts messages('grand_winner')['computer']
   end
-  starred_message('line')
+  starred_message('separator')
   puts messages('total_grand_winners', GRAND_WINNERS[:player],
                 GRAND_WINNERS[:computer]).center(44)
-  starred_message('line')
+  starred_message('separator')
 end
 
 def streak_display
@@ -173,8 +173,9 @@ loop do
     computer_choice = computer_move
     display_choices(choice, computer_choice)
     update_score(choice, computer_choice, score)
-    display_scoreboard(score)
     win_move_message(choice, computer_choice)
+    display_scoreboard(score)
+    # win_move_message(choice, computer_choice)
     display_results(choice, computer_choice)
   end
   grand_update(score)
