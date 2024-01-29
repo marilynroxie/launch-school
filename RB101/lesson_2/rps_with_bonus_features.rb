@@ -1,13 +1,16 @@
 require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
+
 VALID_CHOICES = %w(Rock R Paper P Scissors Sc Lizard L Spock Sp)
+
 GRAND_WINNERS = {
   player: 0,
   computer: 0,
   player_streak: 0,
   computer_streak: 0
 }
+
 MOVES = {
   'R' => 'Rock',
   'P' => 'Paper',
@@ -15,6 +18,7 @@ MOVES = {
   'L' => 'Lizard',
   'Sp' => 'Spock'
 }
+
 WINNING_MOVES = {
   'Rock' => ['Scissors', 'Lizard'],
   'Paper' => ['Rock', 'Spock'],
