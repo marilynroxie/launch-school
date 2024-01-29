@@ -2,15 +2,6 @@ require 'yaml'
 
 MESSAGES = YAML.load_file('rps_messages.yml')
 
-VALID_CHOICES = %w(Rock R Paper P Scissors Sc Lizard L Spock Sp)
-
-GRAND_WINNERS = {
-  player: 0,
-  computer: 0,
-  player_streak: 0,
-  computer_streak: 0
-}
-
 MOVES = {
   'R' => 'Rock',
   'P' => 'Paper',
@@ -25,6 +16,13 @@ WINNING_MOVES = {
   'Scissors' => ['Paper', 'Lizard'],
   'Lizard' => ['Spock', 'Paper'],
   'Spock' => ['Scissors', 'Rock']
+}
+
+GRAND_WINNERS = {
+  player: 0,
+  computer: 0,
+  player_streak: 0,
+  computer_streak: 0
 }
 
 def messages(message, *args)
@@ -72,7 +70,7 @@ def set_choice
     system 'clear'
     if choice == 'Rules'
       rules
-    elsif VALID_CHOICES.include?(convert_move(choice))
+    elsif MOVES.key?(convert_move(choice)) || MOVES.value?(convert_move(choice))
       break
     else
       prompt('invalid_choice')
@@ -82,7 +80,7 @@ def set_choice
 end
 
 def computer_move
-  convert_move(VALID_CHOICES.sample)
+  convert_move(MOVES.values.sample)
 end
 
 def display_choices(player, computer)
@@ -90,8 +88,8 @@ def display_choices(player, computer)
   sleep 0.2
 end
 
-def win?(player, computer)
-  WINNING_MOVES[player].include?(computer)
+def win?(winner, loser)
+  WINNING_MOVES[winner].include?(loser)
 end
 
 def win_move_message(player, computer)
