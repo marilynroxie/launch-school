@@ -70,22 +70,27 @@ winning_moves_lines:
 no_effect: "%s does nothing to %s!"
 display: "You chose %s. Computer chose %s."
 line: "---------------------------------------"
-you_won: |+
-  You won!
+round_result:
+  you_won: |+
+    You won!
 
-computer_won: |+
-  Computer won!
+  computer_won: |+
+    Computer won!
 
-tie: |+
-  It's a tie!
+  tie: |+
+    It's a tie!
 
 scoreboard: "Match Scoreboard: Player: %s | Computer: %s"
 grand_winner:
   player: "You are the Grand Winner!"
   computer: "The computer is the Grand Winner!"
 streak:
-  player: "You've been the Grand Winner %s times in a row!"
-  computer: "The computer has been the Grand Winner %s times in a row!"
+  player: |+
+    You've been the Grand Winner %s times in a row!
+
+  computer: |+
+    The computer has been the Grand Winner %s times in a row!
+
 total_grand_winners: "Grand Scoreboard: Player: %s | Computer: %s"
 play_again: "Do you want to play again? (Y to play again, N to stop playing)"
 options_pos:

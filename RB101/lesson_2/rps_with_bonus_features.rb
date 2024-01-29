@@ -105,11 +105,11 @@ end
 
 def display_results(player, computer)
   if win?(player, computer)
-    puts messages('you_won')
+    puts(messages('round_result')['you_won'])
   elsif win?(computer, player)
-    puts messages('computer_won')
+    puts(messages('round_result')['computer_won'])
   else
-    puts messages('tie')
+    puts(messages('round_result')['tie'])
   end
 end
 
