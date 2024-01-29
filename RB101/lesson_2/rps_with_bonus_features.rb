@@ -50,7 +50,7 @@ def set_choice
 
   loop do
     prompt('selection')
-    choice = gets.chomp.capitalize
+    choice = gets.chomp.capitalize.strip
     system 'clear'
     if choice == 'Rules'
       rules
@@ -150,7 +150,7 @@ end
 def play_again(name)
   loop do
     prompt('play_again')
-    answer = gets.chomp.downcase
+    answer = gets.chomp.downcase.strip
     if messages('options_pos').include?(answer)
       system 'clear'
       break
