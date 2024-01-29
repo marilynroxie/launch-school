@@ -1,4 +1,4 @@
-rules: |
+rules: |+
   Rock Paper Scissors Spock Lizard
 
   Rules:
@@ -13,10 +13,11 @@ rules: |
   ...Paper disproves Spock
   Spock vaporizes Rock...
   Rock crushes Scissors...
+
 enter_name: "Please enter your name: "
 valid_name: "Please enter a valid name."
 welcome: "Welcome to Rock Paper Scissors Spock Lizard, %s!"
-selection: |
+selection: |+
   Choose Rock, Paper, Scissors, Spock, or Lizard.
 
   You may enter the full name of the move, or use abbreviations:
@@ -26,6 +27,7 @@ selection: |
   Type rules if you want to see a breakdown of winning moves.
 
   Whoever reaches three wins total in this match becomes the Grand Winner!
+
 invalid_choice: "That's not a valid choice."
 moves:
   R: Rock
@@ -68,9 +70,15 @@ winning_moves_lines:
 no_effect: "%s does nothing to %s!"
 display: "You chose %s. Computer chose %s."
 line: "---------------------------------------"
-you_won: "You won!"
-computer_won: "Computer won!"
-tie: "It's a tie!"
+you_won: |+
+  You won!
+
+computer_won: |+
+  Computer won!
+
+tie: |+
+  It's a tie!
+
 scoreboard: "Match Scoreboard: Player: %s | Computer: %s"
 grand_winner:
   player: "You are the Grand Winner!"
