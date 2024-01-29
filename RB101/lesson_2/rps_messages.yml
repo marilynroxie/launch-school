@@ -14,19 +14,22 @@ rules: |+
   Spock vaporizes Rock...
   Rock crushes Scissors...
 
+  Win three rounds in this match to become the Grand Winner!
+
 enter_name: "Please enter your name: "
 valid_name: "Please enter a valid name."
-welcome: "Welcome to Rock Paper Scissors Spock Lizard, %s!"
+welcome: |
+  Welcome to Rock Paper Scissors Spock Lizard, %s!
+
+  Whoever wins three rounds this match becomes the Grand Winner!
 selection: |+
   Choose Rock, Paper, Scissors, Spock, or Lizard.
 
-  You may enter the full name of the move, or use abbreviations:
+  Type the full name of the move, or use abbreviations:
 
   r for Rock, p for Paper, sc for Scissors, sp for Spock, and l for Lizard.
 
   Type rules if you want to see a breakdown of winning moves.
-
-  Whoever reaches three wins total in this match becomes the Grand Winner!
 
 invalid_choice: "That's not a valid choice."
 winning_moves_lines:
