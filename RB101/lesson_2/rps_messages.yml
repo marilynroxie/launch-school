@@ -29,28 +29,6 @@ selection: |+
   Whoever reaches three wins total in this match becomes the Grand Winner!
 
 invalid_choice: "That's not a valid choice."
-moves:
-  R: Rock
-  P: Paper
-  Sc: Scissors
-  L: Lizard
-  Sp: Spock
-winning_moves:
-  Rock:
-    - Scissors
-    - Lizard
-  Paper:
-    - Rock
-    - Spock
-  Scissors:
-    - Paper
-    - Lizard
-  Lizard:
-    - Paper
-    - Spock
-  Spock:
-    - Rock
-    - Scissors
 winning_moves_lines:
   Rock:
     - Rock crushes Scissors

@@ -8,6 +8,20 @@ GRAND_WINNERS = {
   player_streak: 0,
   computer_streak: 0
 }
+MOVES = {
+  'R' => 'Rock',
+  'P' => 'Paper',
+  'Sc' => 'Scissors',
+  'L' => 'Lizard',
+  'Sp' => 'Spock'
+}
+WINNING_MOVES = {
+  'Rock' => ['Scissors', 'Lizard'],
+  'Paper' => ['Rock', 'Spock'],
+  'Scissors' => ['Paper', 'Lizard'],
+  'Lizard' => ['Spock', 'Paper'],
+  'Spock' => ['Scissors', 'Rock']
+}
 
 def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
@@ -42,7 +56,7 @@ def get_name
 end
 
 def convert_move(move)
-  messages('moves').key?(move) ? messages('moves')[move] : move
+  (MOVES).key?(move) ? (MOVES)[move] : move
 end
 
 def set_choice
@@ -73,7 +87,7 @@ def display_choices(player, computer)
 end
 
 def win?(player, computer)
-  messages('winning_moves')[player].include?(computer)
+  WINNING_MOVES[player].include?(computer)
 end
 
 def win_move_message(player, computer)
