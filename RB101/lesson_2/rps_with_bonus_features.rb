@@ -128,9 +128,9 @@ end
 def grand_display(score)
   sleep 0.4
   if score[:player] == 3
-    puts messages('grand_winner')['player'][0]
+    puts messages('grand_winner')['player']
   else
-    puts messages('grand_winner')['computer'][0]
+    puts messages('grand_winner')['computer']
   end
   starred_message('line')
   puts messages('total_grand_winners', GRAND_WINNERS[:player],
@@ -140,11 +140,9 @@ end
 
 def streak_display
   if GRAND_WINNERS[:player_streak] >= 2
-    puts "You've won #{GRAND_WINNERS[:player_streak]} times in a row!"
+    puts(messages('streak')['player'] % GRAND_WINNERS[:player_streak])
   elsif GRAND_WINNERS[:computer_streak] >= 2
-    puts "The computer has won #{GRAND_WINNERS[:computer_streak]} times in a row!"
-  else
-    puts ' '
+    puts(messages('streak')['computer'] % GRAND_WINNERS[:computer_streak])
   end
 end
 
