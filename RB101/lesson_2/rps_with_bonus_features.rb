@@ -144,7 +144,7 @@ def match(score)
 end
 
 def grand_update(score)
-  if score[:player] == 3
+  if score[:player] == ROUNDS_TO_WIN
     GRAND_WINNERS[:player] += 1
     GRAND_WINNERS[:player_streak] += 1
     GRAND_WINNERS[:computer_streak] = 0
@@ -157,7 +157,7 @@ end
 
 def grand_display(score)
   sleep 0.4
-  if score[:player] == 3
+  if score[:player] == ROUNDS_TO_WIN
     puts messages('grand_winner')['player']
   else
     puts messages('grand_winner')['computer']
