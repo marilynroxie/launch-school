@@ -18,6 +18,8 @@ WINNING_MOVES = {
   'Spock' => ['Scissors', 'Rock']
 }
 
+ROUNDS_TO_WIN = 3
+
 GRAND_WINNERS = {
   player: 0,
   computer: 0,
@@ -184,7 +186,7 @@ starred_message('welcome', name)
 
 loop do
   score = { player: 0, computer: 0 }
-  until score[:player] == 3 || score[:computer] == 3
+  until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
     choice = set_choice
     computer_choice = computer_move
     display_choices(choice, computer_choice)
