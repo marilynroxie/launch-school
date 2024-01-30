@@ -131,6 +131,18 @@ def display_results(player, computer)
   end
 end
 
+def match(score)
+  until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
+    choice = set_choice
+    computer_choice = computer_move
+    display_choices(choice, computer_choice)
+    update_score(choice, computer_choice, score)
+    win_move_message(choice, computer_choice)
+    display_scoreboard(score)
+    display_results(choice, computer_choice)
+  end
+end
+
 def grand_update(score)
   if score[:player] == 3
     GRAND_WINNERS[:player] += 1
@@ -186,15 +198,7 @@ starred_message('welcome', name)
 
 loop do
   score = { player: 0, computer: 0 }
-  until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
-    choice = set_choice
-    computer_choice = computer_move
-    display_choices(choice, computer_choice)
-    update_score(choice, computer_choice, score)
-    win_move_message(choice, computer_choice)
-    display_scoreboard(score)
-    display_results(choice, computer_choice)
-  end
+  match(score)
   grand_update(score)
   grand_display(score)
   streak_display
