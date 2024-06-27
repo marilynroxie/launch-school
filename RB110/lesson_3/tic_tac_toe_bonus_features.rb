@@ -1,13 +1,10 @@
-# 1. Display the initial empty 3x3 board.
-# 2. Ask the user to mark a square.
-# 3. Computer marks a square.
-# 4. Display the updated board state.
-# 5. If winner, display winner.
-# 6. If board is full, display tie.
-# 7. If neither winner nor board is full, go to #2
-# 8. Play again?
-# 9. If yes, go to #1
-# 10. Good bye!
+# Todo
+# Implemented joinor - done
+# Keep score
+# Computer AI: Defense
+# Computer AI: Offense
+# Computer turn refinements
+# Improve the game loop with place_piece and alternate_player method
 
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
@@ -34,7 +31,10 @@ end
 
 def display_row(brd, row)
   puts "     |     |"
-  puts "  #{brd[(row * 3) + 1]}  |  #{brd[(row * 3) + 2]}  |  #{brd[(row * 3) + 3]}"
+  row_start = row * 3
+  puts "  #{brd[row_start + 1]}  |  " \
+       "#{brd[row_start + 2]}  |  " \
+       "#{brd[row_start + 3]}"
   puts "     |     |"
 end
 
