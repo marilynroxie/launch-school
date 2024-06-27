@@ -8,8 +8,8 @@
 # Improve the game loop with place_piece and alternate_player method
 # Keep track of which square is which number
 # Show scoreboard while playing
-# Allow entering names?
-# Implement ideas from RPS with bonus features
+# Allow entering names? - done
+# Implement ideas from RPS with bonus features - in progress
 
 require "yaml"
 
@@ -23,14 +23,14 @@ INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
 
-# ROUNDS_TO_WIN = 3
+ROUNDS_TO_WIN = 5
 
-# GRAND_WINNERS = {
-#   player: 0,
-#   computer: 0,
-#   player_streak: 0,
-#   computer_streak: 0
-# }
+GRAND_WINNERS = {
+  player: 0,
+  computer: 0,
+  player_streak: 0,
+  computer_streak: 0,
+}
 
 def messages(key, **args)
   message = MESSAGES[key.to_s]
@@ -88,7 +88,6 @@ end
 
 def display_board(board)
   system "clear"
-  messages("markers")
   display_markers
   puts ""
   display_line(board)
@@ -151,6 +150,71 @@ def someone_won?(board)
   !!detect_winner(board)
 end
 
+def update_score(player, computer, score)
+  if someone_won?(player, computer)
+    score[:player] += 1
+  elsif someone_won?(computer, player)
+    score[:computer] += 1
+  end
+end
+
+def display_scoreboard(score)
+  starred_message("separator")
+  puts messages("scoreboard", score[:player], score[:computer]).center(44)
+  starred_message("separator")
+end
+
+def match(score)
+  until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
+    update_score(choice, computer_choice, score)
+    display_scoreboard(score)
+    display_results(choice, computer_choice)
+  end
+end
+
+def grand_update(score)
+  if score[:player] == ROUNDS_TO_WIN
+    GRAND_WINNERS[:player] += 1
+    GRAND_WINNERS[:player_streak] += 1
+    GRAND_WINNERS[:computer_streak] = 0
+  else
+    GRAND_WINNERS[:computer] += 1
+    GRAND_WINNERS[:computer_streak] += 1
+    GRAND_WINNERS[:player_streak] = 0
+  end
+end
+
+def grand_display(score)
+  sleep 0.4
+  if score[:player] == ROUNDS_TO_WIN
+    puts messages("grand_winner")["player"]
+  else
+    puts messages("grand_winner")["computer"]
+  end
+  starred_message("separator")
+  puts messages("total_grand_winners", GRAND_WINNERS[:player],
+                GRAND_WINNERS[:computer]).center(44)
+  starred_message("separator")
+end
+
+def streak_display
+  if GRAND_WINNERS[:player_streak] >= 2
+    puts(messages("streak")["player"] % GRAND_WINNERS[:player_streak])
+  elsif GRAND_WINNERS[:computer_streak] >= 2
+    puts(messages("streak")["computer"] % GRAND_WINNERS[:computer_streak])
+  end
+end
+
+def display_results(win)
+  if win == "Player"
+    puts(messages("round_result")["you_won"])
+  elsif win == "Computer"
+    puts(messages("round_result")["computer_won"])
+  else
+    puts(messages("round_result")["draw"])
+  end
+end
+
 def play_again(name)
   loop do
     prompt("play_again")
@@ -176,6 +240,7 @@ loop do
   board = initialize_board
 
   loop do
+    score = { player: 0, computer: 0 }
     display_board(board)
     player_places_piece!(board)
     break if someone_won?(board) || board_full?(board)
@@ -185,59 +250,11 @@ loop do
   end
 
   display_board(board)
+  win = detect_winner(board)
+  display_results(win)
 
-  if someone_won?(board)
-    prompt "#{detect_winner(board)} won!"
-  else
-    prompt "It's a draw!"
-  end
   play_again(name)
 end
-
-# def match(score)
-#   until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
-#     choice = set_choice
-#     computer_choice = computer_move
-#     display_choices(choice, computer_choice)
-#     update_score(choice, computer_choice, score)
-#     win_move_message(choice, computer_choice)
-#     display_scoreboard(score)
-#     display_results(choice, computer_choice)
-#   end
-# end
-
-# def grand_update(score)
-#   if score[:player] == ROUNDS_TO_WIN
-#     GRAND_WINNERS[:player] += 1
-#     GRAND_WINNERS[:player_streak] += 1
-#     GRAND_WINNERS[:computer_streak] = 0
-#   else
-#     GRAND_WINNERS[:computer] += 1
-#     GRAND_WINNERS[:computer_streak] += 1
-#     GRAND_WINNERS[:player_streak] = 0
-#   end
-# end
-
-# def grand_display(score)
-#   sleep 0.4
-#   if score[:player] == ROUNDS_TO_WIN
-#     puts messages('grand_winner')['player']
-#   else
-#     puts messages('grand_winner')['computer']
-#   end
-#   starred_message('separator')
-#   puts messages('total_grand_winners', GRAND_WINNERS[:player],
-#                 GRAND_WINNERS[:computer]).center(44)
-#   starred_message('separator')
-# end
-
-# def streak_display
-#   if GRAND_WINNERS[:player_streak] >= 2
-#     puts(messages('streak')['player'] % GRAND_WINNERS[:player_streak])
-#   elsif GRAND_WINNERS[:computer_streak] >= 2
-#     puts(messages('streak')['computer'] % GRAND_WINNERS[:computer_streak])
-#   end
-# end
 
 # loop do
 #   score = { player: 0, computer: 0 }
