@@ -32,7 +32,7 @@ round_result:
 
 scoreboard: "Match Scoreboard: Player (X): %s | Computer (O): %s"
 grand_winner:
-  player: "You are the Grand Winner!"
+  player: "You won five rounds! You are the Grand Winner!"
   computer: "The computer is the Grand Winner!"
 streak:
   player: |+

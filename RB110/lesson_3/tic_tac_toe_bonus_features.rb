@@ -3,7 +3,7 @@
 # Allow entering names? - done
 # Extract messages to YAML? - in progress
 # Implement ideas from RPS with bonus features - in progress
-# Keep score - implemented regular scoreboard, need to add grand scoreboard implementation
+# Keep score - implemented regular scoreboard, added grand scoreboard implementation, need to fix loop
 # Computer AI: Defense
 # Computer AI: Offense
 # Computer turn refinements
@@ -180,7 +180,7 @@ def grand_update(score)
     GRAND_WINNERS[:player] += 1
     GRAND_WINNERS[:player_streak] += 1
     GRAND_WINNERS[:computer_streak] = 0
-  else
+  elsif score[:computer] == ROUNDS_TO_WIN
     GRAND_WINNERS[:computer] += 1
     GRAND_WINNERS[:computer_streak] += 1
     GRAND_WINNERS[:player_streak] = 0
@@ -189,9 +189,10 @@ end
 
 def grand_display(score)
   sleep 0.4
+  system "clear"
   if score[:player] == ROUNDS_TO_WIN
     puts messages("grand_winner")["player"]
-  else
+  elsif score[:computer] == ROUNDS_TO_WIN
     puts messages("grand_winner")["computer"]
   end
   starred_message("separator")
@@ -224,6 +225,7 @@ def play_again(name)
     answer = gets.chomp.strip.downcase
     if messages("options_pos").include?(answer)
       system "clear"
+
       break
     elsif messages("options_neg").include?(answer)
       starred_message("thank_you", name)
@@ -241,21 +243,17 @@ sleep 0.5
 score = { player: 0, computer: 0 }
 loop do
   board = initialize_board
-
   match(score, board)
 
   display_board(score, board)
   win = detect_winner(board)
   display_results(win)
+  sleep 0.7
   update_score(win, score)
-  play_again(name)
+  if score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
+    grand_update(score)
+    grand_display(score)
+    play_again(name)
+    score = { player: 0, computer: 0 }
+  end
 end
-
-# loop do
-#   score = { player: 0, computer: 0 }
-#   match(score)
-#   grand_update(score)
-#   grand_display(score)
-#   streak_display
-#   play_again(name)
-# end
