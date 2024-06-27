@@ -1,15 +1,15 @@
 # Todo
 # Implemented joinor - done
+# Allow entering names? - done
 # Extract messages to YAML? - in progress
-# Keep score
+# Implement ideas from RPS with bonus features - in progress
+# Keep score - implemented regular scoreboard, need to add grand scoreboard implementation
 # Computer AI: Defense
 # Computer AI: Offense
 # Computer turn refinements
 # Improve the game loop with place_piece and alternate_player method
 # Keep track of which square is which number
 # Show scoreboard while playing
-# Allow entering names? - done
-# Implement ideas from RPS with bonus features - in progress
 
 require "yaml"
 
@@ -32,9 +32,8 @@ GRAND_WINNERS = {
   computer_streak: 0,
 }
 
-def messages(key, **args)
-  message = MESSAGES[key.to_s]
-  args.empty? ? message : message % args
+def messages(message, *args)
+  args.empty? ? MESSAGES[message] : MESSAGES[message] % args
 end
 
 def prompt(key, **args)
@@ -86,8 +85,9 @@ def display_row(board, row)
   puts "     |     |"
 end
 
-def display_board(board)
+def display_board(score, board)
   system "clear"
+  display_scoreboard(score)
   display_markers
   puts ""
   display_line(board)
@@ -150,10 +150,10 @@ def someone_won?(board)
   !!detect_winner(board)
 end
 
-def update_score(player, computer, score)
-  if someone_won?(player, computer)
+def update_score(win, score)
+  if win == "Player"
     score[:player] += 1
-  elsif someone_won?(computer, player)
+  elsif win == "Computer"
     score[:computer] += 1
   end
 end
@@ -164,11 +164,14 @@ def display_scoreboard(score)
   starred_message("separator")
 end
 
-def match(score)
-  until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
-    update_score(choice, computer_choice, score)
-    display_scoreboard(score)
-    display_results(choice, computer_choice)
+def match(score, board)
+  loop do
+    display_board(score, board)
+    player_places_piece!(board)
+    break if someone_won?(board) || board_full?(board)
+
+    computer_places_piece!(board)
+    break if someone_won?(board) || board_full?(board)
   end
 end
 
@@ -235,24 +238,16 @@ end
 name = get_name
 starred_message("welcome", name)
 sleep 0.5
-
+score = { player: 0, computer: 0 }
 loop do
   board = initialize_board
 
-  loop do
-    score = { player: 0, computer: 0 }
-    display_board(board)
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
+  match(score, board)
 
-    computer_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
-  end
-
-  display_board(board)
+  display_board(score, board)
   win = detect_winner(board)
   display_results(win)
-
+  update_score(win, score)
   play_again(name)
 end
 

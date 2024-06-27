@@ -2,7 +2,13 @@ rules: |+
 
   Rules:
 
-  Win three rounds in this match to become the Grand Winner!
+  You're an X. Computer is an O.
+
+  Choose a square by entering a number from 1-9.
+
+  Three Xs or Os in a row wins the round.
+
+  Win five rounds in this match to become the Grand Winner!
 
 enter_name: "Please enter your name: "
 valid_name: "Please enter a valid name."
