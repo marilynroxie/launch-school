@@ -32,18 +32,48 @@ COMPUTER_MARKER = "O"
 #   computer_streak: 0
 # }
 
-def prompt(message)
-  puts "=> #{message}"
+def messages(key, **args)
+  message = MESSAGES[key.to_s]
+  args.empty? ? message : message % args
+end
+
+def prompt(key, **args)
+  message = messages(key)
+  message = format(message, **args) if args.any?
+  puts("=> #{message}")
+end
+
+def starred_message(key, *args)
+  message = messages(key)
+  message = message % args if args.any?
+  puts("* #{message} *")
+end
+
+def rules
+  messages("rules").each_line do |rule|
+    sleep 0.4
+    puts rule
+  end
+end
+
+def get_name
+  system "clear"
+  loop do
+    prompt("enter_name")
+    name = gets.chomp.strip.split.map(&:capitalize).join(" ")
+    break name unless name.empty?
+    prompt("valid_name")
+  end
 end
 
 def display_markers
-  puts "You're a #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER}"
+  puts messages("markers")
 end
 
 def display_line(board)
   3.times do |row|
     display_row(board, row)
-    puts "----------------" unless row == 2
+    puts messages("separator") unless row == 2
   end
 end
 
@@ -58,6 +88,7 @@ end
 
 def display_board(board)
   system "clear"
+  messages("markers")
   display_markers
   puts ""
   display_line(board)
@@ -87,10 +118,11 @@ end
 def player_places_piece!(board)
   square = ""
   loop do
-    prompt "Choose a square to place a piece: #{joinor(empty_squares(board))}"
+    prompt("choose_square", squares: joinor(empty_squares(board)))
+
     square = gets.chomp.to_i
     break if empty_squares(board).include?(square)
-    prompt "Sorry, that's not a valid choice."
+    prompt("invalid_choice")
   end
   board[square] = PLAYER_MARKER
 end
@@ -119,12 +151,32 @@ def someone_won?(board)
   !!detect_winner(board)
 end
 
+def play_again(name)
+  loop do
+    prompt("play_again")
+    answer = gets.chomp.strip.downcase
+    if messages("options_pos").include?(answer)
+      system "clear"
+      break
+    elsif messages("options_neg").include?(answer)
+      starred_message("thank_you", name)
+      exit
+    else
+      system "clear"
+      prompt("invalid_choice")
+    end
+  end
+end
+
+name = get_name
+starred_message("welcome", name)
+sleep 0.5
+
 loop do
   board = initialize_board
 
   loop do
     display_board(board)
-
     player_places_piece!(board)
     break if someone_won?(board) || board_full?(board)
 
@@ -137,12 +189,9 @@ loop do
   if someone_won?(board)
     prompt "#{detect_winner(board)} won!"
   else
-    prompt "It's a tie!"
+    prompt "It's a draw!"
   end
-
-  prompt "Play again? (y or n)"
-  answer = gets.chomp
-  break unless answer.downcase.start_with?("y")
+  play_again(name)
 end
 
 # def match(score)
@@ -190,26 +239,6 @@ end
 #   end
 # end
 
-# def play_again(name)
-#   loop do
-#     prompt('play_again')
-#     answer = gets.chomp.strip.downcase
-#     if messages('options_pos').include?(answer)
-#       system 'clear'
-#       break
-#     elsif messages('options_neg').include?(answer)
-#       starred_message('thank_you', name)
-#       exit
-#     else
-#       system 'clear'
-#       prompt('invalid_choice')
-#     end
-#   end
-# end
-
-# name = get_name
-# starred_message('welcome', name)
-
 # loop do
 #   score = { player: 0, computer: 0 }
 #   match(score)
@@ -218,5 +247,3 @@ end
 #   streak_display
 #   play_again(name)
 # end
-
-prompt "Thanks for playing Tic Tac Toe! Good bye!"
