@@ -1,15 +1,19 @@
 # Todo
 # Implemented joinor - done
+# Extract messages to YAML? - in progress
 # Keep score
 # Computer AI: Defense
 # Computer AI: Offense
 # Computer turn refinements
 # Improve the game loop with place_piece and alternate_player method
 # Keep track of which square is which number
-# Extract messages to YAML?
 # Show scoreboard while playing
 # Allow entering names?
 # Implement ideas from RPS with bonus features
+
+require "yaml"
+
+MESSAGES = YAML.load_file("tic_tac_toe_messages.yml")
 
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
