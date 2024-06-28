@@ -2,8 +2,8 @@
 # Implemented joinor - done
 # Allow entering names? - done
 # Extract messages to YAML? - in progress
-# Implement ideas from RPS with bonus features - in progress
-# Keep score - implemented regular scoreboard, added grand scoreboard implementation, need to fix loop
+# Implement ideas from RPS with bonus features - done
+# Keep score - is there a way to avoid having score at 0 twice?
 # Computer AI: Defense
 # Computer AI: Offense
 # Computer turn refinements
@@ -29,7 +29,7 @@ GRAND_WINNERS = {
   player: 0,
   computer: 0,
   player_streak: 0,
-  computer_streak: 0,
+  computer_streak: 0
 }
 
 def messages(message, *args)
@@ -253,6 +253,7 @@ loop do
   if score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
     grand_update(score)
     grand_display(score)
+    streak_display
     play_again(name)
     score = { player: 0, computer: 0 }
   end
