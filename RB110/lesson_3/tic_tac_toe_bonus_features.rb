@@ -4,13 +4,15 @@
 # Extract messages to YAML? - in progress
 # Implement ideas from RPS with bonus features - done
 # Show scoreboard while playing - done
-# Have score at 0 reset in only one place - likely need to update match method
+# Have score at 0 reset in only one place - done
+# Have initialize board in only one place?
 # Computer AI: Defense
 # Computer AI: Offense
 # Computer turn refinements
 # Improve the game loop with place_piece and alternate_player method
 # Keep track of which square is which number
 
+require "pry"
 require "yaml"
 
 MESSAGES = YAML.load_file("tic_tac_toe_messages.yml")
@@ -160,18 +162,31 @@ end
 
 def display_scoreboard(score)
   starred_message("separator")
-  puts messages("scoreboard", score[:player], score[:computer]).center(44)
+  puts messages("scoreboard", score[:player], score[:computer])
   starred_message("separator")
 end
 
-def match(score, board)
-  loop do
-    display_board(score, board)
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
+def score_sequence(score, board)
+  display_board(score, board)
+  win = detect_winner(board)
+  display_results(win)
+  sleep 0.5
+  update_score(win, score)
+end
 
-    computer_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
+def match(score, board)
+  until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
+    loop do
+      display_board(score, board)
+      player_places_piece!(board)
+
+      break if someone_won?(board) || board_full?(board)
+
+      computer_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
+    end
+    score_sequence(score, board)
+    board = initialize_board
   end
 end
 
@@ -240,21 +255,13 @@ end
 name = get_name
 starred_message("welcome", name)
 sleep 0.5
-score = { player: 0, computer: 0 }
+
 loop do
+  score = { player: 0, computer: 0 }
   board = initialize_board
   match(score, board)
-
-  display_board(score, board)
-  win = detect_winner(board)
-  display_results(win)
-  sleep 0.7
-  update_score(win, score)
-  if score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
-    grand_update(score)
-    grand_display(score)
-    streak_display
-    play_again(name)
-    score = { player: 0, computer: 0 }
-  end
+  grand_update(score)
+  grand_display(score)
+  streak_display
+  play_again(name)
 end
