@@ -3,13 +3,13 @@
 # Allow entering names? - done
 # Extract messages to YAML? - in progress
 # Implement ideas from RPS with bonus features - done
-# Keep score - is there a way to avoid having score at 0 twice?
+# Show scoreboard while playing - done
+# Have score at 0 reset in only one place - likely need to update match method
 # Computer AI: Defense
 # Computer AI: Offense
 # Computer turn refinements
 # Improve the game loop with place_piece and alternate_player method
 # Keep track of which square is which number
-# Show scoreboard while playing
 
 require "yaml"
 
