@@ -1,7 +1,7 @@
 # Todo
 # Implemented joinor - done
 # Allow entering names? - done
-# Extract messages to YAML? - in progress
+# Extract messages to YAML? - done
 # Implement ideas from RPS with bonus features - done
 # Show scoreboard while playing - done
 # Have score at 0 reset in only one place - done
@@ -79,12 +79,13 @@ def display_line(board)
 end
 
 def display_row(board, row)
-  puts "     |     |"
+  puts messages("column_line")
   row_start = row * 3
   puts "  #{board[row_start + 1]}  |  " \
        "#{board[row_start + 2]}  |  " \
        "#{board[row_start + 3]}"
-  puts "     |     |"
+
+  puts messages("column_line")
 end
 
 def display_board(score, board)

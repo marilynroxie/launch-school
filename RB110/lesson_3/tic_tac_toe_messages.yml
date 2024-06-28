@@ -16,6 +16,7 @@ valid_name: "Please enter a valid name."
 welcome: "Welcome to Tic Tac Toe, %s!"
 
 separator: "----------------"
+column_line: "     |     |"
 
 markers: "You're an X. Computer is an O."
 choose_square: "Choose a square to place a piece: %{squares}"
