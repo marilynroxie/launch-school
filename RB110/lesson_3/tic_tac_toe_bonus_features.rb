@@ -9,8 +9,23 @@
 # Have initialize board in only one place? - done
 # Computer AI: Defense - done
 # Computer AI: Offense - done
+
 # Computer turn refinements
+
+# a) Update the code so that it plays the offensive move first.
+
+# b) The AI for the computer should go like this
+# First, pick the winning move; then, defend;
+# then pick square # #5; then pick a random square.
+
+# c) Change the game so that the computer can move first
+# Ask the user before play begins who should go first.
+
+# d) Add another "who goes first" option
+# that lets the computer choose who goes first.
+
 # Improve the game loop with place_piece and alternate_player method
+
 # Keep track of which square is which number
 
 require "yaml"
