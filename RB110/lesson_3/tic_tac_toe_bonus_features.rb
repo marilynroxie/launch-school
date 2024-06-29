@@ -7,8 +7,8 @@
 # Have score at 0 reset in only one place - done
 # Add optional display of the rules - done
 # Have initialize board in only one place? - done
-# Computer AI: Defense
-# Computer AI: Offense
+# Computer AI: Defense - done
+# Computer AI: Offense - done
 # Computer turn refinements
 # Improve the game loop with place_piece and alternate_player method
 # Keep track of which square is which number
@@ -135,17 +135,25 @@ def player_places_piece!(board)
   board[square] = PLAYER_MARKER
 end
 
-def find_at_risk_square(line, board)
-  if board.values_at(*line).count(PLAYER_MARKER) == 2
+def find_at_risk_square(line, board, marker)
+  if board.values_at(*line).count(marker) == 2
     board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
   end
 end
 
 def computer_places_piece!(brd)
   square = nil
+
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd)
+    square = find_at_risk_square(line, brd, PLAYER_MARKER)
     break if square
+  end
+
+  if !square
+    WINNING_LINES.each do |line|
+      square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+      break if square
+    end
   end
 
   if !square
