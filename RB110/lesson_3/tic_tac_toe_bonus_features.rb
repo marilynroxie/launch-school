@@ -13,10 +13,11 @@
 # Computer turn refinements
 
 # a) Update the code so that it plays the offensive move first.
+# - done
 
 # b) The AI for the computer should go like this
 # First, pick the winning move; then, defend;
-# then pick square # #5; then pick a random square.
+# then pick square # #5; then pick a random square. - done
 
 # c) Change the game so that the computer can move first
 # Ask the user before play begins who should go first.
@@ -27,6 +28,8 @@
 # Improve the game loop with place_piece and alternate_player method
 
 # Keep track of which square is which number
+
+# Fix rubocop for computer_places_piece!
 
 require "yaml"
 
@@ -160,20 +163,22 @@ def computer_places_piece!(brd)
   square = nil
 
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd, PLAYER_MARKER)
+    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
     break if square
   end
 
   if !square
     WINNING_LINES.each do |line|
-      square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+      square = find_at_risk_square(line, brd, PLAYER_MARKER)
       break if square
     end
   end
 
-  if !square
-    square = empty_squares(brd).sample
+  if !square && brd[5] == INITIAL_MARKER
+    square = 5
   end
+
+  square = empty_squares(brd).sample if !square
 
   brd[square] = COMPUTER_MARKER
 end
