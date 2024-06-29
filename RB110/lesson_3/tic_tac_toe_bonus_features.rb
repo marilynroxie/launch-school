@@ -6,7 +6,7 @@
 # Show scoreboard while playing - done
 # Have score at 0 reset in only one place - done
 # Add optional display of the rules - done
-# Have initialize board in only one place?
+# Have initialize board in only one place? - done
 # Computer AI: Defense
 # Computer AI: Offense
 # Computer turn refinements
@@ -173,6 +173,16 @@ def display_scoreboard(score)
   starred_message("separator")
 end
 
+def round(score, board)
+  loop do
+    display_board(score, board)
+    player_places_piece!(board)
+    break if someone_won?(board) || board_full?(board)
+    computer_places_piece!(board)
+    break if someone_won?(board) || board_full?(board)
+  end
+end
+
 def score_sequence(score, board)
   display_board(score, board)
   win = detect_winner(board)
@@ -181,19 +191,11 @@ def score_sequence(score, board)
   update_score(win, score)
 end
 
-def match(score, board)
+def match(score)
   until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
-    loop do
-      display_board(score, board)
-      player_places_piece!(board)
-
-      break if someone_won?(board) || board_full?(board)
-
-      computer_places_piece!(board)
-      break if someone_won?(board) || board_full?(board)
-    end
-    score_sequence(score, board)
     board = initialize_board
+    round(score, board)
+    score_sequence(score, board)
   end
 end
 
@@ -219,7 +221,7 @@ def grand_display(score)
   end
   starred_message("separator")
   puts messages("total_grand_winners", GRAND_WINNERS[:player],
-                GRAND_WINNERS[:computer]).center(44)
+                GRAND_WINNERS[:computer])
   starred_message("separator")
 end
 
@@ -265,8 +267,7 @@ sleep 0.5
 
 loop do
   score = { player: 0, computer: 0 }
-  board = initialize_board
-  match(score, board)
+  match(score)
   grand_update(score)
   grand_display(score)
   streak_display
