@@ -135,9 +135,24 @@ def player_places_piece!(board)
   board[square] = PLAYER_MARKER
 end
 
-def computer_places_piece!(board)
-  square = empty_squares(board).sample
-  board[square] = COMPUTER_MARKER
+def find_at_risk_square(line, board)
+  if board.values_at(*line).count(PLAYER_MARKER) == 2
+    board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
+  end
+end
+
+def computer_places_piece!(brd)
+  square = nil
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd)
+    break if square
+  end
+
+  if !square
+    square = empty_squares(brd).sample
+  end
+
+  brd[square] = COMPUTER_MARKER
 end
 
 def board_full?(board)
