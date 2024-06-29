@@ -19,7 +19,10 @@ separator: "----------------"
 column_line: "     |     |"
 
 markers: "You're an X. Computer is an O."
-choose_square: "Choose a square to place a piece: %{squares}"
+choose_square: |
+  Choose a square to place a piece: %{squares}
+
+  Type 'rules' to read the rules.
 invalid_choice: "Sorry, that's not a valid choice."
 round_result:
   you_won: |+

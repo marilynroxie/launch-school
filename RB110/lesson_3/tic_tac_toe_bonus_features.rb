@@ -5,6 +5,7 @@
 # Implement ideas from RPS with bonus features - done
 # Show scoreboard while playing - done
 # Have score at 0 reset in only one place - done
+# Add optional display of the rules - done
 # Have initialize board in only one place?
 # Computer AI: Defense
 # Computer AI: Offense
@@ -12,7 +13,6 @@
 # Improve the game loop with place_piece and alternate_player method
 # Keep track of which square is which number
 
-require "pry"
 require "yaml"
 
 MESSAGES = YAML.load_file("tic_tac_toe_messages.yml")
@@ -50,7 +50,7 @@ def starred_message(key, *args)
   puts("* #{message} *")
 end
 
-def rules
+def display_rules
   messages("rules").each_line do |rule|
     sleep 0.4
     puts rule
@@ -122,9 +122,15 @@ def player_places_piece!(board)
   loop do
     prompt("choose_square", squares: joinor(empty_squares(board)))
 
-    square = gets.chomp.to_i
-    break if empty_squares(board).include?(square)
-    prompt("invalid_choice")
+    input = gets.chomp
+    if input.downcase == "rules"
+      display_rules
+    elsif empty_squares(board).include?(input.to_i)
+      square = input.to_i
+      break
+    else
+      prompt("invalid_choice")
+    end
   end
   board[square] = PLAYER_MARKER
 end
