@@ -125,6 +125,22 @@ def empty_squares(board)
   board.keys.select { |num| board[num] == INITIAL_MARKER }
 end
 
+def turn_order
+  input = nil
+  loop do
+    messages("who_goes_first").each_line do |turn|
+      sleep 0.3
+      puts turn
+    end
+    input = gets.chomp.downcase
+    break if ["player", "computer", "random"].include?(input)
+    puts messages("invalid_choice")
+    sleep 0.5
+    system "clear"
+  end
+  input
+end
+
 def joinor(arr, delimiter = ", ", word = "or")
   case arr.size
   when 0 then ""
@@ -159,28 +175,28 @@ def find_at_risk_square(line, board, marker)
   end
 end
 
-def computer_places_piece!(brd)
+def computer_places_piece!(board)
   square = nil
 
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+    square = find_at_risk_square(line, board, COMPUTER_MARKER)
     break if square
   end
 
   if !square
     WINNING_LINES.each do |line|
-      square = find_at_risk_square(line, brd, PLAYER_MARKER)
+      square = find_at_risk_square(line, board, PLAYER_MARKER)
       break if square
     end
   end
 
-  if !square && brd[5] == INITIAL_MARKER
+  if !square && board[5] == INITIAL_MARKER
     square = 5
   end
 
-  square = empty_squares(brd).sample if !square
+  square = empty_squares(board).sample if !square
 
-  brd[square] = COMPUTER_MARKER
+  board[square] = COMPUTER_MARKER
 end
 
 def board_full?(board)
@@ -234,7 +250,7 @@ def score_sequence(score, board)
   update_score(win, score)
 end
 
-def match(score)
+def match(_turn, score)
   until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
     board = initialize_board
     round(score, board)
@@ -309,8 +325,9 @@ starred_message("welcome", name)
 sleep 0.5
 
 loop do
+  turn = turn_order
   score = { player: 0, computer: 0 }
-  match(score)
+  match(turn, score)
   grand_update(score)
   grand_display(score)
   streak_display

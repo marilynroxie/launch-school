@@ -1,3 +1,23 @@
+enter_name: "Please enter your name: "
+valid_name: "Please enter a valid name."
+
+welcome: "Welcome to Tic Tac Toe, %s!"
+
+markers: "You're an X. Computer is an O."
+
+who_goes_first: |+
+
+  Who goes first? Type one of the options below:
+
+  Player
+
+  Computer
+
+  Random
+
+separator: "----------------"
+column_line: "     |     |"
+
 rules: |+
 
   Rules:
@@ -10,15 +30,6 @@ rules: |+
 
   Win five rounds in this match to become the Grand Winner!
 
-enter_name: "Please enter your name: "
-valid_name: "Please enter a valid name."
-
-welcome: "Welcome to Tic Tac Toe, %s!"
-
-separator: "----------------"
-column_line: "     |     |"
-
-markers: "You're an X. Computer is an O."
 choose_square: |
   Choose a square to place a piece: %{squares}
 
