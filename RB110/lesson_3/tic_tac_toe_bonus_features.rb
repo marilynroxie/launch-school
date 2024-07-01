@@ -138,6 +138,7 @@ def turn
     sleep 0.5
     system "clear"
   end
+  input = ["player", "computer"].sample if input == "random"
   input
 end
 
