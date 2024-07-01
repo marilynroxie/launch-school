@@ -20,10 +20,10 @@
 # then pick square # #5; then pick a random square. - done
 
 # c) Change the game so that the computer can move first
-# Ask the user before play begins who should go first.
+# Ask the user before play begins who should go first. - done
 
 # d) Add another "who goes first" option
-# that lets the computer choose who goes first.
+# that lets the computer choose who goes first. - done
 
 # Improve the game loop with place_piece and alternate_player method
 
@@ -125,7 +125,7 @@ def empty_squares(board)
   board.keys.select { |num| board[num] == INITIAL_MARKER }
 end
 
-def turn_order
+def turn
   input = nil
   loop do
     messages("who_goes_first").each_line do |turn|
@@ -232,13 +232,16 @@ def display_scoreboard(score)
   starred_message("separator")
 end
 
-def round(score, board)
+def round(turn, score, board)
   loop do
     display_board(score, board)
-    player_places_piece!(board)
+    if turn == "player"
+      player_places_piece!(board)
+    else
+      computer_places_piece!(board)
+    end
     break if someone_won?(board) || board_full?(board)
-    computer_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
+    turn = turn == "player" ? "computer" : "player"
   end
 end
 
@@ -250,10 +253,10 @@ def score_sequence(score, board)
   update_score(win, score)
 end
 
-def match(_turn, score)
+def match(turn, score)
   until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
     board = initialize_board
-    round(score, board)
+    round(turn, score, board)
     score_sequence(score, board)
   end
 end
@@ -325,7 +328,6 @@ starred_message("welcome", name)
 sleep 0.5
 
 loop do
-  turn = turn_order
   score = { player: 0, computer: 0 }
   match(turn, score)
   grand_update(score)
