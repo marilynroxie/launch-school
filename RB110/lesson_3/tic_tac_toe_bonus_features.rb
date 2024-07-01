@@ -168,7 +168,7 @@ def player_places_piece!(board)
       square = input.to_i
       break
     else
-      prompt("invalid_choice")
+      puts messages("invalid_choice")
     end
   end
   board[square] = PLAYER_MARKER
@@ -341,7 +341,7 @@ def play_again(name)
       exit
     else
       system "clear"
-      prompt("invalid_choice")
+      puts messages("invalid_choice")
     end
   end
 end
