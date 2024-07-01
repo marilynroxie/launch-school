@@ -1,38 +1,5 @@
 # Todo
-# Implemented joinor - done
-# Allow entering names? - done
-# Extract messages to YAML? - done
-# Implement ideas from RPS with bonus features - done
-# Show scoreboard while playing - done
-# Have score at 0 reset in only one place - done
-# Add optional display of the rules - done
-# Have initialize board in only one place? - done
-# Computer AI: Defense - done
-# Computer AI: Offense - done
-
-# Computer turn refinements
-
-# a) Update the code so that it plays the offensive move first.
-# - done
-
-# b) The AI for the computer should go like this
-# First, pick the winning move; then, defend;
-# then pick square # #5; then pick a random square. - done
-
-# c) Change the game so that the computer can move first
-# Ask the user before play begins who should go first. - done
-
-# d) Add another "who goes first" option
-# that lets the computer choose who goes first. - done
-
-# Improve the game loop with place_piece! and alternate_player method - done
-
-# Add a short time before computer_places_piece! - done
-
 # Keep track of which square is which number
-
-# Fix rubocop for computer_places_piece! - extract into helper methods - done
-
 # Clear screen appropriately if picking invalid move instead of causing pile up
 
 require "yaml"
