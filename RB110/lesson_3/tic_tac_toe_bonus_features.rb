@@ -84,6 +84,7 @@ def get_name
   loop do
     prompt("enter_name")
     name = gets.chomp.strip.split.map(&:capitalize).join(" ")
+    system "clear"
     break name unless name.empty?
     prompt("valid_name")
   end
@@ -348,7 +349,6 @@ end
 
 name = get_name
 starred_message("welcome", name)
-sleep 0.5
 
 loop do
   score = { player: 0, computer: 0 }
