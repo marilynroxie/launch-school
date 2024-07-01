@@ -27,9 +27,11 @@
 
 # Improve the game loop with place_piece! and alternate_player method - done
 
+# Add a short time before computer_places_piece! - done
+
 # Keep track of which square is which number
 
-# Fix rubocop for computer_places_piece!
+# Fix rubocop for computer_places_piece! - extract into helper methods
 
 # Clear screen appropriately if picking invalid move instead of causing pile up
 
@@ -179,6 +181,7 @@ def find_at_risk_square(line, board, marker)
 end
 
 def computer_places_piece!(board)
+  sleep 0.2
   square = nil
 
   WINNING_LINES.each do |line|
