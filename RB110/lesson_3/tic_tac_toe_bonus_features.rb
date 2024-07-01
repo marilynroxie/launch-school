@@ -31,7 +31,7 @@
 
 # Keep track of which square is which number
 
-# Fix rubocop for computer_places_piece! - extract into helper methods
+# Fix rubocop for computer_places_piece! - extract into helper methods - done
 
 # Clear screen appropriately if picking invalid move instead of causing pile up
 
@@ -180,29 +180,41 @@ def find_at_risk_square(line, board, marker)
   end
 end
 
-def computer_places_piece!(board)
-  sleep 0.2
-  square = nil
-
+def offensive_square(board)
   WINNING_LINES.each do |line|
     square = find_at_risk_square(line, board, COMPUTER_MARKER)
-    break if square
+    return square if square
   end
+  nil
+end
 
+def defensive_square(square, board)
   if !square
     WINNING_LINES.each do |line|
       square = find_at_risk_square(line, board, PLAYER_MARKER)
-      break if square
+      return square if square
     end
   end
+  nil
+end
 
-  if !square && board[5] == INITIAL_MARKER
-    square = 5
-  end
+def center_square(board)
+  5 if board[5] == INITIAL_MARKER
+end
 
-  square = empty_squares(board).sample if !square
+def random_square(board)
+  empty_squares(board).sample
+end
 
-  board[square] = COMPUTER_MARKER
+def computer_places_piece!(board)
+  sleep 0.2
+
+  square = offensive_square(board)
+  square ||= defensive_square(square, board)
+  square ||= center_square(board)
+  square ||= random_square(board)
+
+  board[square] = COMPUTER_MARKER if square
 end
 
 def board_full?(board)
