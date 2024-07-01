@@ -42,6 +42,7 @@ end
 def display_rules
   prompt("rules_question")
   input = gets.chomp
+  system "clear"
   if input.downcase == "rules"
     messages("rules").each_line do |rule|
       sleep 0.4

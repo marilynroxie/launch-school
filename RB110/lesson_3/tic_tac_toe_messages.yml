@@ -32,9 +32,7 @@ rules: |+
 
   Win five rounds in this match to become the Grand Winner!
 
-choose_square: |
-  Choose a square to place a piece: %{squares}
-
+choose_square: "Choose a square to place a piece: %{squares}"
 invalid_choice: "Sorry, that's not a valid choice."
 round_result:
   you_won: |+
