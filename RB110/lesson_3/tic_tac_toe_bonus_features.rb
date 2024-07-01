@@ -25,11 +25,13 @@
 # d) Add another "who goes first" option
 # that lets the computer choose who goes first. - done
 
-# Improve the game loop with place_piece and alternate_player method
+# Improve the game loop with place_piece! and alternate_player method - done
 
 # Keep track of which square is which number
 
 # Fix rubocop for computer_places_piece!
+
+# Clear screen appropriately if picking invalid move instead of causing pile up
 
 require "yaml"
 
@@ -233,7 +235,11 @@ def display_scoreboard(score)
   starred_message("separator")
 end
 
-def round(turn, score, board)
+def alternate_player(turn)
+  turn == "player" ? "computer" : "player"
+end
+
+def place_piece!(turn, score, board)
   loop do
     display_board(score, board)
     if turn == "player"
@@ -241,8 +247,9 @@ def round(turn, score, board)
     else
       computer_places_piece!(board)
     end
+
     break if someone_won?(board) || board_full?(board)
-    turn = turn == "player" ? "computer" : "player"
+    turn = alternate_player(turn)
   end
 end
 
@@ -257,7 +264,7 @@ end
 def match(turn, score)
   until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
     board = initialize_board
-    round(turn, score, board)
+    place_piece!(turn, score, board)
     score_sequence(score, board)
   end
 end
