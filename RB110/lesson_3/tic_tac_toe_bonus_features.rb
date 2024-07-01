@@ -40,9 +40,13 @@ def starred_message(key, *args)
 end
 
 def display_rules
-  messages("rules").each_line do |rule|
-    sleep 0.4
-    puts rule
+  prompt("rules_question")
+  input = gets.chomp
+  if input.downcase == "rules"
+    messages("rules").each_line do |rule|
+      sleep 0.4
+      puts rule
+    end
   end
 end
 
@@ -130,9 +134,7 @@ def player_places_piece!(board)
     prompt("choose_square", squares: joinor(empty_squares(board)))
 
     input = gets.chomp
-    if input.downcase == "rules"
-      display_rules
-    elsif empty_squares(board).include?(input.to_i)
+    if empty_squares(board).include?(input.to_i)
       square = input.to_i
       break
     else
@@ -316,6 +318,7 @@ end
 
 name = get_name
 starred_message("welcome", name)
+display_rules
 
 loop do
   score = { player: 0, computer: 0 }

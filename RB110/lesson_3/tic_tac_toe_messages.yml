@@ -18,6 +18,8 @@ who_goes_first: |+
 separator: "----------------"
 column_line: "     |     |"
 
+rules_question: "Type 'rules' to read the rules. Press any other key to skip rules and choose who goes first."
+
 rules: |+
 
   Rules:
@@ -33,7 +35,6 @@ rules: |+
 choose_square: |
   Choose a square to place a piece: %{squares}
 
-  Type 'rules' to read the rules.
 invalid_choice: "Sorry, that's not a valid choice."
 round_result:
   you_won: |+
