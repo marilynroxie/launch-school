@@ -57,7 +57,7 @@ def get_name
     name = gets.chomp.strip.split.map(&:capitalize).join(" ")
     system "clear"
     break name unless name.empty?
-    prompt("valid_name")
+    prompt("invalid_name")
   end
 end
 

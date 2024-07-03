@@ -1,12 +1,11 @@
 enter_name: "Please enter your name: "
-valid_name: "Please enter a valid name."
+invalid_name: "Please enter a valid name."
 
 welcome: "Welcome to Tic Tac Toe, %s!"
 
 markers: "You're an X. Computer is an O."
 
 who_goes_first: |+
-
   Who goes first? Type one of the options below:
 
   Player
