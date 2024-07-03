@@ -1,6 +1,5 @@
 # Todo
 # Keep track of which square is which number
-# Clear screen appropriately if picking invalid move instead of causing pile up
 
 require "yaml"
 
@@ -106,7 +105,7 @@ def turn
   input = nil
   loop do
     messages("who_goes_first").each_line do |turn|
-      sleep 0.3
+      sleep 0.2
       puts turn
     end
     input = gets.chomp.downcase
@@ -129,9 +128,10 @@ def joinor(arr, delimiter = ", ", word = "or")
   end
 end
 
-def player_places_piece!(board)
+def player_places_piece!(score, board)
   square = ""
   loop do
+    display_board(score, board)
     prompt("choose_square", squares: joinor(empty_squares(board)))
 
     input = gets.chomp
@@ -140,6 +140,7 @@ def player_places_piece!(board)
       break
     else
       puts messages("invalid_choice")
+      sleep 0.5
     end
   end
   board[square] = PLAYER_MARKER
@@ -223,9 +224,8 @@ end
 
 def place_piece!(turn, score, board)
   loop do
-    display_board(score, board)
     if turn == "player"
-      player_places_piece!(board)
+      player_places_piece!(score, board)
     else
       computer_places_piece!(board)
     end
