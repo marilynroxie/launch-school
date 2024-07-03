@@ -151,22 +151,20 @@ def find_at_risk_square(line, board, marker)
   end
 end
 
-def offensive_square(board)
+def pick_square(board, marker)
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, board, COMPUTER_MARKER)
+    square = find_at_risk_square(line, board, marker)
     return square if square
   end
   nil
 end
 
-def defensive_square(square, board)
-  if !square
-    WINNING_LINES.each do |line|
-      square = find_at_risk_square(line, board, PLAYER_MARKER)
-      return square if square
-    end
-  end
-  nil
+def offensive_square(board)
+  pick_square(board, COMPUTER_MARKER)
+end
+
+def defensive_square(board)
+  pick_square(board, PLAYER_MARKER)
 end
 
 def center_square(board)
@@ -179,12 +177,10 @@ end
 
 def computer_places_piece!(board)
   sleep 0.2
-
-  square = offensive_square(board)
-  square ||= defensive_square(square, board)
-  square ||= center_square(board)
-  square ||= random_square(board)
-
+  square = offensive_square(board) ||
+           defensive_square(board) ||
+           center_square(board) ||
+           random_square(board)
   board[square] = COMPUTER_MARKER if square
 end
 
