@@ -285,9 +285,10 @@ def streak_display
 end
 
 def display_results(win)
-  if win == "Player"
+  case win
+  when "Player"
     puts(messages("round_result")["you_won"])
-  elsif win == "Computer"
+  when "Computer"
     puts(messages("round_result")["computer_won"])
   else
     puts(messages("round_result")["draw"])
