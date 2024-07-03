@@ -185,6 +185,23 @@ def computer_places_piece!(board)
   board[square] = COMPUTER_MARKER if square
 end
 
+def alternate_player(turn)
+  turn == "player" ? "computer" : "player"
+end
+
+def place_piece!(turn, score, board)
+  loop do
+    if turn == "player"
+      player_places_piece!(score, board)
+    else
+      computer_places_piece!(board)
+    end
+
+    break if someone_won?(board) || board_full?(board)
+    turn = alternate_player(turn)
+  end
+end
+
 def board_full?(board)
   empty_squares(board).empty?
 end
@@ -218,29 +235,11 @@ def display_scoreboard(score)
   starred_message("separator")
 end
 
-def alternate_player(turn)
-  turn == "player" ? "computer" : "player"
-end
-
-def place_piece!(turn, score, board)
-  loop do
-    if turn == "player"
-      player_places_piece!(score, board)
-    else
-      computer_places_piece!(board)
-    end
-
-    break if someone_won?(board) || board_full?(board)
-    turn = alternate_player(turn)
-  end
-end
-
 def score_sequence(score, board)
   display_board(score, board)
-  win = detect_winner(board)
-  display_results(win)
+  display_results(detect_winner(board))
   sleep 0.5
-  update_score(win, score)
+  update_score(detect_winner(board), score)
 end
 
 def match(turn, score)
