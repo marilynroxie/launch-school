@@ -1,6 +1,3 @@
-# Todo
-# Keep track of which square is which number
-
 require "yaml"
 
 MESSAGES = YAML.load_file("tic_tac_toe_messages.yml")
@@ -9,7 +6,6 @@ WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
                 [[1, 5, 9], [3, 5, 7]] # diagonals
 
-INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
 
@@ -92,13 +88,12 @@ def display_board(score, board)
 end
 
 def initialize_board
-  new_board = {}
-  (1..9).each { |num| new_board[num] = INITIAL_MARKER }
-  new_board
+  { 1 => "1", 2 => "2", 3 => "3", 4 => "4", 5 => "5", 6 => "6",
+    7 => "7", 8 => "8", 9 => "9" }
 end
 
-def empty_squares(board)
-  board.keys.select { |num| board[num] == INITIAL_MARKER }
+def free_squares(board)
+  board.keys.select { |num| board[num] == (initialize_board[num]) }
 end
 
 def turn
@@ -132,10 +127,10 @@ def player_places_piece!(score, board)
   square = ""
   loop do
     display_board(score, board)
-    prompt("choose_square", squares: joinor(empty_squares(board)))
+    prompt("choose_square", squares: joinor(free_squares(board)))
 
     input = gets.chomp
-    if empty_squares(board).include?(input.to_i)
+    if free_squares(board).include?(input.to_i)
       square = input.to_i
       break
     else
@@ -147,8 +142,9 @@ def player_places_piece!(score, board)
 end
 
 def find_at_risk_square(line, board, marker)
+  initial_marker = initialize_board.values.first
   if board.values_at(*line).count(marker) == 2
-    board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
+    board.select { |k, v| line.include?(k) && v == initial_marker }.keys.first
   end
 end
 
@@ -169,15 +165,15 @@ def defensive_square(board)
 end
 
 def center_square(board)
-  5 if board[5] == INITIAL_MARKER
+  5 if board[5] == initialize_board[5]
 end
 
 def random_square(board)
-  empty_squares(board).sample
+  free_squares(board).sample
 end
 
 def computer_places_piece!(board)
-  sleep 0.2
+  sleep 0.3
   square = offensive_square(board) ||
            defensive_square(board) ||
            center_square(board) ||
@@ -203,7 +199,7 @@ def place_piece!(turn, score, board)
 end
 
 def board_full?(board)
-  empty_squares(board).empty?
+  free_squares(board).empty?
 end
 
 def detect_winner(board)
