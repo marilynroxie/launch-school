@@ -1,3 +1,6 @@
+# Todo
+# Fix logic for computer_places_piece! related methods
+
 require "yaml"
 
 MESSAGES = YAML.load_file("tic_tac_toe_messages.yml")
