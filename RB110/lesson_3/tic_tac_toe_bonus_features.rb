@@ -70,11 +70,9 @@ end
 
 def display_row(board, row)
   puts messages("column_line")
-  row_start = row * 3
-  puts "  #{board[row_start + 1]}  |  " \
-       "#{board[row_start + 2]}  |  " \
-       "#{board[row_start + 3]}"
-
+  puts "  #{board[(row * 3) + 1]}  |  " \
+       "#{board[(row * 3) + 2]}  |  " \
+       "#{board[(row * 3) + 3]}"
   puts messages("column_line")
 end
 
