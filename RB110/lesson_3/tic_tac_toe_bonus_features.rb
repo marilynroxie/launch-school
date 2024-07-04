@@ -1,6 +1,3 @@
-# Todo
-# Fix logic for computer_places_piece! related methods
-
 require "yaml"
 
 MESSAGES = YAML.load_file("tic_tac_toe_messages.yml")
@@ -145,9 +142,11 @@ def player_places_piece!(score, board)
 end
 
 def find_at_risk_square(line, board, marker)
-  initial_marker = initialize_board.values.first
+  initial_markers = initialize_board.values
   if board.values_at(*line).count(marker) == 2
-    board.select { |k, v| line.include?(k) && v == initial_marker }.keys.first
+    board.select do |k, v|
+      line.include?(k) && initial_markers.include?(v)
+    end.keys.first
   end
 end
 
