@@ -243,11 +243,13 @@ def score_sequence(score, board)
 end
 
 def match(turn, score)
+  sleep 0.3
   until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
     board = initialize_board
     place_piece!(turn, score, board)
     score_sequence(score, board)
   end
+  sleep 0.3
 end
 
 def grand_update(score)
@@ -265,6 +267,7 @@ end
 def grand_display(score)
   sleep 0.4
   system "clear"
+  display_scoreboard(score)
   if score[:player] == ROUNDS_TO_WIN
     puts messages("grand_winner")["player"]
   elsif score[:computer] == ROUNDS_TO_WIN
@@ -285,6 +288,7 @@ def streak_display
 end
 
 def display_results(win)
+  sleep 0.2
   case win
   when "Player"
     puts(messages("round_result")["you_won"])
