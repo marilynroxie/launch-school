@@ -142,10 +142,9 @@ def player_places_piece!(score, board)
 end
 
 def find_at_risk_square(line, board, marker)
-  initial_markers = initialize_board.values
   if board.values_at(*line).count(marker) == 2
     board.select do |k, v|
-      line.include?(k) && initial_markers.include?(v)
+      line.include?(k) && (initialize_board.values).include?(v)
     end.keys.first
   end
 end
