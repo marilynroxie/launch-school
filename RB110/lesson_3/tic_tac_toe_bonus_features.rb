@@ -15,7 +15,7 @@ GRAND_WINNERS = {
   player: 0,
   computer: 0,
   player_streak: 0,
-  computer_streak: 0
+  computer_streak: 0,
 }
 
 def messages(message, *args)
@@ -296,6 +296,7 @@ end
 
 def play_again(name)
   loop do
+    puts ""
     prompt("play_again")
     answer = gets.chomp.strip.downcase
     if messages("options_pos").include?(answer)
