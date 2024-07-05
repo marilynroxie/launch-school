@@ -15,7 +15,7 @@ GRAND_WINNERS = {
   player: 0,
   computer: 0,
   player_streak: 0,
-  computer_streak: 0,
+  computer_streak: 0
 }
 
 def messages(message, *args)
