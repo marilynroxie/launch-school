@@ -50,6 +50,27 @@ def distribute_cards(deck, player_cards, dealer_cards)
   return player_cards, dealer_cards
 end
 
+def hit_stay(deck, player_cards)
+  loop do
+    player_turn = nil
+    loop do
+      prompt("hit_or_stay")
+      player_turn = gets.chomp.downcase
+      break if ["h", "s"].include?(player_turn)
+      puts messages("invalid_hit_or_stay")
+    end
+
+    if player_turn == "h"
+      player_cards << deck.pop
+      puts messages("you_hit")
+      puts messages("updated_player", player_cards, total(player_cards))
+    end
+
+    break if player_turn == "s" || busted?(player_cards)
+  end
+  return deck, player_cards
+end
+
 def total(cards)
   values = cards.map { |card| card[1] }
 
@@ -126,24 +147,7 @@ loop do
   dealer_cards = []
 
   distribute_cards(deck, player_cards, dealer_cards)
-
-  loop do
-    player_turn = nil
-    loop do
-      prompt("hit_or_stay")
-      player_turn = gets.chomp.downcase
-      break if ["h", "s"].include?(player_turn)
-      puts messages("invalid_hit_or_stay")
-    end
-
-    if player_turn == "h"
-      player_cards << deck.pop
-      puts messages("you_hit")
-      puts messages("updated_player", player_cards, total(player_cards))
-    end
-
-    break if player_turn == "s" || busted?(player_cards)
-  end
+  hit_stay(deck, player_cards)
 
   if busted?(player_cards)
     display_result(dealer_cards, player_cards)
