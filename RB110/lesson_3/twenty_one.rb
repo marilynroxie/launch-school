@@ -1,14 +1,3 @@
-# Todo
-# 1. Initialize deck
-# 2. Deal cards to player and dealer
-# 3. Player turn: hit or stay
-#   - repeat until bust or "stay"
-# 4. If player bust, dealer wins.
-# 5. Dealer turn: hit or stay
-#   - repeat until total >= 17
-# 6. If dealer bust, player wins.
-# 7. Compare cards and declare winner.
-
 require "yaml"
 
 MESSAGES = YAML.load_file("twenty_one_messages.yml")
@@ -94,7 +83,7 @@ end
 
 def display_result(dealer_cards, player_cards)
   result = detect_result(dealer_cards, player_cards)
-
+  sleep 0.3
   case result
   when :player_busted
     puts(messages("round_result")["you_busted"])
@@ -165,6 +154,7 @@ loop do
 
     puts messages("dealer_hit")
     dealer_cards << deck.pop
+    sleep 0.3
     puts messages("updated_dealer_cards", dealer_cards)
   end
 
