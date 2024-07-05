@@ -39,4 +39,10 @@ round_result:
 
 separator: "-------------"
 play_again: "Do you want to play again? (Y to play again, N to stop playing)"
+options_pos:
+  - "yes"
+  - "y"
+options_neg:
+  - "no"
+  - "n"
 thank_you: "Thank you for playing Twenty-One, %s! Good bye!"

@@ -131,10 +131,20 @@ def display_result(dealer_cards, player_cards)
 end
 
 def play_again?
-  puts messages("separator")
-  prompt("play_again")
-  answer = gets.chomp
-  answer.downcase.start_with?("y")
+  loop do
+    puts ""
+    puts messages("separator")
+    prompt("play_again")
+    answer = gets.chomp.strip.downcase
+    if messages("options_neg").include?(answer)
+      return false
+    elsif messages("options_pos").include?(answer)
+      return true
+    else
+      system "clear"
+      puts messages("invalid_choice")
+    end
+  end
 end
 
 name = get_name
