@@ -39,6 +39,17 @@ def initialize_deck
   SUITS.product(VALUES).shuffle
 end
 
+def distribute_cards(deck, player_cards, dealer_cards)
+  2.times do
+    player_cards << deck.pop
+    dealer_cards << deck.pop
+  end
+  puts messages("initial_dealer", dealer_cards[0])
+  puts messages("initial_player", player_cards[0], player_cards[1],
+                total(player_cards))
+  return player_cards, dealer_cards
+end
+
 def total(cards)
   values = cards.map { |card| card[1] }
 
@@ -114,13 +125,7 @@ loop do
   player_cards = []
   dealer_cards = []
 
-  2.times do
-    player_cards << deck.pop
-    dealer_cards << deck.pop
-  end
-  puts messages("initial_dealer", dealer_cards[0])
-  puts messages("initial_player", player_cards[0], player_cards[1],
-                total(player_cards))
+  distribute_cards(deck, player_cards, dealer_cards)
 
   loop do
     player_turn = nil
