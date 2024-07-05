@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 # Todo
 # 1. Initialize deck
 # 2. Deal cards to player and dealer
@@ -13,14 +11,43 @@
 
 require "yaml"
 
+MESSAGES = YAML.load_file("twenty_one_messages.yml")
+
 SUITS = ["♠", "♥", "♦", "♣"]
 
 VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 
 GOAL_SCORE = 21
 
+def messages(message, *args)
+  args.empty? ? MESSAGES[message] : MESSAGES[message] % args
+end
+
 def prompt(msg)
   puts "=> #{msg}"
+end
+
+# def prompt(key, **args)
+#   message = messages(key)
+#   message = format(message, **args) if args.any?
+#   puts("=> #{message}")
+# end
+
+# def starred_message(key, *args)
+#   message = messages(key)
+#   message = message % args if args.any?
+#   puts("* #{message} *")
+# end
+
+def get_name
+  system "clear"
+  loop do
+    puts messages("enter_name")
+    name = gets.chomp.strip.split.map(&:capitalize).join(" ")
+    system "clear"
+    break name unless name.empty?
+    puts messages("invalid_name")
+  end
 end
 
 def initialize_deck
@@ -33,12 +60,12 @@ def total(cards)
   sum = 0
   values.each do |value|
     sum += if value == "A"
-        11
-      elsif value.to_i == 0
-        10
-      else
-        value.to_i
-      end
+             11
+           elsif value.to_i == 0
+             10
+           else
+             value.to_i
+           end
   end
 
   values.select { |value| value == "A" }.count.times do
@@ -74,28 +101,29 @@ def display_result(dealer_cards, player_cards)
 
   case result
   when :player_busted
-    prompt "You busted! Dealer wins!"
+    puts(messages("round_result")["you_busted"])
   when :dealer_busted
-    prompt "Dealer busted! You win!"
+    puts(messages("round_result")["dealer_busted"])
   when :player
-    prompt "You win!"
+    puts(messages("round_result")["you_win"])
   when :dealer
-    prompt "Dealer wins!"
+    puts(messages("round_result")["dealer_wins"])
   when :tie
-    prompt "It's a tie!"
+    puts(messages("round_result")["tie"])
   end
 end
 
 def play_again?
-  puts "-------------"
-  prompt "Do you want to play again? (y or n)"
+  puts messages("separator")
+  puts messages("play_again")
   answer = gets.chomp
   answer.downcase.start_with?("y")
 end
 
-loop do
-  prompt "Welcome to Twenty-One!"
+name = get_name
+puts messages("welcome", name)
 
+loop do
   deck = initialize_deck
   player_cards = []
   dealer_cards = []
@@ -112,10 +140,10 @@ loop do
   loop do
     player_turn = nil
     loop do
-      prompt "Would you like to (h)it or (s)tay?"
+      puts messages("hit_or_stay")
       player_turn = gets.chomp.downcase
       break if ["h", "s"].include?(player_turn)
-      prompt "Sorry, must enter 'h' or 's'."
+      puts messages("invalid_hit_or_stay")
     end
 
     if player_turn == "h"
@@ -153,14 +181,15 @@ loop do
     prompt "Dealer stays at #{total(dealer_cards)}"
   end
 
-  puts "=============="
+  puts messages("separator")
   prompt "Dealer has #{dealer_cards}, for a total of: #{total(dealer_cards)}"
   prompt "Player has #{player_cards}, for a total of: #{total(player_cards)}"
-  puts "=============="
+  puts messages("separator")
 
   display_result(dealer_cards, player_cards)
 
   break unless play_again?
 end
 
-prompt "Thank you for playing Twenty-One! Good bye!"
+puts messages("separator")
+puts messages("thank_you", name)

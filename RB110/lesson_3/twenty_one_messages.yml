@@ -1,0 +1,18 @@
+enter_name: "Please enter your name: "
+invalid_name: "Please enter a valid name."
+
+welcome: "Welcome to 21, %s!"
+
+hit_or_stay: "Would you like to (h)it or (s)tay?"
+invalid_hit_or_stay: "Sorry, must enter 'h' or 's'."
+
+round_result:
+  you_busted: "You busted! Dealer wins!"
+  dealer_busted: "Dealer busted! You win!"
+  you_win: "You win!"
+  dealer_wins: "Dealer wins!"
+  tie: "It's a tie!"
+
+separator: "-------------"
+play_again: "Do you want to play again? (Y to play again, N to stop playing)"
+thank_you: "Thank you for playing Twenty-One, %s! Good bye!"
