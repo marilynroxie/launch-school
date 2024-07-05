@@ -14,11 +14,7 @@ who_goes_first: |+
 
   Random
 
-separator: "----------------"
-column_line: "     |     |"
-
 rules_question: "Type 'rules' to read the rules. Press any other key to skip rules and choose who goes first."
-
 rules: |+
 
   Rules:
@@ -30,6 +26,9 @@ rules: |+
   Three Xs or Os in a row wins the round.
 
   Win five rounds in this match to become the Grand Winner!
+
+separator: "----------------"
+column_line: "     |     |"
 
 choose_square: "Choose a square to place a piece: %{squares}"
 invalid_choice: "Sorry, that's not a valid choice."
