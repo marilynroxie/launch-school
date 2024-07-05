@@ -139,7 +139,7 @@ def display_final_result(dealer_cards, player_cards)
   display_result(dealer_cards, player_cards)
 end
 
-def play_again?
+def play_again?(name)
   loop do
     puts ""
     puts messages("separator")
@@ -170,7 +170,7 @@ loop do
 
   if busted?(player_cards)
     display_result(dealer_cards, player_cards)
-    play_again? ? next : break
+    play_again?(name) ? next : break
   else
     puts messages("you_stayed", total(player_cards))
   end
@@ -189,14 +189,14 @@ loop do
   if busted?(dealer_cards)
     puts messages("dealer_total", total(dealer_cards))
     display_result(dealer_cards, player_cards)
-    play_again? ? next : break
+    play_again?(name) ? next : break
   else
     puts messages("dealer_stay", total(dealer_cards))
   end
 
   display_final_result(dealer_cards, player_cards)
 
-  break unless play_again?
+  break unless play_again?(name)
 end
 system "clear"
 puts messages("separator")
