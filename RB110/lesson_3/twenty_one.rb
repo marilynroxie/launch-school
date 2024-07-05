@@ -130,6 +130,15 @@ def display_result(dealer_cards, player_cards)
   end
 end
 
+def display_final_result(dealer_cards, player_cards)
+  puts messages("separator")
+  puts messages("final_dealer_total", dealer_cards, total(dealer_cards))
+  puts messages("final_player_total", player_cards, total(player_cards))
+  puts messages("separator")
+
+  display_result(dealer_cards, player_cards)
+end
+
 def play_again?
   loop do
     puts ""
@@ -185,12 +194,7 @@ loop do
     puts messages("dealer_stay", total(dealer_cards))
   end
 
-  puts messages("separator")
-  puts messages("final_dealer_total", dealer_cards, total(dealer_cards))
-  puts messages("final_player_total", player_cards, total(player_cards))
-  puts messages("separator")
-
-  display_result(dealer_cards, player_cards)
+  display_final_result(dealer_cards, player_cards)
 
   break unless play_again?
 end
