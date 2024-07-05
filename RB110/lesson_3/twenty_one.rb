@@ -23,30 +23,26 @@ def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
 end
 
-def prompt(msg)
-  puts "=> #{msg}"
+def prompt(key, **args)
+  message = messages(key)
+  message = format(message, **args) if args.any?
+  puts("=> #{message}")
 end
 
-# def prompt(key, **args)
-#   message = messages(key)
-#   message = format(message, **args) if args.any?
-#   puts("=> #{message}")
-# end
-
-# def starred_message(key, *args)
-#   message = messages(key)
-#   message = message % args if args.any?
-#   puts("* #{message} *")
-# end
+def starred_message(key, *args)
+  message = messages(key)
+  message = message % args if args.any?
+  puts("* #{message} *")
+end
 
 def get_name
   system "clear"
   loop do
-    puts messages("enter_name")
+    prompt("enter_name")
     name = gets.chomp.strip.split.map(&:capitalize).join(" ")
     system "clear"
     break name unless name.empty?
-    puts messages("invalid_name")
+    prompt("invalid_name")
   end
 end
 
@@ -115,12 +111,13 @@ end
 
 def play_again?
   puts messages("separator")
-  puts messages("play_again")
+  prompt("play_again")
   answer = gets.chomp
   answer.downcase.start_with?("y")
 end
 
 name = get_name
+system "clear"
 puts messages("welcome", name)
 
 loop do
@@ -132,15 +129,14 @@ loop do
     player_cards << deck.pop
     dealer_cards << deck.pop
   end
-
-  prompt "Dealer has #{dealer_cards[0]} and ?"
-  prompt "You have: #{player_cards[0]} and #{player_cards[1]}, " \
-         "for a total of #{total(player_cards)}."
+  puts messages("initial_dealer", dealer_cards[0])
+  puts messages("initial_player", player_cards[0], player_cards[1],
+                total(player_cards))
 
   loop do
     player_turn = nil
     loop do
-      puts messages("hit_or_stay")
+      prompt("hit_or_stay")
       player_turn = gets.chomp.downcase
       break if ["h", "s"].include?(player_turn)
       puts messages("invalid_hit_or_stay")
@@ -148,9 +144,8 @@ loop do
 
     if player_turn == "h"
       player_cards << deck.pop
-      prompt "You chose to hit!"
-      prompt "Your cards are now: #{player_cards}"
-      prompt "Your total is now: #{total(player_cards)}"
+      puts messages("you_hit")
+      puts messages("updated_player", player_cards, total(player_cards))
     end
 
     break if player_turn == "s" || busted?(player_cards)
@@ -160,36 +155,36 @@ loop do
     display_result(dealer_cards, player_cards)
     play_again? ? next : break
   else
-    prompt "You stayed at #{total(player_cards)}"
+    puts messages("you_stayed", total(player_cards))
   end
 
-  prompt "Dealer turn..."
+  puts messages("dealer_turn")
 
   loop do
     break if total(dealer_cards) >= 17
 
-    prompt "Dealer hits!"
+    puts messages("dealer_hit")
     dealer_cards << deck.pop
-    prompt "Dealer's cards are now: #{dealer_cards}"
+    puts messages("updated_dealer_cards", dealer_cards)
   end
 
   if busted?(dealer_cards)
-    prompt "Dealer total is now: #{total(dealer_cards)}"
+    puts messages("dealer_total", total(dealer_cards))
     display_result(dealer_cards, player_cards)
     play_again? ? next : break
   else
-    prompt "Dealer stays at #{total(dealer_cards)}"
+    puts messages("dealer_stay", total(dealer_cards))
   end
 
   puts messages("separator")
-  prompt "Dealer has #{dealer_cards}, for a total of: #{total(dealer_cards)}"
-  prompt "Player has #{player_cards}, for a total of: #{total(player_cards)}"
+  puts messages("final_dealer_total", dealer_cards, total(dealer_cards))
+  puts messages("final_player_total", player_cards, total(player_cards))
   puts messages("separator")
 
   display_result(dealer_cards, player_cards)
 
   break unless play_again?
 end
-
+system "clear"
 puts messages("separator")
 puts messages("thank_you", name)
