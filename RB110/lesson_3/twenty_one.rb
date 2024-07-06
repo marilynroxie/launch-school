@@ -71,6 +71,19 @@ def hit_stay(deck, player_cards)
   return deck, player_cards
 end
 
+def dealer_turn(deck, dealer_cards)
+  puts messages("dealer_turn")
+
+  loop do
+    break if total(dealer_cards) >= 17
+
+    puts messages("dealer_hit")
+    dealer_cards << deck.pop
+    sleep 0.3
+    puts messages("updated_dealer_cards", dealer_cards)
+  end
+end
+
 def total(cards)
   values = cards.map { |card| card[1] }
 
@@ -189,18 +202,7 @@ loop do
   distribute_cards(deck, player_cards, dealer_cards)
   hit_stay(deck, player_cards)
   break unless player_bust(player_cards, dealer_cards)
-
-  puts messages("dealer_turn")
-
-  loop do
-    break if total(dealer_cards) >= 17
-
-    puts messages("dealer_hit")
-    dealer_cards << deck.pop
-    sleep 0.3
-    puts messages("updated_dealer_cards", dealer_cards)
-  end
-
+  dealer_turn(deck, dealer_cards)
   break unless dealer_bust(dealer_cards, player_cards)
   display_final_result(dealer_cards, player_cards)
   break unless play_again?
