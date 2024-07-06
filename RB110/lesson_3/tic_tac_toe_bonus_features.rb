@@ -11,13 +11,6 @@ COMPUTER_MARKER = "O"
 
 ROUNDS_TO_WIN = 5
 
-# grand_winners = {
-#   player: 0,
-#   computer: 0,
-#   player_streak: 0,
-#   computer_streak: 0
-# }
-
 def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
 end
@@ -94,7 +87,7 @@ def free_squares(board)
   board.keys.select { |num| board[num] == (initialize_board[num]) }
 end
 
-def turn
+def choose_turn
   input = nil
   loop do
     messages("who_goes_first").each_line do |turn|
@@ -180,20 +173,20 @@ def computer_places_piece!(board)
   board[square] = COMPUTER_MARKER if square
 end
 
-def alternate_player(turn)
-  turn == "player" ? "computer" : "player"
+def alternate_player(choose_turn)
+  choose_turn == "player" ? "computer" : "player"
 end
 
-def place_piece!(turn, score, board)
+def place_piece!(choose_turn, score, board)
   loop do
-    if turn == "player"
+    if choose_turn == "player"
       player_places_piece!(score, board)
     else
       computer_places_piece!(board)
     end
 
     break if someone_won?(board) || board_full?(board)
-    turn = alternate_player(turn)
+    choose_turn = alternate_player(choose_turn)
   end
 end
 
@@ -237,11 +230,11 @@ def score_sequence(score, board)
   update_score(detect_winner(board), score)
 end
 
-def match(turn, score)
+def match(choose_turn, score)
   sleep 0.3
   until score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
     board = initialize_board
-    place_piece!(turn, score, board)
+    place_piece!(choose_turn, score, board)
     score_sequence(score, board)
   end
   sleep 0.3
@@ -325,7 +318,7 @@ grand_winners = {
 
 loop do
   score = { player: 0, computer: 0 }
-  match(turn, score)
+  match(choose_turn, score)
   grand_update(score, grand_winners)
   grand_display(score, grand_winners)
   streak_display(grand_winners)
