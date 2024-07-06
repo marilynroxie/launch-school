@@ -140,7 +140,7 @@ def find_at_risk_square(line, board, marker)
   end
 end
 
-def pick_square(board, marker)
+def at_risk_square(board, marker)
   WINNING_LINES.each do |line|
     square = find_at_risk_square(line, board, marker)
     return square if square
@@ -149,11 +149,11 @@ def pick_square(board, marker)
 end
 
 def offensive_square(board)
-  pick_square(board, COMPUTER_MARKER)
+  at_risk_square(board, COMPUTER_MARKER)
 end
 
 def defensive_square(board)
-  pick_square(board, PLAYER_MARKER)
+  at_risk_square(board, PLAYER_MARKER)
 end
 
 def center_square(board)
