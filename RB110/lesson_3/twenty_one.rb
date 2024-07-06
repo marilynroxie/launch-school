@@ -1,7 +1,3 @@
-# Todo
-# Game logic works correctly unless player busts
-# in which case it incorrectly keeps the player's prior total
-
 require "yaml"
 
 MESSAGES = YAML.load_file("twenty_one_messages.yml")
@@ -156,24 +152,24 @@ def display_result(dealer_cards, player_cards)
   end
 end
 
-def player_bust(player_cards, dealer_cards, name)
+def player_bust?(player_cards, dealer_cards)
   if busted?(player_cards)
     display_result(dealer_cards, player_cards)
-    play_again?(name)
+    true
   else
     puts messages("you_stayed", total(player_cards))
-    true
+    false
   end
 end
 
-def dealer_bust(dealer_cards, player_cards, name)
+def dealer_bust?(dealer_cards, player_cards)
   if busted?(dealer_cards)
     puts messages("dealer_total", total(dealer_cards))
     display_result(dealer_cards, player_cards)
-    play_again?(name)
+    true
   else
     puts messages("dealer_stay", total(dealer_cards))
-    true
+    false
   end
 end
 
@@ -221,9 +217,19 @@ loop do
 
   distribute_cards(deck, player_cards, dealer_cards)
   deck, player_cards = hit_stay(deck, player_cards)
-  break unless player_bust(player_cards, dealer_cards, name)
+
+  if player_bust?(player_cards, dealer_cards)
+    next if play_again?(name)
+    break
+  end
+
   dealer_turn(deck, dealer_cards)
-  break unless dealer_bust(dealer_cards, player_cards, name)
+
+  if dealer_bust?(dealer_cards, player_cards)
+    next if play_again?(name)
+    break
+  end
+
   display_final_result(dealer_cards, player_cards)
   break unless play_again?(name)
 end
