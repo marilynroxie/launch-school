@@ -96,16 +96,6 @@ def busted?(cards)
   total(cards) > GOAL_SCORE
 end
 
-def player_bust(player_cards, dealer_cards)
-  if busted?(player_cards)
-    display_result(dealer_cards, player_cards)
-    play_again?
-  else
-    puts messages("you_stayed", total(player_cards))
-    true
-  end
-end
-
 def detect_result(dealer_cards, player_cards)
   player_total = total(player_cards)
   dealer_total = total(dealer_cards)
@@ -137,6 +127,27 @@ def display_result(dealer_cards, player_cards)
     puts(messages("round_result")["dealer_wins"])
   when :tie
     puts(messages("round_result")["tie"])
+  end
+end
+
+def player_bust(player_cards, dealer_cards)
+  if busted?(player_cards)
+    display_result(dealer_cards, player_cards)
+    play_again?
+  else
+    puts messages("you_stayed", total(player_cards))
+    true
+  end
+end
+
+def dealer_bust(dealer_cards, player_cards)
+  if busted?(dealer_cards)
+    puts messages("dealer_total", total(dealer_cards))
+    display_result(dealer_cards, player_cards)
+    play_again?
+  else
+    puts messages("dealer_stay", total(dealer_cards))
+    true
   end
 end
 
@@ -190,16 +201,8 @@ loop do
     puts messages("updated_dealer_cards", dealer_cards)
   end
 
-  if busted?(dealer_cards)
-    puts messages("dealer_total", total(dealer_cards))
-    display_result(dealer_cards, player_cards)
-    play_again? ? next : break
-  else
-    puts messages("dealer_stay", total(dealer_cards))
-  end
-
+  break unless dealer_bust(dealer_cards, player_cards)
   display_final_result(dealer_cards, player_cards)
-
   break unless play_again?
 end
 system "clear"
