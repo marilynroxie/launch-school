@@ -1,3 +1,7 @@
+# Todo
+# Game logic works correctly unless player busts
+# in which case it incorrectly keeps the player's prior total
+
 require "yaml"
 
 MESSAGES = YAML.load_file("twenty_one_messages.yml")
