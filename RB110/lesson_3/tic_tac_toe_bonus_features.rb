@@ -165,7 +165,6 @@ def random_square(board)
 end
 
 def computer_places_piece!(board)
-  sleep 0.3
   square = offensive_square(board) ||
            defensive_square(board) ||
            center_square(board) ||
