@@ -37,6 +37,25 @@ round_result:
   dealer_wins: "Dealer wins!"
   tie: "It's a tie!"
 
+grand_winner:
+  player: |+
+
+    You won five rounds! You are the Grand Winner!
+
+  computer: |+
+
+    The computer is the Grand Winner!
+
+streak:
+  player: |+
+
+    You've been the Grand Winner %s times in a row!
+
+  computer: |+
+
+    The computer has been the Grand Winner %s times in a row!
+
+total_grand_winners: "Grand Scoreboard: Player (X): %s | Computer (O): %s"
 separator: "-------------"
 play_again: "Do you want to play again? (Y to play again, N to stop playing)"
 options_pos:

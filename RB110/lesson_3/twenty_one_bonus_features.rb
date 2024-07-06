@@ -4,7 +4,8 @@
 # End of round output
 # Grand total of rounds - 5
 # Add rules option
-# Constants for other score options
+# Constants for other winning score options
+# Add more scoreboard methods from TTT
 
 require "yaml"
 
@@ -17,6 +18,8 @@ VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 DEALER_STAYS = 17
 
 GOAL_SCORE = 21
+
+ROUNDS_TO_WIN = 5
 
 def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
@@ -190,6 +193,33 @@ def display_final_result(dealer_cards, player_cards)
   display_result(dealer_cards, player_cards)
 end
 
+def grand_update(score, grand_winners)
+  if score[:player] == ROUNDS_TO_WIN
+    grand_winners[:player] += 1
+    grand_winners[:player_streak] += 1
+    grand_winners[:computer_streak] = 0
+  elsif score[:computer] == ROUNDS_TO_WIN
+    grand_winners[:computer] += 1
+    grand_winners[:computer_streak] += 1
+    grand_winners[:player_streak] = 0
+  end
+end
+
+def grand_display(score, grand_winners)
+  sleep 0.4
+  system "clear"
+  display_scoreboard(score)
+  if score[:player] == ROUNDS_TO_WIN
+    puts messages("grand_winner")["player"]
+  elsif score[:computer] == ROUNDS_TO_WIN
+    puts messages("grand_winner")["computer"]
+  end
+  starred_message("separator")
+  puts messages("total_grand_winners", grand_winners[:player],
+                grand_winners[:computer])
+  starred_message("separator")
+end
+
 def farewell(name)
   system "clear"
   puts messages("separator")
@@ -217,8 +247,15 @@ end
 name = get_name
 system "clear"
 puts messages("welcome", name)
+grand_winners = {
+  player: 0,
+  computer: 0,
+  player_streak: 0,
+  computer_streak: 0
+}
 
 loop do
+  score = { player: 0, computer: 0 }
   deck = initialize_deck
   player_cards = []
   dealer_cards = []
@@ -239,5 +276,7 @@ loop do
   end
 
   display_final_result(dealer_cards, player_cards)
+  grand_update(score, grand_winners)
+  grand_display(score, grand_winners)
   break unless play_again?(name)
 end
