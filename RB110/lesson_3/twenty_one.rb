@@ -143,21 +143,21 @@ def display_result(dealer_cards, player_cards)
   end
 end
 
-def player_bust(player_cards, dealer_cards)
+def player_bust(player_cards, dealer_cards, name)
   if busted?(player_cards)
     display_result(dealer_cards, player_cards)
-    play_again?
+    play_again?(name)
   else
     puts messages("you_stayed", total(player_cards))
     true
   end
 end
 
-def dealer_bust(dealer_cards, player_cards)
+def dealer_bust(dealer_cards, player_cards, name)
   if busted?(dealer_cards)
     puts messages("dealer_total", total(dealer_cards))
     display_result(dealer_cards, player_cards)
-    play_again?
+    play_again?(name)
   else
     puts messages("dealer_stay", total(dealer_cards))
     true
@@ -173,13 +173,20 @@ def display_final_result(dealer_cards, player_cards)
   display_result(dealer_cards, player_cards)
 end
 
-def play_again?
+def farewell(name)
+  system "clear"
+  puts messages("separator")
+  puts messages("thank_you", name)
+end
+
+def play_again?(name)
   loop do
     puts ""
     puts messages("separator")
     prompt("play_again")
     answer = gets.chomp.strip.downcase
     if messages("options_neg").include?(answer)
+      farewell(name)
       return false
     elsif messages("options_pos").include?(answer)
       return true
@@ -201,12 +208,9 @@ loop do
 
   distribute_cards(deck, player_cards, dealer_cards)
   hit_stay(deck, player_cards)
-  break unless player_bust(player_cards, dealer_cards)
+  break unless player_bust(player_cards, dealer_cards, name)
   dealer_turn(deck, dealer_cards)
-  break unless dealer_bust(dealer_cards, player_cards)
+  break unless dealer_bust(dealer_cards, player_cards, name)
   display_final_result(dealer_cards, player_cards)
-  break unless play_again?
+  break unless play_again?(name)
 end
-system "clear"
-puts messages("separator")
-puts messages("thank_you", name)
