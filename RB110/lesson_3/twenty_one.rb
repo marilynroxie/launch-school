@@ -10,6 +10,8 @@ SUITS = ["♠", "♥", "♦", "♣"]
 
 VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 
+DEALER_STAYS = 17
+
 GOAL_SCORE = 21
 
 def messages(message, *args)
@@ -86,7 +88,7 @@ def dealer_turn(deck, dealer_cards)
   puts messages("dealer_turn")
 
   loop do
-    break if total(dealer_cards) >= 17
+    break if total(dealer_cards) >= DEALER_STAYS
 
     puts messages("dealer_hit")
     dealer_cards << deck.pop
