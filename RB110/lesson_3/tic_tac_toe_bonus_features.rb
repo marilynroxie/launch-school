@@ -11,12 +11,12 @@ COMPUTER_MARKER = "O"
 
 ROUNDS_TO_WIN = 5
 
-GRAND_WINNERS = {
-  player: 0,
-  computer: 0,
-  player_streak: 0,
-  computer_streak: 0
-}
+# grand_winners = {
+#   player: 0,
+#   computer: 0,
+#   player_streak: 0,
+#   computer_streak: 0
+# }
 
 def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
@@ -247,19 +247,19 @@ def match(turn, score)
   sleep 0.3
 end
 
-def grand_update(score)
+def grand_update(score, grand_winners)
   if score[:player] == ROUNDS_TO_WIN
-    GRAND_WINNERS[:player] += 1
-    GRAND_WINNERS[:player_streak] += 1
-    GRAND_WINNERS[:computer_streak] = 0
+    grand_winners[:player] += 1
+    grand_winners[:player_streak] += 1
+    grand_winners[:computer_streak] = 0
   elsif score[:computer] == ROUNDS_TO_WIN
-    GRAND_WINNERS[:computer] += 1
-    GRAND_WINNERS[:computer_streak] += 1
-    GRAND_WINNERS[:player_streak] = 0
+    grand_winners[:computer] += 1
+    grand_winners[:computer_streak] += 1
+    grand_winners[:player_streak] = 0
   end
 end
 
-def grand_display(score)
+def grand_display(score, grand_winners)
   sleep 0.4
   system "clear"
   display_scoreboard(score)
@@ -269,16 +269,16 @@ def grand_display(score)
     puts messages("grand_winner")["computer"]
   end
   starred_message("separator")
-  puts messages("total_grand_winners", GRAND_WINNERS[:player],
-                GRAND_WINNERS[:computer])
+  puts messages("total_grand_winners", grand_winners[:player],
+                grand_winners[:computer])
   starred_message("separator")
 end
 
-def streak_display
-  if GRAND_WINNERS[:player_streak] >= 2
-    puts(messages("streak")["player"] % GRAND_WINNERS[:player_streak])
-  elsif GRAND_WINNERS[:computer_streak] >= 2
-    puts(messages("streak")["computer"] % GRAND_WINNERS[:computer_streak])
+def streak_display(grand_winners)
+  if grand_winners[:player_streak] >= 2
+    puts(messages("streak")["player"] % grand_winners[:player_streak])
+  elsif grand_winners[:computer_streak] >= 2
+    puts(messages("streak")["computer"] % grand_winners[:computer_streak])
   end
 end
 
@@ -316,12 +316,18 @@ end
 name = get_name
 starred_message("welcome", name)
 display_rules
+grand_winners = {
+  player: 0,
+  computer: 0,
+  player_streak: 0,
+  computer_streak: 0
+}
 
 loop do
   score = { player: 0, computer: 0 }
   match(turn, score)
-  grand_update(score)
-  grand_display(score)
-  streak_display
+  grand_update(score, grand_winners)
+  grand_display(score, grand_winners)
+  streak_display(grand_winners)
   play_again(name)
 end
