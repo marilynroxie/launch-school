@@ -96,6 +96,16 @@ def busted?(cards)
   total(cards) > GOAL_SCORE
 end
 
+def player_bust(player_cards, dealer_cards)
+  if busted?(player_cards)
+    display_result(dealer_cards, player_cards)
+    play_again?
+  else
+    puts messages("you_stayed", total(player_cards))
+    true
+  end
+end
+
 def detect_result(dealer_cards, player_cards)
   player_total = total(player_cards)
   dealer_total = total(dealer_cards)
@@ -139,7 +149,7 @@ def display_final_result(dealer_cards, player_cards)
   display_result(dealer_cards, player_cards)
 end
 
-def play_again?(name)
+def play_again?
   loop do
     puts ""
     puts messages("separator")
@@ -167,13 +177,7 @@ loop do
 
   distribute_cards(deck, player_cards, dealer_cards)
   hit_stay(deck, player_cards)
-
-  if busted?(player_cards)
-    display_result(dealer_cards, player_cards)
-    play_again?(name) ? next : break
-  else
-    puts messages("you_stayed", total(player_cards))
-  end
+  break unless player_bust(player_cards, dealer_cards)
 
   puts messages("dealer_turn")
 
@@ -189,14 +193,14 @@ loop do
   if busted?(dealer_cards)
     puts messages("dealer_total", total(dealer_cards))
     display_result(dealer_cards, player_cards)
-    play_again?(name) ? next : break
+    play_again? ? next : break
   else
     puts messages("dealer_stay", total(dealer_cards))
   end
 
   display_final_result(dealer_cards, player_cards)
 
-  break unless play_again?(name)
+  break unless play_again?
 end
 system "clear"
 puts messages("separator")
