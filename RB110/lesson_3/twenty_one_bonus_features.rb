@@ -25,15 +25,13 @@ def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
 end
 
-def prompt(key, **args)
-  message = messages(key)
-  message = format(message, **args) if args.any?
+def prompt(key, *args)
+  message = messages(key, *args)
   puts("=> #{message}")
 end
 
 def starred_message(key, *args)
-  message = messages(key)
-  message = message % args if args.any?
+  message = messages(key, *args)
   puts("* #{message} *")
 end
 
@@ -191,6 +189,26 @@ def display_final_result(dealer_cards, player_cards)
   puts messages("separator")
 
   display_result(dealer_cards, player_cards)
+end
+
+def update_score(win, score)
+  if win == "Player"
+    score[:player] += 1
+  elsif win == "Computer"
+    score[:computer] += 1
+  end
+end
+
+def score_sequence(win, score)
+  display_result(dealer_cards, player_cards)
+  sleep 0.5
+  update_score(win, score)
+end
+
+def display_scoreboard(score)
+  starred_message("separator")
+  puts messages("scoreboard", score[:player], score[:computer])
+  starred_message("separator")
 end
 
 def grand_update(score, grand_winners)

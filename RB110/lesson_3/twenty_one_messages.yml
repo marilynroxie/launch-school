@@ -37,6 +37,7 @@ round_result:
   dealer_wins: "Dealer wins!"
   tie: "It's a tie!"
 
+scoreboard: "Match Scoreboard: Player (X): %s | Computer (O): %s"
 grand_winner:
   player: |+
 
