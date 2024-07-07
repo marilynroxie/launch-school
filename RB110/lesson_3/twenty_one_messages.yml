@@ -37,26 +37,26 @@ round_result:
   dealer_wins: "Dealer wins!"
   tie: "It's a tie!"
 
-scoreboard: "Match Scoreboard: Player (X): %s | Computer (O): %s"
+scoreboard: "Match Scoreboard: Player: %s | Dealer: %s"
 grand_winner:
   player: |+
 
     You won five rounds! You are the Grand Winner!
 
-  computer: |+
+  dealer: |+
 
-    The computer is the Grand Winner!
+    The dealer is the Grand Winner!
 
 streak:
   player: |+
 
     You've been the Grand Winner %s times in a row!
 
-  computer: |+
+  dealer: |+
 
-    The computer has been the Grand Winner %s times in a row!
+    The dealer has been the Grand Winner %s times in a row!
 
-total_grand_winners: "Grand Scoreboard: Player (X): %s | Computer (O): %s"
+total_grand_winners: "Grand Scoreboard: Player: %s | Dealer: %s"
 separator: "-------------"
 play_again: "Do you want to play again? (Y to play again, N to stop playing)"
 options_pos:

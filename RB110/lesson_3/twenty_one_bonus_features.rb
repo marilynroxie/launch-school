@@ -191,11 +191,22 @@ def display_final_result(dealer_cards, player_cards)
   display_result(dealer_cards, player_cards)
 end
 
+def win(detect_result)
+  case detect_result
+  when :player_busted, :dealer
+    "Dealer"
+  when :dealer_busted, :player
+    "Player"
+  else
+    nil
+  end
+end
+
 def update_score(win, score)
   if win == "Player"
     score[:player] += 1
-  elsif win == "Computer"
-    score[:computer] += 1
+  elsif win == "Dealer"
+    score[:dealer] += 1
   end
 end
 
@@ -203,11 +214,12 @@ def score_sequence(win, score)
   display_result(dealer_cards, player_cards)
   sleep 0.5
   update_score(win, score)
+  display_scoreboard(score)
 end
 
 def display_scoreboard(score)
   starred_message("separator")
-  puts messages("scoreboard", score[:player], score[:computer])
+  puts messages("scoreboard", score[:player], score[:dealer])
   starred_message("separator")
 end
 
@@ -215,10 +227,10 @@ def grand_update(score, grand_winners)
   if score[:player] == ROUNDS_TO_WIN
     grand_winners[:player] += 1
     grand_winners[:player_streak] += 1
-    grand_winners[:computer_streak] = 0
-  elsif score[:computer] == ROUNDS_TO_WIN
-    grand_winners[:computer] += 1
-    grand_winners[:computer_streak] += 1
+    grand_winners[:dealer_streak] = 0
+  elsif score[:dealer] == ROUNDS_TO_WIN
+    grand_winners[:dealer] += 1
+    grand_winners[:dealer_streak] += 1
     grand_winners[:player_streak] = 0
   end
 end
@@ -229,12 +241,12 @@ def grand_display(score, grand_winners)
   display_scoreboard(score)
   if score[:player] == ROUNDS_TO_WIN
     puts messages("grand_winner")["player"]
-  elsif score[:computer] == ROUNDS_TO_WIN
-    puts messages("grand_winner")["computer"]
+  elsif score[:dealer] == ROUNDS_TO_WIN
+    puts messages("grand_winner")["dealer"]
   end
   starred_message("separator")
   puts messages("total_grand_winners", grand_winners[:player],
-                grand_winners[:computer])
+                grand_winners[:dealer])
   starred_message("separator")
 end
 
@@ -267,13 +279,13 @@ system "clear"
 puts messages("welcome", name)
 grand_winners = {
   player: 0,
-  computer: 0,
+  dealer: 0,
   player_streak: 0,
-  computer_streak: 0
+  dealer_streak: 0
 }
 
 loop do
-  score = { player: 0, computer: 0 }
+  score = { player: 0, dealer: 0 }
   deck = initialize_deck
   player_cards = []
   dealer_cards = []
