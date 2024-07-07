@@ -15,15 +15,13 @@ def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
 end
 
-def prompt(key, **args)
-  message = messages(key)
-  message = format(message, **args) if args.any?
+def prompt(key, *args)
+  message = messages(key, *args)
   puts("=> #{message}")
 end
 
 def starred_message(key, *args)
-  message = messages(key)
-  message = message % args if args.any?
+  message = messages(key, *args)
   puts("* #{message} *")
 end
 
