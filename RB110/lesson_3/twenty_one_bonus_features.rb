@@ -99,17 +99,21 @@ def display_suit_text(suit)
   end
 end
 
-def distribute_cards(deck, player_cards, dealer_cards)
-  2.times do
-    player_cards << deck.pop
-    dealer_cards << deck.pop
-  end
+def display_initial_cards_data(player_cards, dealer_cards)
   puts messages("initial_dealer", dealer_cards[0])
   display_cards(player_cards)
   puts messages("initial_player",
                 player_cards[0][1], display_suit_text(player_cards[0][0]),
                 player_cards[1][1], display_suit_text(player_cards[1][0]),
                 total(player_cards))
+end
+
+def distribute_cards(deck, player_cards, dealer_cards)
+  2.times do
+    player_cards << deck.pop
+    dealer_cards << deck.pop
+  end
+  display_initial_cards_data(player_cards, dealer_cards)
   return player_cards, dealer_cards
 end
 
