@@ -293,8 +293,10 @@ end
 
 def display_final_result(dealer_cards, player_cards)
   puts messages("separator")
-  puts messages("final_dealer_total", dealer_cards, total(dealer_cards))
-  puts messages("final_player_total", player_cards, total(player_cards))
+  puts messages("final_dealer_total", format_cards(dealer_cards),
+                total(dealer_cards))
+  puts messages("final_player_total", format_cards(player_cards),
+                total(player_cards))
   puts messages("separator")
 end
 
