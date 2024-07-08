@@ -96,27 +96,15 @@ def display_cards(cards, show_hidden: false)
   end
 end
 
-# def display_cards(cards, show_hidden: false)
-#   card_lines = cards.map do |card|
-#     suit, value = card
-#     [
-#       "┌─────┐",
-#       "│#{value.ljust(2)}   │",
-#       "│  #{suit}  │",
-#       "│   #{value.rjust(2)}│",
-#       "└─────┘"
-#     ]
-#   end
-
-#   if show_hidden
-#     hidden_card_lines = messages("hidden_card").split("\n")
-#     card_lines << hidden_card_lines
-#   end
-
-#   5.times do |i|
-#     puts card_lines.map { |card| card[i] }.join("  ")
-#   end
-# end
+def display_value_text(value)
+  case value
+  when "A" then "Ace"
+  when "K" then "King"
+  when "Q" then "Queen"
+  when "J" then "Jack"
+  else value
+  end
+end
 
 def display_suit_text(suit)
   case suit
