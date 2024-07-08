@@ -205,12 +205,12 @@ def dealer_turn(deck, dealer_cards)
 end
 
 def add_suspense
-    sleep 0.5
-    puts "."
-    sleep 0.5
-    puts "."
-    sleep 0.5
-    puts "."
+  sleep 0.5
+  puts "."
+  sleep 0.5
+  puts "."
+  sleep 0.5
+  puts "."
 end
 
 def total(cards)
@@ -362,18 +362,20 @@ def farewell(name)
   puts messages("thank_you", name)
 end
 
-def continue?(name)
-  loop do
-    puts messages("continue")
-    answer = gets.chomp.strip.downcase
-    if messages("options_neg").include?(answer)
-      farewell(name)
-      exit
-    elsif messages("options_pos").include?(answer)
-      return true
-    else
-      system "clear"
-      puts messages("invalid_choice")
+def continue?(name, score)
+  if score[:player] < ROUNDS_TO_WIN && score[:dealer] < ROUNDS_TO_WIN
+    loop do
+      puts messages("continue")
+      answer = gets.chomp.strip.downcase
+      if messages("options_neg").include?(answer)
+        farewell(name)
+        exit
+      elsif messages("options_pos").include?(answer)
+        return true
+      else
+        system "clear"
+        puts messages("invalid_choice")
+      end
     end
   end
 end
@@ -423,7 +425,7 @@ loop do
     if player_bust?(player_cards, dealer_cards)
       update_score(score, dealer_cards, player_cards)
       display_final_result(dealer_cards, player_cards)
-      next if continue?(name)
+      next if continue?(name, score)
     end
 
     dealer_turn(deck, dealer_cards)
@@ -432,12 +434,12 @@ loop do
     if dealer_bust?(dealer_cards, player_cards)
       update_score(score, dealer_cards, player_cards)
       display_final_result(dealer_cards, player_cards)
-      next if continue?(name)
+      next if continue?(name, score)
     end
 
     display_final_result(dealer_cards, player_cards)
     score_sequence(score, dealer_cards, player_cards)
-    continue?(name) unless score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
+    continue?(name, score)
   end
 
   grand_update(score, grand_winners)
