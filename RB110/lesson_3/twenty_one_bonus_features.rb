@@ -34,6 +34,17 @@ def starred_message(key, *args)
   puts("* #{message} *")
 end
 
+def get_name
+  system "clear"
+  loop do
+    prompt("enter_name")
+    name = gets.chomp.strip.split.map(&:capitalize).join(" ")
+    system "clear"
+    break name unless name.empty?
+    prompt("invalid_name")
+  end
+end
+
 def display_rules
   prompt("rules_question")
   input = gets.chomp
@@ -43,17 +54,6 @@ def display_rules
       sleep 0.4
       puts rule
     end
-  end
-end
-
-def get_name
-  system "clear"
-  loop do
-    prompt("enter_name")
-    name = gets.chomp.strip.split.map(&:capitalize).join(" ")
-    system "clear"
-    break name unless name.empty?
-    prompt("invalid_name")
   end
 end
 
