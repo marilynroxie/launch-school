@@ -75,17 +75,31 @@ def player_hit(deck, player_cards)
   puts messages("updated_player", player_cards, total(player_cards))
 end
 
-def hit_stay(deck, player_cards)
+# def player_turn(deck, player_cards)
+#   loop do
+#     player_turn = player_decision
+
+#     if player_turn == "h"
+#       player_hit(deck, player_cards)
+#     end
+
+#     break if player_turn == "s" || busted?(player_cards)
+#   end
+#   [deck, player_cards]
+# end
+
+def player_turn(deck, player_cards)
   loop do
-    player_turn = player_decision
-
-    if player_turn == "h"
+    case player_decision
+    when "h"
       player_hit(deck, player_cards)
+      if busted?(player_cards)
+        return [deck, player_cards]
+      end
+    when "s"
+      return [deck, player_cards]
     end
-
-    break if player_turn == "s" || busted?(player_cards)
   end
-  [deck, player_cards]
 end
 
 def dealer_turn(deck, dealer_cards)
@@ -193,8 +207,6 @@ def display_final_result(dealer_cards, player_cards)
   puts messages("final_dealer_total", dealer_cards, total(dealer_cards))
   puts messages("final_player_total", player_cards, total(player_cards))
   puts messages("separator")
-
-  display_result(dealer_cards, player_cards)
 end
 
 def update_score(score, dealer_cards, player_cards)
@@ -291,7 +303,7 @@ loop do
     player_cards = []
     dealer_cards = []
     distribute_cards(deck, player_cards, dealer_cards)
-    deck, player_cards = hit_stay(deck, player_cards)
+    deck, player_cards = player_turn(deck, player_cards)
 
     if player_bust?(player_cards, dealer_cards)
       update_score(score, dealer_cards, player_cards)
@@ -305,8 +317,8 @@ loop do
       next
     end
 
-    score_sequence(score, dealer_cards, player_cards)
     display_final_result(dealer_cards, player_cards)
+    score_sequence(score, dealer_cards, player_cards)
   end
 
   grand_update(score, grand_winners)
