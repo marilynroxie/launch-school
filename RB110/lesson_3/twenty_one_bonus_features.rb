@@ -204,6 +204,15 @@ def dealer_turn(deck, dealer_cards)
   end
 end
 
+def add_suspense
+    sleep 0.5
+    puts "."
+    sleep 0.5
+    puts "."
+    sleep 0.5
+    puts "."
+end
+
 def total(cards)
   values = cards.map { |card| card[1] }
 
@@ -335,7 +344,7 @@ end
 def grand_display(score, grand_winners)
   sleep 0.4
   # system "clear"
-  display_scoreboard(score)
+  # display_scoreboard(score)
   if score[:player] == ROUNDS_TO_WIN
     puts messages("grand_winner")["player"]
   elsif score[:dealer] == ROUNDS_TO_WIN
@@ -418,6 +427,7 @@ loop do
     end
 
     dealer_turn(deck, dealer_cards)
+    add_suspense
 
     if dealer_bust?(dealer_cards, player_cards)
       update_score(score, dealer_cards, player_cards)
@@ -425,10 +435,9 @@ loop do
       next if continue?(name)
     end
 
-    update_score(score, dealer_cards, player_cards)
     display_final_result(dealer_cards, player_cards)
     score_sequence(score, dealer_cards, player_cards)
-    continue?(name)
+    continue?(name) unless score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
   end
 
   grand_update(score, grand_winners)
