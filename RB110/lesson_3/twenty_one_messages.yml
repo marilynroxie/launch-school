@@ -3,6 +3,8 @@ invalid_name: "Please enter a valid name."
 
 welcome: "Welcome to 21, %s!"
 
+round: "Round %s"
+
 initial_dealer: |+
 
   Dealer has %s and ?

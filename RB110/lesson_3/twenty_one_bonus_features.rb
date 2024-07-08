@@ -2,7 +2,7 @@
 # Calculating the total - use local variable instead
 # play_again? investigation
 # End of round output
-# Grand total of rounds - 5
+# Grand total of rounds:5 - done
 # Add rules option
 # Constants for other winning score options
 
@@ -281,8 +281,11 @@ grand_winners = {
 }
 
 loop do
+  round = 0
   score = { player: 0, dealer: 0 }
   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
+    round += 1
+    puts messages("round", round)
     display_scoreboard(score)
     deck = initialize_deck
     player_cards = []
