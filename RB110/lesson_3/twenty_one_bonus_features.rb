@@ -200,7 +200,7 @@ def dealer_turn(deck, dealer_cards)
     puts messages("dealer_hit")
     dealer_cards << deck.pop
     sleep 0.3
-    puts messages("updated_dealer_cards", dealer_cards)
+    puts messages("updated_dealer_cards", format_cards(dealer_cards))
   end
 end
 
