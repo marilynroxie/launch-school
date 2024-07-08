@@ -144,7 +144,7 @@ def player_decision
 end
 
 def format_card(card)
-  "#{card[1]} of #{display_suit_text(card[0])}"
+  "#{display_value_text(card[1])} of #{display_suit_text(card[0])}"
 end
 
 def format_two_cards(cards)
