@@ -5,6 +5,7 @@
 # Grand total of rounds:5 - done
 # Add rules option - done
 # Constants for other winning score options
+# Fix continue option to not execute if 5 rounds won is reached
 
 require "yaml"
 
@@ -301,7 +302,6 @@ end
 # end
 
 def display_final_result(dealer_cards, player_cards)
-  puts messages("separator")
   puts messages("final_dealer_hand")
   display_cards(dealer_cards)
   puts messages("final_dealer_total", format_cards(dealer_cards),
@@ -343,8 +343,6 @@ end
 
 def grand_display(score, grand_winners)
   sleep 0.4
-  # system "clear"
-  # display_scoreboard(score)
   if score[:player] == ROUNDS_TO_WIN
     puts messages("grand_winner")["player"]
   elsif score[:dealer] == ROUNDS_TO_WIN
@@ -362,40 +360,36 @@ def farewell(name)
   puts messages("thank_you", name)
 end
 
-def continue?(name, score)
-  if score[:player] < ROUNDS_TO_WIN && score[:dealer] < ROUNDS_TO_WIN
-    loop do
-      puts messages("continue")
-      answer = gets.chomp.strip.downcase
-      if messages("options_neg").include?(answer)
-        farewell(name)
-        exit
-      elsif messages("options_pos").include?(answer)
-        return true
-      else
-        system "clear"
-        puts messages("invalid_choice")
-      end
-    end
-  end
-end
-
-def play_again?(name)
+def get_answer
   loop do
-    puts ""
-    puts messages("separator")
-    prompt("play_again")
     answer = gets.chomp.strip.downcase
     if messages("options_neg").include?(answer)
-      farewell(name)
       return false
     elsif messages("options_pos").include?(answer)
       return true
     else
-      system "clear"
       puts messages("invalid_choice")
     end
   end
+end
+
+def continue?(name, score)
+  if score[:player] < ROUNDS_TO_WIN && score[:dealer] < ROUNDS_TO_WIN
+    prompt("continue")
+    answer = get_answer
+    unless answer
+      farewell(name)
+      exit
+    end
+    answer
+  end
+end
+
+def play_again?(name)
+  prompt("play_again")
+  answer = get_answer
+  farewell(name) unless answer
+  answer
 end
 
 name = get_name
@@ -437,8 +431,8 @@ loop do
       next if continue?(name, score)
     end
 
-    display_final_result(dealer_cards, player_cards)
     score_sequence(score, dealer_cards, player_cards)
+    display_final_result(dealer_cards, player_cards)
     continue?(name, score)
   end
 

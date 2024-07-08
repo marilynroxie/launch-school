@@ -122,7 +122,10 @@ streak:
 
 total_grand_winners: "Grand Scoreboard: Player: %s | Dealer: %s"
 separator: "-------------"
-play_again: "Do you want to play again? (Y to play again, N to stop playing)"
+play_again: |+
+
+  Do you want to play again? (Y to play again, N to stop playing)
+
 options_pos:
   - "yes"
   - "y"
