@@ -81,8 +81,8 @@ dealer_stay: Dealer stays at %s
 dealer_turn: "Dealer turn..."
 dealer_hit: "Dealer hits!"
 
-final_dealer_total: "Dealer has %s, for a total of: %s"
-final_player_total: "Player has %s, for a total of: %s"
+final_dealer_total: "Dealer had %s, for a total of: %s"
+final_player_total: "Player had %s, for a total of: %s"
 
 round_result:
   you_busted: "You busted! Dealer wins!"
