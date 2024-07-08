@@ -72,17 +72,19 @@ def initialize_deck
   SUITS.product(VALUES).shuffle
 end
 
+def generate_card_lines(card)
+  suit, value = card
+  [
+    "┌─────┐",
+    "│#{value.ljust(2)}   │",
+    "│  #{suit}  │",
+    "│   #{value.rjust(2)}│",
+    "└─────┘"
+  ]
+end
+
 def display_cards(cards, show_hidden: false)
-  card_lines = cards.map do |card|
-    suit, value = card
-    [
-      "┌─────┐",
-      "│#{value.ljust(2)}   │",
-      "│  #{suit}  │",
-      "│   #{value.rjust(2)}│",
-      "└─────┘"
-    ]
-  end
+  card_lines = cards.map { |card| generate_card_lines(card) }
 
   if show_hidden
     hidden_card_lines = messages("hidden_card").split("\n")
@@ -93,6 +95,28 @@ def display_cards(cards, show_hidden: false)
     puts card_lines.map { |card| card[i] }.join("  ")
   end
 end
+
+# def display_cards(cards, show_hidden: false)
+#   card_lines = cards.map do |card|
+#     suit, value = card
+#     [
+#       "┌─────┐",
+#       "│#{value.ljust(2)}   │",
+#       "│  #{suit}  │",
+#       "│   #{value.rjust(2)}│",
+#       "└─────┘"
+#     ]
+#   end
+
+#   if show_hidden
+#     hidden_card_lines = messages("hidden_card").split("\n")
+#     card_lines << hidden_card_lines
+#   end
+
+#   5.times do |i|
+#     puts card_lines.map { |card| card[i] }.join("  ")
+#   end
+# end
 
 def display_suit_text(suit)
   case suit
