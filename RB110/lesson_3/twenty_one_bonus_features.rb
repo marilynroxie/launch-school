@@ -72,12 +72,30 @@ def initialize_deck
   SUITS.product(VALUES).shuffle
 end
 
+def display_cards(cards)
+  card_lines = cards.map do |card|
+    suit, value = card
+    [
+      "┌─────┐",
+      "│#{value.ljust(2)}   │",
+      "│  #{suit}  │",
+      "│   #{value.rjust(2)}│",
+      "└─────┘"
+    ]
+  end
+
+  5.times do |i|
+    puts card_lines.map { |card| card[i] }.join("  ")
+  end
+end
+
 def distribute_cards(deck, player_cards, dealer_cards)
   2.times do
     player_cards << deck.pop
     dealer_cards << deck.pop
   end
   puts messages("initial_dealer", dealer_cards[0])
+  display_cards(player_cards)
   puts messages("initial_player", player_cards[0], player_cards[1],
                 total(player_cards))
   return player_cards, dealer_cards
@@ -96,6 +114,7 @@ def player_hit(deck, player_cards)
   player_cards << deck.pop
   puts messages("you_hit")
   puts messages("updated_player", player_cards, total(player_cards))
+  display_cards(player_cards)
 end
 
 def player_turn(deck, player_cards)
