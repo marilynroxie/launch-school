@@ -1,6 +1,6 @@
 # Todo
 # Calculating the total - use local variable instead
-# play_again? investigation
+# play_again? investigation - done
 # End of round output
 # Grand total of rounds:5 - done
 # Add rules option
@@ -74,19 +74,6 @@ def player_hit(deck, player_cards)
   puts messages("you_hit")
   puts messages("updated_player", player_cards, total(player_cards))
 end
-
-# def player_turn(deck, player_cards)
-#   loop do
-#     player_turn = player_decision
-
-#     if player_turn == "h"
-#       player_hit(deck, player_cards)
-#     end
-
-#     break if player_turn == "s" || busted?(player_cards)
-#   end
-#   [deck, player_cards]
-# end
 
 def player_turn(deck, player_cards)
   loop do
@@ -285,6 +272,7 @@ end
 name = get_name
 system "clear"
 puts messages("welcome", name)
+sleep 0.7
 grand_winners = {
   player: 0,
   dealer: 0,
@@ -295,6 +283,7 @@ grand_winners = {
 loop do
   round = 0
   score = { player: 0, dealer: 0 }
+  system "clear"
   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
     round += 1
     puts messages("round", round)
