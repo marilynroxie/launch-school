@@ -48,6 +48,13 @@ initial_dealer: |+
 
   Dealer has %s and ?
 
+hidden_card: |+
+  ┌─────┐
+  │?    │
+  │  ?  │
+  │    ?│
+  └─────┘
+
 initial_player: |+
   You have %s, for a total of %s.
 

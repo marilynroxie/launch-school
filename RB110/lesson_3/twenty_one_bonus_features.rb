@@ -72,7 +72,7 @@ def initialize_deck
   SUITS.product(VALUES).shuffle
 end
 
-def display_cards(cards)
+def display_cards(cards, show_hidden: false)
   card_lines = cards.map do |card|
     suit, value = card
     [
@@ -82,6 +82,11 @@ def display_cards(cards)
       "│   #{value.rjust(2)}│",
       "└─────┘"
     ]
+  end
+
+  if show_hidden
+    hidden_card_lines = messages("hidden_card").split("\n")
+    card_lines << hidden_card_lines
   end
 
   5.times do |i|
@@ -100,6 +105,8 @@ def display_suit_text(suit)
 end
 
 def display_initial_cards_data(player_cards, dealer_cards)
+  sleep 0.3
+  display_cards([dealer_cards[0]], show_hidden: true)
   puts messages("initial_dealer", format_cards([dealer_cards[0]]))
   display_cards(player_cards)
   puts messages("initial_player", format_cards(player_cards),
