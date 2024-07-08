@@ -118,8 +118,10 @@ end
 
 def display_initial_cards_data(player_cards, dealer_cards)
   sleep 0.3
+  puts messages("dealer_hand")
   display_cards([dealer_cards[0]], show_hidden: true)
   puts messages("initial_dealer", format_cards([dealer_cards[0]]))
+  puts messages("player_hand")
   display_cards(player_cards)
   puts messages("initial_player", format_cards(player_cards),
                 total(player_cards))
