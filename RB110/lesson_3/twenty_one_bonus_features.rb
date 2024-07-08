@@ -191,29 +191,19 @@ def display_final_result(dealer_cards, player_cards)
   display_result(dealer_cards, player_cards)
 end
 
-def win(detect_result)
-  case detect_result
-  when :player_busted, :dealer
-    "Dealer"
-  when :dealer_busted, :player
-    "Player"
-  else
-    nil
-  end
-end
-
-def update_score(win, score)
-  if win == "Player"
+def update_score(score, dealer_cards, player_cards)
+  win = detect_result(dealer_cards, player_cards)
+  if win == :dealer_busted || win == :player
     score[:player] += 1
-  elsif win == "Dealer"
+  elsif win == :player_busted || win == :dealer
     score[:dealer] += 1
   end
 end
 
-def score_sequence(win, score)
+def score_sequence(score, dealer_cards, player_cards)
   display_result(dealer_cards, player_cards)
   sleep 0.5
-  update_score(win, score)
+  update_score(score, dealer_cards, player_cards)
   display_scoreboard(score)
 end
 
@@ -237,7 +227,7 @@ end
 
 def grand_display(score, grand_winners)
   sleep 0.4
-  system "clear"
+  # system "clear"
   display_scoreboard(score)
   if score[:player] == ROUNDS_TO_WIN
     puts messages("grand_winner")["player"]
@@ -289,7 +279,6 @@ loop do
   deck = initialize_deck
   player_cards = []
   dealer_cards = []
-
   distribute_cards(deck, player_cards, dealer_cards)
   deck, player_cards = hit_stay(deck, player_cards)
 
@@ -304,7 +293,7 @@ loop do
     next if play_again?(name)
     break
   end
-
+  score_sequence(score, dealer_cards, player_cards)
   display_final_result(dealer_cards, player_cards)
   grand_update(score, grand_winners)
   grand_display(score, grand_winners)
