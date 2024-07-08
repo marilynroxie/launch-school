@@ -199,9 +199,9 @@ end
 
 def update_score(score, dealer_cards, player_cards)
   win = detect_result(dealer_cards, player_cards)
-  if win == :dealer_busted || win == :player
+  if win == :player || win == :dealer_busted
     score[:player] += 1
-  elsif win == :player_busted || win == :dealer
+  elsif win == :dealer || win == :player_busted
     score[:dealer] += 1
   end
 end
@@ -282,31 +282,32 @@ grand_winners = {
 
 loop do
   score = { player: 0, dealer: 0 }
-  loop do
-    until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
-      deck = initialize_deck
-      player_cards = []
-      dealer_cards = []
-      distribute_cards(deck, player_cards, dealer_cards)
-      deck, player_cards = hit_stay(deck, player_cards)
+  until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
+    display_scoreboard(score)
+    deck = initialize_deck
+    player_cards = []
+    dealer_cards = []
+    distribute_cards(deck, player_cards, dealer_cards)
+    deck, player_cards = hit_stay(deck, player_cards)
 
-      if player_bust?(player_cards, dealer_cards)
-        score[:dealer] += 1
-        next if play_again?(name)
-        break
-      end
-
-      dealer_turn(deck, dealer_cards)
-
-      if dealer_bust?(dealer_cards, player_cards)
-        score[:player] += 1
-        next if play_again?(name)
-        break
-      end
-      score_sequence(score, dealer_cards, player_cards)
+    if player_bust?(player_cards, dealer_cards)
+      update_score(score, dealer_cards, player_cards)
       display_final_result(dealer_cards, player_cards)
+      next
     end
+
+    dealer_turn(deck, dealer_cards)
+
+    if dealer_bust?(dealer_cards, player_cards)
+      update_score(score, dealer_cards, player_cards)
+      display_final_result(dealer_cards, player_cards)
+      next
+    end
+
+    score_sequence(score, dealer_cards, player_cards)
+    display_final_result(dealer_cards, player_cards)
   end
+
   grand_update(score, grand_winners)
   grand_display(score, grand_winners)
   break unless play_again?(name)
