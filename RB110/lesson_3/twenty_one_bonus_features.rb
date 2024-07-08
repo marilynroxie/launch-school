@@ -100,11 +100,9 @@ def display_suit_text(suit)
 end
 
 def display_initial_cards_data(player_cards, dealer_cards)
-  puts messages("initial_dealer", dealer_cards[0])
+  puts messages("initial_dealer", format_cards([dealer_cards[0]]))
   display_cards(player_cards)
-  puts messages("initial_player",
-                player_cards[0][1], display_suit_text(player_cards[0][0]),
-                player_cards[1][1], display_suit_text(player_cards[1][0]),
+  puts messages("initial_player", format_cards(player_cards),
                 total(player_cards))
 end
 
@@ -126,10 +124,35 @@ def player_decision
   end
 end
 
+def format_card(card)
+  "#{card[1]} of #{display_suit_text(card[0])}"
+end
+
+def format_two_cards(cards)
+  [
+    format_card(cards[0]),
+    "and",
+    format_card(cards[1])
+  ].join(" ")
+end
+
+def format_multiple_cards(cards)
+  cards.map { |card| format_card(card) }.join(", ")
+end
+
+def format_cards(cards)
+  if cards.size == 2
+    format_two_cards(cards)
+  else
+    format_multiple_cards(cards)
+  end
+end
+
 def player_hit(deck, player_cards)
   player_cards << deck.pop
   puts messages("you_hit")
-  puts messages("updated_player", player_cards, total(player_cards))
+  puts messages("updated_player", format_cards(player_cards),
+                total(player_cards))
   display_cards(player_cards)
 end
 
