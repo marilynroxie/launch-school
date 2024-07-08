@@ -44,9 +44,7 @@ round: |+
 
   Round %s
 
-dealer_hand: |+
-  DEALER'S HAND
-
+dealer_hand: "DEALER'S HAND"
 initial_dealer: |+
 
   Dealer has %s and ?
@@ -80,6 +78,15 @@ dealer_total: |+
 dealer_stay: Dealer stays at %s
 dealer_turn: "Dealer turn..."
 dealer_hit: "Dealer hits!"
+
+final_dealer_hand: |+
+
+  DEALER'S FINAL HAND
+
+final_player_hand: |+
+
+  -------------------
+  PLAYER'S FINAL HAND
 
 final_dealer_total: "Dealer has %s, for a total of: %s"
 final_player_total: "Player has %s, for a total of: %s"
