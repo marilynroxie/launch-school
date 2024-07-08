@@ -3,7 +3,7 @@
 # play_again? investigation - done
 # End of round output
 # Grand total of rounds:5 - done
-# Add rules option
+# Add rules option - done
 # Constants for other winning score options
 
 require "yaml"
@@ -32,6 +32,18 @@ end
 def starred_message(key, *args)
   message = messages(key, *args)
   puts("* #{message} *")
+end
+
+def display_rules
+  prompt("rules_question")
+  input = gets.chomp
+  system "clear"
+  if input.downcase == "rules"
+    messages("rules").each_line do |rule|
+      sleep 0.4
+      puts rule
+    end
+  end
 end
 
 def get_name
@@ -277,7 +289,7 @@ end
 name = get_name
 system "clear"
 puts messages("welcome", name)
-sleep 0.7
+display_rules
 grand_winners = {
   player: 0,
   dealer: 0,

@@ -3,6 +3,43 @@ invalid_name: "Please enter a valid name."
 
 welcome: "Welcome to 21, %s!"
 
+rules_question: "Type 'rules' to read the rules. Press any other key to skip rules and choose who goes first."
+rules: |+
+
+  Rules:
+
+    The Deck and Scoring:
+
+      You are dealt cards from a 52-card deck consisting of Hearts, Diamonds, Clubs, and Spades.
+
+      The suits each have 13 values: 2 through 10, Jack, Queen, King, and Ace.
+
+      2 through 10 are worth their face values.
+
+      Jack, Queen, and King are each worth 10.
+
+      The Ace is worth 11, or worth 1 if counting it as 11 would cause the total to exceed 21.
+
+    Game Play:
+
+      You are facing an opponent, the dealer. Both you and the dealer are initially dealt 2 cards.
+
+      You can see the 2 cards you have been dealt, but can only see one of the dealer's cards.
+
+      On your turn, you can choose to either "hit" (be dealt another card) or "Stay" (keep your hand and move on to the dealer's turn).
+
+    Winning:
+
+      The goal of Twenty-One is to try to get as close to 21 as possible, without going over.
+
+      You win the round either if you have a higher total than the dealer without "busting", or if the dealer busts.
+
+      If you go over 21, it's a "bust" and you lose!
+
+      If the dealer goes over 21, they "bust" and you win!
+
+      Win five rounds in this match to become the Grand Winner!
+
 round: |+
 
   Round %s
