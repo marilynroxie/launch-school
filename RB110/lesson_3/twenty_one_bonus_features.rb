@@ -45,6 +45,17 @@ def get_name
   end
 end
 
+def display_scoreboard(score)
+  starred_message("separator")
+  puts messages("scoreboard", score[:player], score[:dealer])
+  starred_message("separator")
+end
+
+def display_round_data(round, score)
+  puts messages("round", round)
+  display_scoreboard(score)
+end
+
 def initialize_deck
   SUITS.product(VALUES).shuffle
 end
@@ -182,7 +193,7 @@ def dealer_bust?(dealer_cards, player_cards)
   end
 end
 
-# def match(score)
+# def round(score)
 #   sleep 0.3
 #   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
 #   end
@@ -210,12 +221,6 @@ def score_sequence(score, dealer_cards, player_cards)
   sleep 0.5
   update_score(score, dealer_cards, player_cards)
   display_scoreboard(score)
-end
-
-def display_scoreboard(score)
-  starred_message("separator")
-  puts messages("scoreboard", score[:player], score[:dealer])
-  starred_message("separator")
 end
 
 def grand_update(score, grand_winners)
@@ -286,8 +291,7 @@ loop do
   system "clear"
   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
     round += 1
-    puts messages("round", round)
-    display_scoreboard(score)
+    display_round_data(round, score)
     deck = initialize_deck
     player_cards = []
     dealer_cards = []
