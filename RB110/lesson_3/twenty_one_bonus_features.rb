@@ -10,7 +10,7 @@ require "yaml"
 
 MESSAGES = YAML.load_file("twenty_one_messages.yml")
 
-SUITS = ["\u2665", "\u2660", "\u2663", "\u2666"]
+SUITS = ["\u2665", "\u2660", "\u2666", "\u2663"]
 
 VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 
@@ -63,6 +63,16 @@ def display_scoreboard(score)
   starred_message("separator")
 end
 
+def display_suit_text(suit)
+  case suit
+  when "\u2665" then "Hearts"
+  when "\u2660" then "Spades"
+  when "\u2663" then "Clubs"
+  when "\u2666" then "Diamonds"
+  else "?"
+  end
+end
+
 def display_round_data(round, score)
   puts messages("round", round)
   display_scoreboard(score)
@@ -96,8 +106,12 @@ def distribute_cards(deck, player_cards, dealer_cards)
   end
   puts messages("initial_dealer", dealer_cards[0])
   display_cards(player_cards)
-  puts messages("initial_player", player_cards[0], player_cards[1],
-                total(player_cards))
+  # puts messages("initial_player", player_cards[0], player_cards[1],
+  #               total(player_cards))
+  puts messages("initial_player",
+              player_cards[0][1], display_suit_text(player_cards[0][0]),
+              player_cards[1][1], display_suit_text(player_cards[1][0]),
+              total(player_cards))
   return player_cards, dealer_cards
 end
 

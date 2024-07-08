@@ -49,7 +49,7 @@ initial_dealer: |+
   Dealer has %s and ?
 
 initial_player: |+
-  You have: %s and %s, for a total of %s.
+  You have: %s of %s and %s of %s, for a total of %s.
 
 hit_or_stay: "Would you like to (h)it or (s)tay?"
 invalid_hit_or_stay: "Sorry, must enter 'h' or 's'."
