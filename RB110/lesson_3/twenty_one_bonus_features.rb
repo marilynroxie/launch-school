@@ -5,7 +5,6 @@
 # Grand total of rounds - 5
 # Add rules option
 # Constants for other winning score options
-# Add more scoreboard methods from TTT
 
 require "yaml"
 
@@ -15,11 +14,11 @@ SUITS = ["♠", "♥", "♦", "♣"]
 
 VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 
+ROUNDS_TO_WIN = 5
+
 DEALER_STAYS = 17
 
 GOAL_SCORE = 21
-
-ROUNDS_TO_WIN = 5
 
 def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
@@ -181,6 +180,13 @@ def dealer_bust?(dealer_cards, player_cards)
     false
   end
 end
+
+# def match(score)
+#   sleep 0.3
+#   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
+#   end
+#   score_sequence(score, dealer_cards, player_cards)
+# end
 
 def display_final_result(dealer_cards, player_cards)
   puts messages("separator")
