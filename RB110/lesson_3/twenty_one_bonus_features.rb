@@ -292,7 +292,6 @@ loop do
 
     if player_bust?(player_cards, dealer_cards)
       update_score(score, dealer_cards, player_cards)
-      display_final_result(dealer_cards, player_cards)
       next
     end
 
@@ -300,7 +299,6 @@ loop do
 
     if dealer_bust?(dealer_cards, player_cards)
       update_score(score, dealer_cards, player_cards)
-      display_final_result(dealer_cards, player_cards)
       next
     end
 
