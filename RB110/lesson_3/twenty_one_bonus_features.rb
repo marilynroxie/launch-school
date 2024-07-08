@@ -353,6 +353,22 @@ def farewell(name)
   puts messages("thank_you", name)
 end
 
+def continue?(name)
+  loop do
+    puts messages("continue")
+    answer = gets.chomp.strip.downcase
+    if messages("options_neg").include?(answer)
+      farewell(name)
+      exit
+    elsif messages("options_pos").include?(answer)
+      return true
+    else
+      system "clear"
+      puts messages("invalid_choice")
+    end
+  end
+end
+
 def play_again?(name)
   loop do
     puts ""
@@ -398,7 +414,7 @@ loop do
     if player_bust?(player_cards, dealer_cards)
       update_score(score, dealer_cards, player_cards)
       display_final_result(dealer_cards, player_cards)
-      next
+      next if continue?(name)
     end
 
     dealer_turn(deck, dealer_cards)
@@ -406,11 +422,13 @@ loop do
     if dealer_bust?(dealer_cards, player_cards)
       update_score(score, dealer_cards, player_cards)
       display_final_result(dealer_cards, player_cards)
-      next
+      next if continue?(name)
     end
 
+    update_score(score, dealer_cards, player_cards)
     display_final_result(dealer_cards, player_cards)
     score_sequence(score, dealer_cards, player_cards)
+    continue?(name)
   end
 
   grand_update(score, grand_winners)

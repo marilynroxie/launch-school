@@ -91,6 +91,9 @@ round_result:
   dealer_wins: "Dealer wins!"
   tie: "It's a tie!"
 
+continue: "Continue to next round? (Y to continue, N to exit the game entirely)"
+invalid_choice: "Sorry, that's not a valid choice."
+
 scoreboard: "Match Scoreboard: Player: %s | Dealer: %s"
 grand_winner:
   player: |+
