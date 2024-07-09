@@ -4,8 +4,9 @@
 # End of round output
 # Grand total of rounds:5 - done
 # Add rules option - done
-# Constants for other winning score options
+# Constants for allowing player to choose other winning score options
 # Fix continue option to not execute if 5 rounds won is reached
+# More screen clears and banner displays?
 
 require "yaml"
 
