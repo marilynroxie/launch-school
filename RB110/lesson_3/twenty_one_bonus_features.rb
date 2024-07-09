@@ -436,9 +436,9 @@ loop do
 
     score_sequence(score, dealer_cards, player_cards)
     display_final_result(dealer_cards, player_cards)
-    continue?(name, score)
+    continue?(name, score) unless score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
   end
-
+  display_scoreboard(score)
   grand_update(score, grand_winners)
   grand_display(score, grand_winners)
   break unless play_again?(name)
