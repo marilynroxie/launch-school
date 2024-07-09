@@ -63,6 +63,12 @@ initial_player: |+
   You have %s, for a total of %s.
 
 hit_or_stay: "Would you like to (h)it or (s)tay?"
+hit_stay_options:
+  - "h"
+  - "hit"
+  - "s"
+  - "stay"
+
 invalid_hit_or_stay: "Sorry, must enter 'h' or 's'."
 
 you_hit: "You chose to hit!"

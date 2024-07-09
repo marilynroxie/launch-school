@@ -141,7 +141,9 @@ def player_decision
   loop do
     prompt("hit_or_stay")
     decision = gets.chomp.downcase
-    return decision if ["h", "s"].include?(decision)
+    # return decision if ["h", "s"].include?
+    # (decision)
+    return decision if messages("hit_stay_options").include?(decision)
     puts messages("invalid_hit_or_stay")
   end
 end
@@ -181,12 +183,12 @@ end
 def player_turn(deck, player_cards)
   loop do
     case player_decision
-    when "h"
+    when "h", "hit"
       player_hit(deck, player_cards)
       if busted?(player_cards)
         return [deck, player_cards]
       end
-    when "s"
+    when "s", "stay"
       return [deck, player_cards]
     end
   end
