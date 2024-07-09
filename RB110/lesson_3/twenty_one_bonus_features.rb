@@ -7,6 +7,7 @@
 # Constants for allowing player to choose other winning score options
 # Fix continue option to not execute if 5 rounds won is reached
 # More screen clears and banner displays?
+# Implement round method?
 
 require "yaml"
 
@@ -142,8 +143,6 @@ def player_decision
   loop do
     prompt("hit_or_stay")
     decision = gets.chomp.downcase
-    # return decision if ["h", "s"].include?
-    # (decision)
     return decision if messages("hit_stay_options").include?(decision)
     puts messages("invalid_hit_or_stay")
   end
@@ -296,13 +295,6 @@ def dealer_bust?(dealer_cards, player_cards)
     false
   end
 end
-
-# def round(score)
-#   sleep 0.3
-#   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
-#   end
-#   score_sequence(score, dealer_cards, player_cards)
-# end
 
 def display_final_result(dealer_cards, player_cards)
   puts messages("final_dealer_hand")
