@@ -44,8 +44,8 @@ game_start: "Start the game? (Y to start, N to exit)"
 change_goal_score:
   Do you want to change the goal score to something other than 21?
   (Y to change, N to keep it as 21)
-enter_goal_score: "Enter the goal score as 11, 21, 31, 41, or 51:"
-invalid_goal_score: "Invalid goal score. Please enter 11, 21, 31, 41, or 51."
+enter_goal_score: "Enter the goal score as 21, 31, 41, or 51:"
+invalid_goal_score: "Invalid goal score. Please enter 21, 31, 41, or 51."
 
 round: "%s - Round %s"
 dealer_hand: "DEALER'S HAND"

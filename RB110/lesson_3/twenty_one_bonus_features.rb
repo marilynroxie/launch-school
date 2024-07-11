@@ -12,9 +12,9 @@ VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 
 ROUNDS_TO_WIN = 5
 
-DEALER_STAYS = 17
+DEALER_STAYS_DEFAULT = 17
 
-GOAL_SCORE = 21
+GOAL_SCORE_DEFAULT = 21
 
 def messages(message, *args)
   args.empty? ? MESSAGES[message] : MESSAGES[message] % args
@@ -54,19 +54,19 @@ def display_rules(name)
   end
 end
 
-def change_goal_score?(goal_score, dealer_stays)
-  prompt("change_goal_score")
+def change_goal_score?(dealer_stays = DEALER_STAYS_DEFAULT, goal_score = GOAL_SCORE_DEFAULT)
+  prompt("change_goal_score", goal_score)
   loop do
     answer = gets.chomp.strip.downcase
     if messages("options_neg").include?(answer)
-      return [goal_score, dealer_stays]
+      return [dealer_stays, goal_score]
     elsif messages("options_pos").include?(answer)
       system "clear"
       prompt("enter_goal_score")
       loop do
         choice = gets.chomp.to_i
-        if [11, 21, 31, 41, 51].include?(choice)
-          return [choice, choice - 4]
+        if [21, 31, 41, 51].include?(choice)
+          return [choice - 4, choice]
         else
           system "clear"
           prompt("invalid_goal_score")
@@ -80,7 +80,6 @@ end
 
 def display_game_name(goal_score)
   case goal_score
-  when 11 then "Eleven"
   when 21 then "Twenty-One"
   when 31 then "Thirty-One"
   when 41 then "Forty-One"
@@ -446,9 +445,7 @@ grand_winners = {
 }
 
 loop do
-  goal_score = GOAL_SCORE
-  dealer_stays = DEALER_STAYS
-  goal_score, dealer_stays = change_goal_score?(goal_score, dealer_stays)
+  dealer_stays, goal_score = change_goal_score?(dealer_stays, goal_score)
   round = 0
   score = { player: 0, dealer: 0 }
   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
