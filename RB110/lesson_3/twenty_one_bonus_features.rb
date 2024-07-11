@@ -43,14 +43,29 @@ def get_name
   end
 end
 
-def display_rules
+def display_rules(name)
   prompt("rules_question")
   input = gets.chomp
   system "clear"
   if input.downcase == "rules"
     messages("rules").each_line do |rule|
-      sleep 0.4
+      sleep 0.7
       puts rule
+    end
+    game_start(name)
+  end
+end
+
+def game_start(name)
+  prompt("game_start")
+  loop do
+    answer = gets.chomp.strip.downcase
+    if messages("options_neg").include?(answer)
+      farewell(name)
+    elsif messages("options_pos").include?(answer)
+      return true
+    else
+      puts messages("invalid_choice")
     end
   end
 end
@@ -348,6 +363,7 @@ def farewell(name)
   system "clear"
   puts messages("separator")
   puts messages("thank_you", name)
+  exit
 end
 
 def get_answer
@@ -369,7 +385,6 @@ def continue?(name, score)
     answer = get_answer
     unless answer
       farewell(name)
-      exit
     end
     answer
   end
@@ -385,7 +400,7 @@ end
 name = get_name
 system "clear"
 puts messages("welcome", name)
-display_rules
+display_rules(name)
 grand_winners = {
   player: 0,
   dealer: 0,
