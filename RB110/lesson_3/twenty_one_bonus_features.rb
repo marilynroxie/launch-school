@@ -1,5 +1,6 @@
 # Todo
 # Calculating the total - use local variable instead
+# Handle situation of both players staying differently?
 # More screen clears and banner displays?
 
 require "yaml"
