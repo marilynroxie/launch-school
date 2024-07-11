@@ -54,33 +54,38 @@ def display_rules(name)
   end
 end
 
-def change_goal_score?(dealer_stays = DEALER_STAYS_DEFAULT, goal_score = GOAL_SCORE_DEFAULT)
-  prompt("change_goal_score", goal_score)
+def goal_change?
   loop do
     answer = gets.chomp.strip.downcase
-    if messages("options_neg").include?(answer)
-      return [dealer_stays, goal_score]
-    elsif messages("options_pos").include?(answer)
-      system "clear"
-      prompt("enter_goal_score")
-      loop do
-        choice = gets.chomp.to_i
-        if [21, 31, 41, 51].include?(choice)
-          return [choice - 4, choice]
-        else
-          system "clear"
-          prompt("invalid_goal_score")
-        end
-      end
-    else
-      puts messages("invalid_choice")
-    end
+    return true if messages("options_pos").include?(answer)
+    return false if messages("options_neg").include?(answer)
+    puts messages("invalid_choice")
   end
+end
+
+def choose_goal_score
+  loop do
+    system "clear"
+    prompt("enter_goal_score")
+    choice = gets.chomp.to_i
+    return choice if [21, 31, 41, 51].include?(choice)
+    puts messages("invalid_goal_score")
+    sleep 0.7
+  end
+end
+
+def change_goal_score?(dealer_stays = DEALER_STAYS_DEFAULT,
+                       goal_score = GOAL_SCORE_DEFAULT)
+  prompt("change_goal_score", goal_score)
+  return [dealer_stays, goal_score] unless goal_change?
+
+  goal_score = choose_goal_score
+  [goal_score - 4, goal_score]
 end
 
 def display_game_name(goal_score)
   case goal_score
-  when 21 then "Twenty-One"
+  when 21 || GOAL_SCORE_DEFAULT then "Twenty-One"
   when 31 then "Thirty-One"
   when 41 then "Forty-One"
   when 51 then "Fifty-One"
@@ -445,7 +450,8 @@ grand_winners = {
 }
 
 loop do
-  dealer_stays, goal_score = change_goal_score?(dealer_stays, goal_score)
+  dealer_stays, goal_score = change_goal_score?(DEALER_STAYS_DEFAULT,
+                                                GOAL_SCORE_DEFAULT)
   round = 0
   score = { player: 0, dealer: 0 }
   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
