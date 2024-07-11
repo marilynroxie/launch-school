@@ -1,7 +1,5 @@
 # Todo
 # Calculating the total - use local variable instead
-# Handle situation of both players staying differently?
-# More screen clears and banner displays?
 
 require "yaml"
 
@@ -70,8 +68,6 @@ def choose_goal_score
     prompt("enter_goal_score")
     choice = gets.chomp.to_i
     return choice if [21, 31, 41, 51].include?(choice)
-    puts messages("invalid_goal_score")
-    sleep 0.7
   end
 end
 
@@ -308,7 +304,6 @@ end
 
 def display_result(dealer_cards, player_cards, goal_score)
   result = detect_result(dealer_cards, player_cards, goal_score)
-  sleep 0.3
   case result
   when :player_busted
     puts(messages("round_result")["you_busted"])
@@ -423,10 +418,6 @@ def get_answer
 end
 
 def continue?(name, score, goal_score)
-  p score
-  p score[:player] == ROUNDS_TO_WIN
-  p score[:dealer] == ROUNDS_TO_WIN
-  sleep 0.7
   if score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
     return false
   end
@@ -479,7 +470,7 @@ loop do
       break unless continue?(name, score, goal_score)
       next
     end
-
+    add_suspense
     dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
     add_suspense
 
@@ -489,7 +480,7 @@ loop do
       next
     end
 
-    no_bust_sequence(name, score, dealer_cards, player_cards, goal_score)
+    no_bust_sequence(score, dealer_cards, player_cards, goal_score)
     break unless continue?(name, score, goal_score)
   end
   display_scoreboard(score)
