@@ -1,7 +1,6 @@
 # Todo
 # Calculating the total - use local variable instead
 # Constants for allowing player to choose other winning score options
-# Fix continue option to not execute if 5 rounds won is reached
 # More screen clears and banner displays?
 
 require "yaml"
@@ -77,7 +76,7 @@ def display_scoreboard(score)
 end
 
 def display_round_data(round, score)
-  puts messages("round", round)
+  puts messages("round", GOAL_SCORE, round)
   display_scoreboard(score)
 end
 

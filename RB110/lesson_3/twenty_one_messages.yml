@@ -41,9 +41,7 @@ rules: |+
       Win five rounds in this match to become the Grand Winner!
 
 game_start: "Start the game? (Y to start, N to exit)"
-round: |+
-
-  Round %s
+round: "%s - Round %s"
 
 dealer_hand: "DEALER'S HAND"
 initial_dealer: |+
