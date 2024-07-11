@@ -49,7 +49,7 @@ def display_rules(name)
       sleep 0.7
       puts rule
     end
-    game_start(name, goal_score)
+    game_start(name)
   end
 end
 
@@ -82,7 +82,7 @@ end
 
 def display_game_name(goal_score)
   case goal_score
-  when 21 || GOAL_SCORE_DEFAULT then "Twenty-One"
+  when 21 then "Twenty-One"
   when 31 then "Thirty-One"
   when 41 then "Forty-One"
   when 51 then "Fifty-One"
@@ -90,13 +90,14 @@ def display_game_name(goal_score)
   end
 end
 
-def game_start(name, goal_score)
+def game_start(name)
   prompt("game_start")
   loop do
     answer = gets.chomp.strip.downcase
     if messages("options_neg").include?(answer)
-      farewell(name, goal_score)
+      farewell(name, GOAL_SCORE_DEFAULT)
     elsif messages("options_pos").include?(answer)
+      system "clear"
       return true
     else
       puts messages("invalid_choice")
