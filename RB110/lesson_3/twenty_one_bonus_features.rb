@@ -1,13 +1,8 @@
 # Todo
 # Calculating the total - use local variable instead
-# play_again? investigation - done
-# End of round output
-# Grand total of rounds:5 - done
-# Add rules option - done
 # Constants for allowing player to choose other winning score options
 # Fix continue option to not execute if 5 rounds won is reached
 # More screen clears and banner displays?
-# Implement round method?
 
 require "yaml"
 
@@ -428,7 +423,10 @@ loop do
 
     score_sequence(score, dealer_cards, player_cards)
     display_final_result(dealer_cards, player_cards)
-    continue?(name, score) unless score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
+    unless score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
+      continue?(name,
+                score)
+    end
   end
   display_scoreboard(score)
   grand_update(score, grand_winners)
