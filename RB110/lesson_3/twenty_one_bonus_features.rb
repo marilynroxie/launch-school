@@ -78,6 +78,17 @@ def change_goal_score?(goal_score, dealer_stays)
   end
 end
 
+def display_game_name(goal_score)
+  case goal_score
+  when 11 then "Eleven"
+  when 21 then "Twenty-One"
+  when 31 then "Thirty-One"
+  when 41 then "Forty-One"
+  when 51 then "Fifty-One"
+  else "Whatever-One"
+  end
+end
+
 def game_start(name)
   prompt("game_start")
   loop do
@@ -99,7 +110,7 @@ def display_scoreboard(score)
 end
 
 def display_round_data(round, goal_score, score)
-  puts messages("round", goal_score, round)
+  puts messages("round", display_game_name(goal_score), round)
   display_scoreboard(score)
 end
 
@@ -440,8 +451,8 @@ loop do
   goal_score, dealer_stays = change_goal_score?(goal_score, dealer_stays)
   round = 0
   score = { player: 0, dealer: 0 }
-  system "clear"
   until score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
+    system "clear"
     round += 1
     display_round_data(round, goal_score, score)
     deck = initialize_deck
