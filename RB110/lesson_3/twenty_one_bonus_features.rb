@@ -50,7 +50,7 @@ def display_rules(name)
       sleep 0.7
       puts rule
     end
-    game_start(name)
+    game_start(name, goal_score)
   end
 end
 
@@ -89,12 +89,12 @@ def display_game_name(goal_score)
   end
 end
 
-def game_start(name)
+def game_start(name, goal_score)
   prompt("game_start")
   loop do
     answer = gets.chomp.strip.downcase
     if messages("options_neg").include?(answer)
-      farewell(name)
+      farewell(name, goal_score)
     elsif messages("options_pos").include?(answer)
       return true
     else
@@ -392,10 +392,10 @@ def grand_display(score, grand_winners)
   starred_message("separator")
 end
 
-def farewell(name)
+def farewell(name, goal_score)
   system "clear"
   puts messages("separator")
-  puts messages("thank_you", name)
+  puts messages("thank_you", display_game_name(goal_score), name)
   exit
 end
 
@@ -412,7 +412,7 @@ def get_answer
   end
 end
 
-def continue?(name, score)
+def continue?(name, score, goal_score)
   if score[:player] >= ROUNDS_TO_WIN || score[:dealer] >= ROUNDS_TO_WIN
     return false
   end
@@ -421,16 +421,16 @@ def continue?(name, score)
   answer = get_answer
 
   unless answer
-    farewell(name)
+    farewell(name, goal_score)
   end
 
   answer
 end
 
-def play_again?(name)
+def play_again?(name, goal_score)
   prompt("play_again")
   answer = get_answer
-  farewell(name) unless answer
+  farewell(name, goal_score) unless answer
   answer
 end
 
@@ -464,7 +464,7 @@ loop do
     if player_bust?(player_cards, dealer_cards, goal_score)
       update_score(score, dealer_cards, player_cards, goal_score)
       display_final_result(dealer_cards, player_cards, goal_score)
-      next if continue?(name, score)
+      next if continue?(name, score, goal_score)
     end
 
     dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
@@ -473,15 +473,15 @@ loop do
     if dealer_bust?(dealer_cards, player_cards, goal_score)
       update_score(score, dealer_cards, player_cards, goal_score)
       display_final_result(dealer_cards, player_cards, goal_score)
-      next if continue?(name, score)
+      next if continue?(name, score, goal_score)
     end
 
     score_sequence(score, dealer_cards, player_cards, goal_score)
     display_final_result(dealer_cards, player_cards, goal_score)
-    continue?(name, score)
+    continue?(name, score, goal_score)
   end
   display_scoreboard(score)
   grand_update(score, grand_winners)
   grand_display(score, grand_winners)
-  break unless play_again?(name)
+  break unless play_again?(name, goal_score)
 end

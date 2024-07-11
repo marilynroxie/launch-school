@@ -142,4 +142,4 @@ options_pos:
 options_neg:
   - "no"
   - "n"
-thank_you: "Thank you for playing Twenty-One, %s! Good bye!"
+thank_you: "Thank you for playing %s, %s! Good bye!"
