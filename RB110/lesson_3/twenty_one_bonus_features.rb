@@ -344,7 +344,19 @@ def dealer_bust?(dealer_cards, player_cards, goal_score)
   end
 end
 
-def display_final_result(dealer_cards, player_cards, goal_score)
+def bust_sequence(score, dealer_cards, player_cards, goal_score)
+  update_score(score, dealer_cards, player_cards, goal_score)
+  display_final_result(dealer_cards, player_cards, goal_score, score)
+end
+
+def no_bust_sequence(score, dealer_cards, player_cards, goal_score)
+  update_score(score, dealer_cards, player_cards, goal_score)
+  display_result(dealer_cards, player_cards, goal_score)
+  display_final_result(dealer_cards, player_cards, goal_score, score)
+end
+
+def display_final_result(dealer_cards, player_cards, goal_score, score)
+  display_scoreboard(score)
   puts messages("final_dealer_hand")
   display_cards(dealer_cards)
   puts messages("final_dealer_total", format_cards(dealer_cards),
@@ -363,13 +375,6 @@ def update_score(score, dealer_cards, player_cards, goal_score)
   elsif win == :dealer || win == :player_busted
     score[:dealer] += 1
   end
-end
-
-def score_sequence(score, dealer_cards, player_cards, goal_score)
-  display_result(dealer_cards, player_cards, goal_score)
-  sleep 0.5
-  update_score(score, dealer_cards, player_cards, goal_score)
-  display_scoreboard(score)
 end
 
 def grand_update(score, grand_winners)
@@ -418,7 +423,11 @@ def get_answer
 end
 
 def continue?(name, score, goal_score)
-  if score[:player] >= ROUNDS_TO_WIN || score[:dealer] >= ROUNDS_TO_WIN
+  p score
+  p score[:player] == ROUNDS_TO_WIN
+  p score[:dealer] == ROUNDS_TO_WIN
+  sleep 0.7
+  if score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
     return false
   end
 
@@ -466,23 +475,22 @@ loop do
     deck, player_cards = player_turn(deck, player_cards, goal_score)
 
     if player_bust?(player_cards, dealer_cards, goal_score)
-      update_score(score, dealer_cards, player_cards, goal_score)
-      display_final_result(dealer_cards, player_cards, goal_score)
-      next if continue?(name, score, goal_score)
+      bust_sequence(score, dealer_cards, player_cards, goal_score)
+      break unless continue?(name, score, goal_score)
+      next
     end
 
     dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
     add_suspense
 
     if dealer_bust?(dealer_cards, player_cards, goal_score)
-      update_score(score, dealer_cards, player_cards, goal_score)
-      display_final_result(dealer_cards, player_cards, goal_score)
-      next if continue?(name, score, goal_score)
+      bust_sequence(score, dealer_cards, player_cards, goal_score)
+      break unless continue?(name, score, goal_score)
+      next
     end
 
-    score_sequence(score, dealer_cards, player_cards, goal_score)
-    display_final_result(dealer_cards, player_cards, goal_score)
-    continue?(name, score, goal_score)
+    no_bust_sequence(name, score, dealer_cards, player_cards, goal_score)
+    break unless continue?(name, score, goal_score)
   end
   display_scoreboard(score)
   grand_update(score, grand_winners)
