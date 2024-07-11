@@ -1,9 +1,9 @@
 enter_name: "Please enter your name: "
 invalid_name: "Please enter a valid name."
 
-welcome: "Welcome to 21, %s!"
+welcome: "Welcome to Twenty-One, %s!"
 
-rules_question: "Type 'rules' to read the rules. Press any other key to skip rules and choose who goes first."
+rules_question: "Type 'rules' to read the rules. Press any other key to skip rules and start the game."
 rules: |+
 
   Rules:
@@ -41,8 +41,13 @@ rules: |+
       Win five rounds in this match to become the Grand Winner!
 
 game_start: "Start the game? (Y to start, N to exit)"
-round: "%s - Round %s"
+change_goal_score:
+  Do you want to change the goal score to something other than 21?
+  (Y to change, N to keep it as 21)
+enter_goal_score: "Enter the goal score as 11, 21, 31, 41, or 51:"
+invalid_goal_score: "Invalid goal score. Please enter 11, 21, 31, 41, or 51."
 
+round: "%s - Round %s"
 dealer_hand: "DEALER'S HAND"
 initial_dealer: |+
 
@@ -103,7 +108,7 @@ round_result:
   dealer_wins: "Dealer wins!"
   tie: "It's a tie!"
 
-continue: "Continue to next round? (Y to continue, N to exit the game entirely)"
+continue: "Continue? (Y to continue, N to exit the game entirely)"
 invalid_choice: "Sorry, that's not a valid choice."
 
 scoreboard: "Match Scoreboard: Player: %s | Dealer: %s"
