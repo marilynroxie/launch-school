@@ -40,6 +40,28 @@ def get_name
   end
 end
 
+def farewell(name, goal_score)
+  system "clear"
+  puts messages("separator")
+  puts messages("thank_you", display_game_name(goal_score), name)
+  exit
+end
+
+def game_start(name)
+  prompt("game_start")
+  loop do
+    answer = gets.chomp.strip.downcase
+    if messages("options_neg").include?(answer)
+      farewell(name, GOAL_SCORE_DEFAULT)
+    elsif messages("options_pos").include?(answer)
+      system "clear"
+      return true
+    else
+      puts messages("invalid_choice")
+    end
+  end
+end
+
 def display_rules(name)
   prompt("rules_question")
   input = gets.chomp
@@ -87,21 +109,6 @@ def display_game_name(goal_score)
   when 41 then "Forty-One"
   when 51 then "Fifty-One"
   else "Whatever-One"
-  end
-end
-
-def game_start(name)
-  prompt("game_start")
-  loop do
-    answer = gets.chomp.strip.downcase
-    if messages("options_neg").include?(answer)
-      farewell(name, GOAL_SCORE_DEFAULT)
-    elsif messages("options_pos").include?(answer)
-      system "clear"
-      return true
-    else
-      puts messages("invalid_choice")
-    end
   end
 end
 
@@ -396,13 +403,6 @@ def grand_display(score, grand_winners)
   puts messages("total_grand_winners", grand_winners[:player],
                 grand_winners[:dealer])
   starred_message("separator")
-end
-
-def farewell(name, goal_score)
-  system "clear"
-  puts messages("separator")
-  puts messages("thank_you", display_game_name(goal_score), name)
-  exit
 end
 
 def get_answer
