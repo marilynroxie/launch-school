@@ -62,7 +62,7 @@ def goal_change?
   end
 end
 
-def choose_goal_score
+def get_goal_score
   loop do
     system "clear"
     prompt("enter_goal_score")
@@ -76,7 +76,7 @@ def change_goal_score?(dealer_stays = DEALER_STAYS_DEFAULT,
   prompt("change_goal_score", goal_score)
   return [dealer_stays, goal_score] unless goal_change?
 
-  goal_score = choose_goal_score
+  goal_score = get_goal_score
   [goal_score - 4, goal_score]
 end
 
