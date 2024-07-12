@@ -164,6 +164,27 @@ def display_suit_text(suit)
   end
 end
 
+def total(cards, goal_score)
+  values = cards.map { |card| card[1] }
+
+  sum = 0
+  values.each do |value|
+    sum += if value == "A"
+             11
+           elsif value.to_i == 0
+             10
+           else
+             value.to_i
+           end
+  end
+
+  values.select { |value| value == "A" }.count.times do
+    sum -= 10 if sum > goal_score
+  end
+
+  sum
+end
+
 def display_initial_cards_data(player_cards, dealer_cards, goal_score)
   sleep 0.3
   puts messages("dealer_hand")
@@ -263,27 +284,6 @@ def add_suspense
   puts "."
   sleep 0.5
   puts "."
-end
-
-def total(cards, goal_score)
-  values = cards.map { |card| card[1] }
-
-  sum = 0
-  values.each do |value|
-    sum += if value == "A"
-             11
-           elsif value.to_i == 0
-             10
-           else
-             value.to_i
-           end
-  end
-
-  values.select { |value| value == "A" }.count.times do
-    sum -= 10 if sum > goal_score
-  end
-
-  sum
 end
 
 def detect_result(dealer_cards, player_cards, goal_score)
