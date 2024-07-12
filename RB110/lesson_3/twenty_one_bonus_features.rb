@@ -225,6 +225,10 @@ def player_hit(deck, player_cards, goal_score)
   display_cards(player_cards)
 end
 
+def busted?(cards, goal_score)
+  total(cards, goal_score) > goal_score
+end
+
 def player_turn(deck, player_cards, goal_score)
   loop do
     case player_decision
@@ -280,10 +284,6 @@ def total(cards, goal_score)
   end
 
   sum
-end
-
-def busted?(cards, goal_score)
-  total(cards, goal_score) > goal_score
 end
 
 def detect_result(dealer_cards, player_cards, goal_score)
