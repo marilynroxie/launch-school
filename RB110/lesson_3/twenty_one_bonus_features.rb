@@ -209,7 +209,6 @@ def distribute_cards(deck, player_cards, dealer_cards, goal_score)
     dealer_cards << deck.pop
   end
   display_initial_cards_data(player_cards, dealer_cards, goal_score)
-  return player_cards, dealer_cards
 end
 
 def player_decision
@@ -266,7 +265,7 @@ def player_turn(deck, player_cards, goal_score)
         return [deck, player_cards]
       end
     when "s", "stay"
-      return [deck, player_cards, goal_score]
+      return [deck, player_cards]
     end
   end
 end
