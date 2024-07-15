@@ -344,7 +344,6 @@ def display_final_result(dealer_cards, player_cards, dealer_total,
   puts messages("final_player_hand")
   display_cards(player_cards)
   puts messages("final_player_total", format_cards(player_cards), player_total)
-  puts messages("separator")
 end
 
 def update_score(score, dealer_total, player_total, goal_score)

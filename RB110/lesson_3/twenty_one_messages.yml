@@ -99,8 +99,9 @@ final_player_hand: |+
   PLAYER'S FINAL HAND
 
 final_dealer_total: "Dealer has %s, for a total of: %s"
-final_player_total: "Player has %s, for a total of: %s"
-
+final_player_total: |+
+  Player has %s, for a total of: %s
+  -------------------
 round_result:
   you_busted: "You busted! Dealer wins!"
   dealer_busted: "Dealer busted! You win!"
