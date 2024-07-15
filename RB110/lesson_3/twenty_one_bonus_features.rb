@@ -1,6 +1,3 @@
-# Todo
-# Calculating the total - use local variable instead
-
 require "yaml"
 
 MESSAGES = YAML.load_file("twenty_one_messages.yml")
@@ -192,8 +189,7 @@ def total(cards, goal_score)
   sum
 end
 
-def display_initial_cards_data(player_cards, dealer_cards, player_total,
-                               _dealer_total, _goal_score)
+def display_initial_cards_data(player_cards, dealer_cards, player_total)
   sleep 0.3
   puts messages("dealer_hand")
   display_cards([dealer_cards[0]], show_hidden: true)
@@ -210,8 +206,7 @@ def distribute_cards(deck, player_cards, dealer_cards, goal_score)
   end
   player_total = total(player_cards, goal_score)
   dealer_total = total(dealer_cards, goal_score)
-  display_initial_cards_data(player_cards, dealer_cards, player_total,
-                             dealer_total, goal_score)
+  display_initial_cards_data(player_cards, dealer_cards, player_total)
   [player_total, dealer_total]
 end
 
@@ -329,9 +324,8 @@ def display_result(dealer_total, player_total, goal_score)
   end
 end
 
-def player_bust?(player_total, dealer_total, goal_score)
+def player_bust?(player_total, goal_score)
   if player_total > goal_score
-    display_result(dealer_total, player_total, goal_score)
     true
   else
     puts messages("you_stayed", player_total)
@@ -339,10 +333,9 @@ def player_bust?(player_total, dealer_total, goal_score)
   end
 end
 
-def dealer_bust?(dealer_total, player_total, goal_score)
+def dealer_bust?(dealer_total, goal_score)
   if dealer_total > goal_score
     puts messages("dealer_total", dealer_total)
-    display_result(dealer_total, player_total, goal_score)
     true
   else
     puts messages("dealer_stay", dealer_total)
@@ -350,23 +343,13 @@ def dealer_bust?(dealer_total, player_total, goal_score)
   end
 end
 
-def bust_sequence(score, dealer_cards, player_cards, dealer_total,
-                  player_total, goal_score)
-  update_score(score, dealer_total, player_total, goal_score)
-  display_final_result(dealer_cards, player_cards, dealer_total, player_total,
-                       goal_score, score)
-end
-
-def no_bust_sequence(score, dealer_cards, player_cards, dealer_total,
-                     player_total, goal_score)
+def end_round_sequence(score, dealer_total, player_total, goal_score)
   update_score(score, dealer_total, player_total, goal_score)
   display_result(dealer_total, player_total, goal_score)
-  display_final_result(dealer_cards, player_cards, dealer_total, player_total,
-                       goal_score, score)
 end
 
 def display_final_result(dealer_cards, player_cards, dealer_total,
-                         player_total, _goal_score, score)
+                         player_total, score)
   display_scoreboard(score)
   puts messages("final_dealer_hand")
   display_cards(dealer_cards)
@@ -474,25 +457,30 @@ loop do
     player_cards, player_total = player_turn(deck, player_cards, goal_score,
                                              player_total)
 
-    if player_bust?(player_total, dealer_total, goal_score)
-      bust_sequence(score, dealer_cards, player_cards, dealer_total,
-                    player_total, goal_score)
+    if player_bust?(player_total, goal_score)
+      end_round_sequence(score, dealer_total, player_total, goal_score)
+      display_final_result(dealer_cards, player_cards,
+                           dealer_total, player_total,
+                           score)
       break unless continue?(name, score, goal_score)
       next
     end
-    add_suspense
+
     dealer_total = dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
     add_suspense
 
-    if dealer_bust?(dealer_total, player_total, goal_score)
-      bust_sequence(score, dealer_cards, player_cards, dealer_total,
-                    player_total, goal_score)
+    if dealer_bust?(dealer_total, goal_score)
+      end_round_sequence(score, dealer_total, player_total, goal_score)
+      display_final_result(dealer_cards, player_cards,
+                           dealer_total, player_total,
+                           score)
       break unless continue?(name, score, goal_score)
       next
     end
 
-    no_bust_sequence(score, dealer_cards, player_cards, dealer_total,
-                     player_total, goal_score)
+    end_round_sequence(score, dealer_total, player_total, goal_score)
+    display_final_result(dealer_cards, player_cards, dealer_total, player_total,
+                         score)
     break unless continue?(name, score, goal_score)
   end
   display_scoreboard(score)
