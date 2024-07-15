@@ -192,15 +192,15 @@ def total(cards, goal_score)
   sum
 end
 
-def display_initial_cards_data(player_cards, dealer_cards, goal_score)
+def display_initial_cards_data(player_cards, dealer_cards, player_total,
+                               _dealer_total, _goal_score)
   sleep 0.3
   puts messages("dealer_hand")
   display_cards([dealer_cards[0]], show_hidden: true)
   puts messages("initial_dealer", format_cards([dealer_cards[0]]))
   puts messages("player_hand")
   display_cards(player_cards)
-  puts messages("initial_player", format_cards(player_cards),
-                total(player_cards, goal_score))
+  puts messages("initial_player", format_cards(player_cards), player_total)
 end
 
 def distribute_cards(deck, player_cards, dealer_cards, goal_score)
@@ -208,7 +208,11 @@ def distribute_cards(deck, player_cards, dealer_cards, goal_score)
     player_cards << deck.pop
     dealer_cards << deck.pop
   end
-  display_initial_cards_data(player_cards, dealer_cards, goal_score)
+  player_total = total(player_cards, goal_score)
+  dealer_total = total(dealer_cards, goal_score)
+  display_initial_cards_data(player_cards, dealer_cards, player_total,
+                             dealer_total, goal_score)
+  [player_total, dealer_total]
 end
 
 def player_decision
@@ -246,41 +250,44 @@ end
 
 def player_hit(deck, player_cards, goal_score)
   player_cards << deck.pop
+  player_total = total(player_cards, goal_score)
   puts messages("you_hit")
-  puts messages("updated_player", format_cards(player_cards),
-                total(player_cards, goal_score))
+  puts messages("updated_player", format_cards(player_cards), player_total)
   display_cards(player_cards)
+  player_total
 end
 
 def busted?(cards, goal_score)
   total(cards, goal_score) > goal_score
 end
 
-def player_turn(deck, player_cards, goal_score)
+def player_turn(deck, player_cards, goal_score, player_total)
   loop do
     case player_decision
     when "h", "hit"
-      player_hit(deck, player_cards, goal_score)
-      if busted?(player_cards, goal_score)
-        return [deck, player_cards]
-      end
+      player_total = player_hit(deck, player_cards, goal_score)
+      return [player_cards, player_total] if player_total > goal_score
     when "s", "stay"
-      return [deck, player_cards]
+      return [player_cards, player_total]
     end
   end
 end
 
 def dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
   puts messages("dealer_turn")
+  dealer_total = total(dealer_cards, goal_score)
 
   loop do
-    break if total(dealer_cards, goal_score) >= dealer_stays
+    break if dealer_total >= dealer_stays
 
     puts messages("dealer_hit")
     dealer_cards << deck.pop
+    dealer_total = total(dealer_cards, goal_score)
     sleep 0.3
     puts messages("updated_dealer_cards", format_cards(dealer_cards))
   end
+
+  dealer_total
 end
 
 def add_suspense
@@ -292,10 +299,7 @@ def add_suspense
   puts "."
 end
 
-def detect_result(dealer_cards, player_cards, goal_score)
-  player_total = total(player_cards, goal_score)
-  dealer_total = total(dealer_cards, goal_score)
-
+def detect_result(dealer_total, player_total, goal_score)
   if player_total > goal_score
     :player_busted
   elsif dealer_total > goal_score
@@ -309,8 +313,8 @@ def detect_result(dealer_cards, player_cards, goal_score)
   end
 end
 
-def display_result(dealer_cards, player_cards, goal_score)
-  result = detect_result(dealer_cards, player_cards, goal_score)
+def display_result(dealer_total, player_total, goal_score)
+  result = detect_result(dealer_total, player_total, goal_score)
   case result
   when :player_busted
     puts(messages("round_result")["you_busted"])
@@ -325,53 +329,56 @@ def display_result(dealer_cards, player_cards, goal_score)
   end
 end
 
-def player_bust?(player_cards, dealer_cards, goal_score)
-  if busted?(player_cards, goal_score)
-    display_result(dealer_cards, player_cards, goal_score)
+def player_bust?(player_total, dealer_total, goal_score)
+  if player_total > goal_score
+    display_result(dealer_total, player_total, goal_score)
     true
   else
-    puts messages("you_stayed", total(player_cards, goal_score))
+    puts messages("you_stayed", player_total)
     false
   end
 end
 
-def dealer_bust?(dealer_cards, player_cards, goal_score)
-  if busted?(dealer_cards, goal_score)
-    puts messages("dealer_total", total(dealer_cards, goal_score))
-    display_result(dealer_cards, player_cards, goal_score)
+def dealer_bust?(dealer_total, player_total, goal_score)
+  if dealer_total > goal_score
+    puts messages("dealer_total", dealer_total)
+    display_result(dealer_total, player_total, goal_score)
     true
   else
-    puts messages("dealer_stay", total(dealer_cards, goal_score))
+    puts messages("dealer_stay", dealer_total)
     false
   end
 end
 
-def bust_sequence(score, dealer_cards, player_cards, goal_score)
-  update_score(score, dealer_cards, player_cards, goal_score)
-  display_final_result(dealer_cards, player_cards, goal_score, score)
+def bust_sequence(score, dealer_cards, player_cards, dealer_total,
+                  player_total, goal_score)
+  update_score(score, dealer_total, player_total, goal_score)
+  display_final_result(dealer_cards, player_cards, dealer_total, player_total,
+                       goal_score, score)
 end
 
-def no_bust_sequence(score, dealer_cards, player_cards, goal_score)
-  update_score(score, dealer_cards, player_cards, goal_score)
-  display_result(dealer_cards, player_cards, goal_score)
-  display_final_result(dealer_cards, player_cards, goal_score, score)
+def no_bust_sequence(score, dealer_cards, player_cards, dealer_total,
+                     player_total, goal_score)
+  update_score(score, dealer_total, player_total, goal_score)
+  display_result(dealer_total, player_total, goal_score)
+  display_final_result(dealer_cards, player_cards, dealer_total, player_total,
+                       goal_score, score)
 end
 
-def display_final_result(dealer_cards, player_cards, goal_score, score)
+def display_final_result(dealer_cards, player_cards, dealer_total,
+                         player_total, _goal_score, score)
   display_scoreboard(score)
   puts messages("final_dealer_hand")
   display_cards(dealer_cards)
-  puts messages("final_dealer_total", format_cards(dealer_cards),
-                total(dealer_cards, goal_score))
+  puts messages("final_dealer_total", format_cards(dealer_cards), dealer_total)
   puts messages("final_player_hand")
   display_cards(player_cards)
-  puts messages("final_player_total", format_cards(player_cards),
-                total(player_cards, goal_score))
+  puts messages("final_player_total", format_cards(player_cards), player_total)
   puts messages("separator")
 end
 
-def update_score(score, dealer_cards, player_cards, goal_score)
-  win = detect_result(dealer_cards, player_cards, goal_score)
+def update_score(score, dealer_total, player_total, goal_score)
+  win = detect_result(dealer_total, player_total, goal_score)
   if win == :player || win == :dealer_busted
     score[:player] += 1
   elsif win == :dealer || win == :player_busted
@@ -462,25 +469,30 @@ loop do
     deck = initialize_deck
     player_cards = []
     dealer_cards = []
-    distribute_cards(deck, player_cards, dealer_cards, goal_score)
-    deck, player_cards = player_turn(deck, player_cards, goal_score)
+    player_total, dealer_total = distribute_cards(deck, player_cards,
+                                                  dealer_cards, goal_score)
+    player_cards, player_total = player_turn(deck, player_cards, goal_score,
+                                             player_total)
 
-    if player_bust?(player_cards, dealer_cards, goal_score)
-      bust_sequence(score, dealer_cards, player_cards, goal_score)
+    if player_bust?(player_total, dealer_total, goal_score)
+      bust_sequence(score, dealer_cards, player_cards, dealer_total,
+                    player_total, goal_score)
       break unless continue?(name, score, goal_score)
       next
     end
     add_suspense
-    dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
+    dealer_total = dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
     add_suspense
 
-    if dealer_bust?(dealer_cards, player_cards, goal_score)
-      bust_sequence(score, dealer_cards, player_cards, goal_score)
+    if dealer_bust?(dealer_total, player_total, goal_score)
+      bust_sequence(score, dealer_cards, player_cards, dealer_total,
+                    player_total, goal_score)
       break unless continue?(name, score, goal_score)
       next
     end
 
-    no_bust_sequence(score, dealer_cards, player_cards, goal_score)
+    no_bust_sequence(score, dealer_cards, player_cards, dealer_total,
+                     player_total, goal_score)
     break unless continue?(name, score, goal_score)
   end
   display_scoreboard(score)
