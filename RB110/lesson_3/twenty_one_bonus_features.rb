@@ -26,6 +26,13 @@ def starred_message(key, *args)
   puts("* #{message} *")
 end
 
+def add_suspense
+  3.times do
+    sleep 0.5
+    puts "."
+  end
+end
+
 def get_name
   system "clear"
   loop do
@@ -128,7 +135,7 @@ def initialize_deck
   SUITS.product(VALUES).shuffle
 end
 
-def generate_card_lines(card)
+def display_card_lines(card)
   suit, value = card
   [
     "┌─────┐",
@@ -140,7 +147,7 @@ def generate_card_lines(card)
 end
 
 def display_cards(cards, display_hidden: false)
-  card_lines = cards.map { |card| generate_card_lines(card) }
+  card_lines = cards.map { |card| display_card_lines(card) }
 
   if display_hidden
     hidden_card_lines = messages("hidden_card").split("\n")
@@ -169,6 +176,30 @@ def display_suit_text(suit)
   when "♣" then "Clubs"
   when "♦" then "Diamonds"
   else "?"
+  end
+end
+
+def format_card(card)
+  "#{display_value_text(card[1])} of #{display_suit_text(card[0])}"
+end
+
+def format_two_cards(cards)
+  [
+    format_card(cards[0]),
+    "and",
+    format_card(cards[1])
+  ].join(" ")
+end
+
+def format_multiple_cards(cards)
+  cards.map { |card| format_card(card) }.join(", ")
+end
+
+def format_cards(cards)
+  if cards.size == 2
+    format_two_cards(cards)
+  else
+    format_multiple_cards(cards)
   end
 end
 
@@ -214,36 +245,12 @@ def distribute_cards(deck, player_cards, dealer_cards, goal_score)
   [player_total, dealer_total]
 end
 
-def player_hit_or_stay
+def get_hit_or_stay
   loop do
     prompt("hit_or_stay")
     decision = gets.chomp.strip.downcase
     return decision if messages("hit_stay_options").include?(decision)
     puts messages("invalid_hit_or_stay")
-  end
-end
-
-def format_card(card)
-  "#{display_value_text(card[1])} of #{display_suit_text(card[0])}"
-end
-
-def format_two_cards(cards)
-  [
-    format_card(cards[0]),
-    "and",
-    format_card(cards[1])
-  ].join(" ")
-end
-
-def format_multiple_cards(cards)
-  cards.map { |card| format_card(card) }.join(", ")
-end
-
-def format_cards(cards)
-  if cards.size == 2
-    format_two_cards(cards)
-  else
-    format_multiple_cards(cards)
   end
 end
 
@@ -262,7 +269,7 @@ end
 
 def player_turn(deck, player_cards, goal_score, player_total)
   loop do
-    case player_hit_or_stay
+    case get_hit_or_stay
     when "h", "hit"
       player_total = player_hit(deck, player_cards, goal_score)
       return [player_cards, player_total] if player_total > goal_score
@@ -287,13 +294,6 @@ def dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
   end
 
   dealer_total
-end
-
-def add_suspense
-  3.times do
-    sleep 0.5
-    puts "."
-  end
 end
 
 def detect_result(dealer_total, player_total, goal_score)
@@ -343,6 +343,15 @@ def dealer_bust?(dealer_total, goal_score)
   end
 end
 
+def update_score(score, dealer_total, player_total, goal_score)
+  win = detect_result(dealer_total, player_total, goal_score)
+  if win == :player || win == :dealer_busted
+    score[:player] += 1
+  elsif win == :dealer || win == :player_busted
+    score[:dealer] += 1
+  end
+end
+
 def end_round_sequence(score, dealer_total, player_total, goal_score)
   update_score(score, dealer_total, player_total, goal_score)
   sleep 0.7
@@ -359,15 +368,6 @@ def display_final_result(dealer_cards, player_cards, dealer_total,
   puts messages("final_player_hand")
   display_cards(player_cards)
   puts messages("final_player_total", format_cards(player_cards), player_total)
-end
-
-def update_score(score, dealer_total, player_total, goal_score)
-  win = detect_result(dealer_total, player_total, goal_score)
-  if win == :player || win == :dealer_busted
-    score[:player] += 1
-  elsif win == :dealer || win == :player_busted
-    score[:dealer] += 1
-  end
 end
 
 def grand_update(score, grand_winners)
