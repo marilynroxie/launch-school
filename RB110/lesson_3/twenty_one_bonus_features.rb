@@ -299,12 +299,10 @@ def detect_result(dealer_total, player_total, goal_score)
     :player_busted
   elsif dealer_total > goal_score
     :dealer_busted
-  elsif dealer_total < player_total
-    :player
-  elsif dealer_total > player_total
-    :dealer
-  else
+  elsif dealer_total == player_total
     :tie
+  else
+    dealer_total > player_total ? :dealer : :player
   end
 end
 
