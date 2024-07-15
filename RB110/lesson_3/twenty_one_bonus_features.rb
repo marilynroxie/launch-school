@@ -72,15 +72,6 @@ def display_rules(name)
   end
 end
 
-def goal_change?
-  loop do
-    answer = gets.chomp.strip.downcase
-    return true if messages("options_pos").include?(answer)
-    return false if messages("options_neg").include?(answer)
-    puts messages("invalid_choice")
-  end
-end
-
 def get_goal_score
   loop do
     system "clear"
@@ -94,7 +85,7 @@ def change_goal_score?(dealer_stays = DEALER_STAYS_DEFAULT,
                        goal_score = GOAL_SCORE_DEFAULT)
   system "clear"
   prompt("change_goal_score", goal_score)
-  return [dealer_stays, goal_score] unless goal_change?
+  return [dealer_stays, goal_score] unless get_answer
 
   goal_score = get_goal_score
   [goal_score - 4, goal_score]
