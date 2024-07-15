@@ -47,10 +47,10 @@ end
 def game_start(name)
   prompt("game_start")
   loop do
-    answer = gets.chomp.strip.downcase
-    if messages("options_neg").include?(answer)
+    choice = gets.chomp.strip.downcase
+    if messages("options_neg").include?(choice)
       farewell(name, GOAL_SCORE_DEFAULT)
-    elsif messages("options_pos").include?(answer)
+    elsif messages("options_pos").include?(choice)
       system "clear"
       return true
     else
@@ -81,11 +81,24 @@ def get_goal_score
   end
 end
 
+def get_choice
+  loop do
+    choice = gets.chomp.strip.downcase
+    if messages("options_neg").include?(choice)
+      return false
+    elsif messages("options_pos").include?(choice)
+      return true
+    else
+      puts messages("invalid_choice")
+    end
+  end
+end
+
 def change_goal_score?(dealer_stays = DEALER_STAYS_DEFAULT,
                        goal_score = GOAL_SCORE_DEFAULT)
   system "clear"
   prompt("change_goal_score", goal_score)
-  return [dealer_stays, goal_score] unless get_answer
+  return [dealer_stays, goal_score] unless get_choice
 
   goal_score = get_goal_score
   [goal_score - 4, goal_score]
@@ -202,10 +215,10 @@ def distribute_cards(deck, player_cards, dealer_cards, goal_score)
   [player_total, dealer_total]
 end
 
-def player_decision
+def player_hit_or_stay
   loop do
     prompt("hit_or_stay")
-    decision = gets.chomp.downcase
+    decision = gets.chomp.strip.downcase
     return decision if messages("hit_stay_options").include?(decision)
     puts messages("invalid_hit_or_stay")
   end
@@ -250,7 +263,7 @@ end
 
 def player_turn(deck, player_cards, goal_score, player_total)
   loop do
-    case player_decision
+    case player_hit_or_stay
     when "h", "hit"
       player_total = player_hit(deck, player_cards, goal_score)
       return [player_cards, player_total] if player_total > goal_score
@@ -380,39 +393,26 @@ def grand_display(score, grand_winners)
   starred_message("separator")
 end
 
-def get_answer
-  loop do
-    answer = gets.chomp.strip.downcase
-    if messages("options_neg").include?(answer)
-      return false
-    elsif messages("options_pos").include?(answer)
-      return true
-    else
-      puts messages("invalid_choice")
-    end
-  end
-end
-
 def continue?(name, score, goal_score)
   if score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
     return false
   end
 
   prompt("continue")
-  answer = get_answer
+  choice = get_choice
 
-  unless answer
+  unless choice
     farewell(name, goal_score)
   end
 
-  answer
+  choice
 end
 
 def play_again?(name, goal_score)
   prompt("play_again")
-  answer = get_answer
-  farewell(name, goal_score) unless answer
-  answer
+  choice = get_choice
+  farewell(name, goal_score) unless choice
+  choice
 end
 
 name = get_name
