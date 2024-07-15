@@ -79,15 +79,19 @@ you_hit: "You chose to hit!"
 you_stayed: "You stayed at %s"
 updated_player: |+
   Your cards are now: %s
+
   Your total is now: %s
 
-updated_dealer_cards: |+
-  Dealer's cards are now: %s
+updated_dealer_cards: "Dealer's cards are now: %s"
 dealer_total: |+
-  Dealer total is now: %s
-dealer_stay: Dealer stays at %s
+  Dealer's total is now: %s
+
+dealer_stay: |+
+  Dealer stays at %s
+
 dealer_turn: "Dealer turn..."
-dealer_hit: "Dealer hits!"
+dealer_hit: |+
+  Dealer hits!
 
 final_dealer_hand: |+
 
@@ -143,4 +147,6 @@ options_pos:
 options_neg:
   - "no"
   - "n"
-thank_you: "Thank you for playing %s, %s! Good bye!"
+thank_you: |+
+  -------------
+  Thank you for playing %s, %s! Good bye!

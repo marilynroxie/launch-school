@@ -39,7 +39,6 @@ end
 
 def farewell(name, goal_score)
   system "clear"
-  puts messages("separator")
   puts messages("thank_you", display_game_name(goal_score), name)
   exit
 end
@@ -165,10 +164,10 @@ end
 
 def display_suit_text(suit)
   case suit
-  when "\u2665" then "Hearts"
-  when "\u2660" then "Spades"
-  when "\u2663" then "Clubs"
-  when "\u2666" then "Diamonds"
+  when "♥" then "Hearts"
+  when "♠" then "Spades"
+  when "♣" then "Clubs"
+  when "♦" then "Diamonds"
   else "?"
   end
 end
@@ -284,6 +283,7 @@ def dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
     dealer_cards << deck.pop
     dealer_total = total(dealer_cards, goal_score)
     puts messages("updated_dealer_cards", format_cards(dealer_cards))
+    puts messages("dealer_total", dealer_total)
   end
 
   dealer_total
@@ -345,7 +345,9 @@ end
 
 def end_round_sequence(score, dealer_total, player_total, goal_score)
   update_score(score, dealer_total, player_total, goal_score)
+  sleep 0.7
   display_result(dealer_total, player_total, goal_score)
+  sleep 0.7
 end
 
 def display_final_result(dealer_cards, player_cards, dealer_total,
@@ -452,6 +454,7 @@ loop do
       next
     end
 
+    add_suspense
     dealer_total = dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
     add_suspense
 
