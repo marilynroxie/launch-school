@@ -263,8 +263,8 @@ def player_hit(deck, player_cards, goal_score)
   player_total
 end
 
-def busted?(cards, goal_score)
-  total(cards, goal_score) > goal_score
+def busted?(totals, goal_score)
+  totals > goal_score
 end
 
 def player_turn(deck, player_cards, goal_score, player_total)
@@ -272,7 +272,7 @@ def player_turn(deck, player_cards, goal_score, player_total)
     case get_hit_or_stay
     when "h", "hit"
       player_total = player_hit(deck, player_cards, goal_score)
-      return [player_cards, player_total] if player_total > goal_score
+      return [player_cards, player_total] if busted?(player_total, goal_score)
     when "s", "stay"
       return [player_cards, player_total]
     end
@@ -297,9 +297,9 @@ def dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
 end
 
 def detect_result(dealer_total, player_total, goal_score)
-  if player_total > goal_score
+  if busted?(player_total, goal_score)
     :player_busted
-  elsif dealer_total > goal_score
+  elsif busted?(dealer_total, goal_score)
     :dealer_busted
   elsif dealer_total == player_total
     :tie
@@ -325,7 +325,7 @@ def display_result(dealer_total, player_total, goal_score)
 end
 
 def player_bust?(player_total, goal_score)
-  if player_total > goal_score
+  if busted?(player_total, goal_score)
     true
   else
     puts messages("you_stayed", player_total)
@@ -334,8 +334,7 @@ def player_bust?(player_total, goal_score)
 end
 
 def dealer_bust?(dealer_total, goal_score)
-  if dealer_total > goal_score
-    puts messages("dealer_total", dealer_total)
+  if busted?(dealer_total, goal_score)
     true
   else
     puts messages("dealer_stay", dealer_total)
