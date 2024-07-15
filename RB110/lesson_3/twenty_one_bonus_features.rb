@@ -135,10 +135,10 @@ def generate_card_lines(card)
   ]
 end
 
-def display_cards(cards, show_hidden: false)
+def display_cards(cards, display_hidden: false)
   card_lines = cards.map { |card| generate_card_lines(card) }
 
-  if show_hidden
+  if display_hidden
     hidden_card_lines = messages("hidden_card").split("\n")
     card_lines << hidden_card_lines
   end
@@ -192,7 +192,7 @@ end
 def display_initial_cards_data(player_cards, dealer_cards, player_total)
   sleep 0.3
   puts messages("dealer_hand")
-  display_cards([dealer_cards[0]], show_hidden: true)
+  display_cards([dealer_cards[0]], display_hidden: true)
   puts messages("initial_dealer", format_cards([dealer_cards[0]]))
   puts messages("player_hand")
   display_cards(player_cards)
@@ -278,7 +278,6 @@ def dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
     puts messages("dealer_hit")
     dealer_cards << deck.pop
     dealer_total = total(dealer_cards, goal_score)
-    sleep 0.3
     puts messages("updated_dealer_cards", format_cards(dealer_cards))
   end
 
@@ -286,12 +285,10 @@ def dealer_turn(deck, dealer_cards, goal_score, dealer_stays)
 end
 
 def add_suspense
-  sleep 0.5
-  puts "."
-  sleep 0.5
-  puts "."
-  sleep 0.5
-  puts "."
+  3.times do
+    sleep 0.5
+    puts "."
+  end
 end
 
 def detect_result(dealer_total, player_total, goal_score)
