@@ -92,6 +92,7 @@ end
 
 def change_goal_score?(dealer_stays = DEALER_STAYS_DEFAULT,
                        goal_score = GOAL_SCORE_DEFAULT)
+  system "clear"
   prompt("change_goal_score", goal_score)
   return [dealer_stays, goal_score] unless goal_change?
 
