@@ -399,12 +399,19 @@ end
 def continue?(name, score, goal_score)
   return false if score[:player] == ROUNDS || score[:dealer] == ROUNDS
 
-  prompt('continue')
-  choice = ask_choice
-
-  display_farewell(name, goal_score) unless choice
-
-  choice
+  loop do
+    prompt('continue')
+    choice = gets.chomp.strip.downcase
+    if choice.empty?
+      return true
+    elsif choice == 'quit'
+      display_farewell(name, goal_score)
+      exit
+    else
+      system 'clear'
+      puts messages("invalid_choice")
+    end
+  end
 end
 
 def play_again?(name, goal_score)
@@ -426,8 +433,8 @@ grand_winners = {
 }
 
 loop do
-  dealer_stays, goal_score = choose_goal_score?(DEALER_STAYS_DEFAULT,
-                                                GOAL_SCORE_DEFAULT)
+  dealer_stays, goal_score = choose_goal_score(DEALER_STAYS_DEFAULT,
+                                               GOAL_SCORE_DEFAULT)
   round = 0
   score = { player: 0, dealer: 0 }
   until score[:player] == ROUNDS || score[:dealer] == ROUNDS
