@@ -10,7 +10,7 @@ SUITS = ["♥", "♠", "♦", "♣"]
 
 VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 
-ROUNDS = 5
+ROUNDS_TO_WIN = 5
 
 DEALER_STAYS_DEFAULT = 17
 
@@ -225,9 +225,9 @@ end
 
 def display_grand(score, grand_winners)
   sleep 0.4
-  if score[:player] == ROUNDS
+  if score[:player] == ROUNDS_TO_WIN
     puts messages('grand_winner')['player']
-  elsif score[:dealer] == ROUNDS
+  elsif score[:dealer] == ROUNDS_TO_WIN
     puts messages('grand_winner')['dealer']
   end
   starred_message('separator')
@@ -247,7 +247,7 @@ def update_goal_score(dealer_stays = DEALER_STAYS_DEFAULT,
 end
 
 def match_over?(score)
-  score[:player] == ROUNDS || score[:dealer] == ROUNDS
+  score[:player] == ROUNDS_TO_WIN || score[:dealer] == ROUNDS_TO_WIN
 end
 
 def initialize_deck
@@ -399,11 +399,11 @@ def end_round_sequence(score, dealer_total, player_total, goal_score)
 end
 
 def grand_update(score, grand_winners)
-  if score[:player] == ROUNDS
+  if score[:player] == ROUNDS_TO_WIN
     grand_winners[:player] += 1
     grand_winners[:player_streak] += 1
     grand_winners[:dealer_streak] = 0
-  elsif score[:dealer] == ROUNDS
+  elsif score[:dealer] == ROUNDS_TO_WIN
     grand_winners[:dealer] += 1
     grand_winners[:dealer_streak] += 1
     grand_winners[:player_streak] = 0
