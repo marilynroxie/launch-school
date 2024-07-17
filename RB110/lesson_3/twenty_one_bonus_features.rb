@@ -1,7 +1,6 @@
 # Todo
 # Don't have screen build up anywhere a user enters an invalid choice;
 # see continue? implementation
-# Group display_ and ask_ methods together
 
 require 'yaml'
 
@@ -54,12 +53,6 @@ def ask_name
   end
 end
 
-def display_farewell(name, goal_score)
-  clear_screen
-  puts messages('thank_you', display_game_name(goal_score), name)
-  exit
-end
-
 def ask_start(name)
   prompt('game_start')
   loop do
@@ -80,14 +73,6 @@ def ask_display_rules(name)
   input = gets.chomp
   clear_screen
   display_full_rules(name) if input.downcase == 'rules'
-end
-
-def display_full_rules(name)
-  messages('full_rules').each_line do |rule|
-    sleep 0.7
-    puts rule
-  end
-  ask_start(name)
 end
 
 def ask_goal_score
@@ -112,14 +97,28 @@ def ask_choice
   end
 end
 
-def set_goal_score(dealer_stays = DEALER_STAYS_DEFAULT,
-                      goal_score = GOAL_SCORE_DEFAULT)
-  clear_screen
-  prompt('change_goal_score', goal_score)
-  return [dealer_stays, goal_score] unless ask_choice
+def ask_hit_or_stay
+  loop do
+    prompt('hit_or_stay')
+    decision = gets.chomp.strip.downcase
+    return decision if messages('hit_stay_options').include?(decision)
 
-  goal_score = ask_goal_score
-  [goal_score - 4, goal_score]
+    puts messages('invalid_hit_or_stay')
+  end
+end
+
+def display_farewell(name, goal_score)
+  clear_screen
+  puts messages('thank_you', display_game_name(goal_score), name)
+  exit
+end
+
+def display_full_rules(name)
+  messages('full_rules').each_line do |rule|
+    sleep 0.7
+    puts rule
+  end
+  ask_start(name)
 end
 
 def display_game_name(goal_score)
@@ -132,10 +131,6 @@ def display_game_name(goal_score)
   end
 end
 
-def match_over?(score)
-  score[:player] == ROUNDS || score[:dealer] == ROUNDS
-end
-
 def display_scoreboard(score)
   starred_message('separator')
   puts messages('scoreboard', score[:player], score[:dealer])
@@ -145,10 +140,6 @@ end
 def display_round_data(round, goal_score, score)
   puts messages('round', display_game_name(goal_score), round)
   display_scoreboard(score)
-end
-
-def initialize_deck
-  SUITS.product(VALUES).shuffle
 end
 
 def display_card_lines(card)
@@ -193,6 +184,74 @@ def display_suit_text(suit)
   when '♦' then 'Diamonds'
   else '?'
   end
+end
+
+def display_initial_cards_data(player_cards, dealer_cards, player_total)
+  sleep 0.3
+  puts messages('dealer_hand')
+  display_cards([dealer_cards[0]], display_hidden: true)
+  puts messages('initial_dealer', format_cards([dealer_cards[0]]))
+  puts messages('player_hand')
+  display_cards(player_cards)
+  puts messages('initial_player', format_cards(player_cards), player_total)
+end
+
+def display_result(dealer_total, player_total, goal_score)
+  result = detect_result(dealer_total, player_total, goal_score)
+  case result
+  when :player_busted
+    puts(messages('round_result')['you_busted'])
+  when :dealer_busted
+    puts(messages('round_result')['dealer_busted'])
+  when :player
+    puts(messages('round_result')['you_win'])
+  when :dealer
+    puts(messages('round_result')['dealer_wins'])
+  when :tie
+    puts(messages('round_result')['tie'])
+  end
+end
+
+def display_final_result(dealer_cards, player_cards, dealer_total,
+                         player_total, score)
+  display_scoreboard(score)
+  puts messages('final_dealer_hand')
+  display_cards(dealer_cards)
+  puts messages('final_dealer_total', format_cards(dealer_cards), dealer_total)
+  puts messages('final_player_hand')
+  display_cards(player_cards)
+  puts messages('final_player_total', format_cards(player_cards), player_total)
+end
+
+def display_grand(score, grand_winners)
+  sleep 0.4
+  if score[:player] == ROUNDS
+    puts messages('grand_winner')['player']
+  elsif score[:dealer] == ROUNDS
+    puts messages('grand_winner')['dealer']
+  end
+  starred_message('separator')
+  puts messages('total_grand_winners', grand_winners[:player],
+                grand_winners[:dealer])
+  starred_message('separator')
+end
+
+def set_goal_score(dealer_stays = DEALER_STAYS_DEFAULT,
+                      goal_score = GOAL_SCORE_DEFAULT)
+  clear_screen
+  prompt('change_goal_score', goal_score)
+  return [dealer_stays, goal_score] unless ask_choice
+
+  goal_score = ask_goal_score
+  [goal_score - 4, goal_score]
+end
+
+def match_over?(score)
+  score[:player] == ROUNDS || score[:dealer] == ROUNDS
+end
+
+def initialize_deck
+  SUITS.product(VALUES).shuffle
 end
 
 def format_card(card)
@@ -240,16 +299,6 @@ def total(cards, goal_score)
   sum
 end
 
-def display_initial_cards_data(player_cards, dealer_cards, player_total)
-  sleep 0.3
-  puts messages('dealer_hand')
-  display_cards([dealer_cards[0]], display_hidden: true)
-  puts messages('initial_dealer', format_cards([dealer_cards[0]]))
-  puts messages('player_hand')
-  display_cards(player_cards)
-  puts messages('initial_player', format_cards(player_cards), player_total)
-end
-
 def distribute_cards(deck, player_cards, dealer_cards, goal_score)
   2.times do
     player_cards << deck.pop
@@ -259,16 +308,6 @@ def distribute_cards(deck, player_cards, dealer_cards, goal_score)
   dealer_total = total(dealer_cards, goal_score)
   display_initial_cards_data(player_cards, dealer_cards, player_total)
   [player_total, dealer_total]
-end
-
-def ask_hit_or_stay
-  loop do
-    prompt('hit_or_stay')
-    decision = gets.chomp.strip.downcase
-    return decision if messages('hit_stay_options').include?(decision)
-
-    puts messages('invalid_hit_or_stay')
-  end
 end
 
 def player_hit(deck, player_cards, goal_score)
@@ -325,22 +364,6 @@ def detect_result(dealer_total, player_total, goal_score)
   end
 end
 
-def display_result(dealer_total, player_total, goal_score)
-  result = detect_result(dealer_total, player_total, goal_score)
-  case result
-  when :player_busted
-    puts(messages('round_result')['you_busted'])
-  when :dealer_busted
-    puts(messages('round_result')['dealer_busted'])
-  when :player
-    puts(messages('round_result')['you_win'])
-  when :dealer
-    puts(messages('round_result')['dealer_wins'])
-  when :tie
-    puts(messages('round_result')['tie'])
-  end
-end
-
 def player_bust?(player_total, goal_score)
   if busted?(player_total, goal_score)
     true
@@ -375,17 +398,6 @@ def end_round_sequence(score, dealer_total, player_total, goal_score)
   sleep 0.7
 end
 
-def display_final_result(dealer_cards, player_cards, dealer_total,
-                         player_total, score)
-  display_scoreboard(score)
-  puts messages('final_dealer_hand')
-  display_cards(dealer_cards)
-  puts messages('final_dealer_total', format_cards(dealer_cards), dealer_total)
-  puts messages('final_player_hand')
-  display_cards(player_cards)
-  puts messages('final_player_total', format_cards(player_cards), player_total)
-end
-
 def grand_update(score, grand_winners)
   if score[:player] == ROUNDS
     grand_winners[:player] += 1
@@ -396,19 +408,6 @@ def grand_update(score, grand_winners)
     grand_winners[:dealer_streak] += 1
     grand_winners[:player_streak] = 0
   end
-end
-
-def grand_display(score, grand_winners)
-  sleep 0.4
-  if score[:player] == ROUNDS
-    puts messages('grand_winner')['player']
-  elsif score[:dealer] == ROUNDS
-    puts messages('grand_winner')['dealer']
-  end
-  starred_message('separator')
-  puts messages('total_grand_winners', grand_winners[:player],
-                grand_winners[:dealer])
-  starred_message('separator')
 end
 
 def continue?(name, score, goal_score)
@@ -495,6 +494,6 @@ loop do
   end
   display_scoreboard(score)
   grand_update(score, grand_winners)
-  grand_display(score, grand_winners)
+  display_grand(score, grand_winners)
   break unless play_again?(name, goal_score)
 end
