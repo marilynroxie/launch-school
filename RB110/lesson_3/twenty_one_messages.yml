@@ -58,8 +58,6 @@ change_goal_score:
   Do you want to change the goal score to a number other than 21?
   (Y to change, N to have the goal as 21)
 enter_goal_score: "Enter the goal score as 21, 31, 41, or 51:"
-invalid_goal_score: "Invalid goal score!"
-
 round: "%s - Round %s"
 dealer_hand: "DEALER'S HAND"
 initial_dealer: |+
