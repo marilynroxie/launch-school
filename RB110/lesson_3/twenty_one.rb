@@ -1,10 +1,10 @@
-require "yaml"
+require 'yaml'
 
-MESSAGES = YAML.load_file("twenty_one_messages.yml")
+MESSAGES = YAML.load_file('twenty_one_messages.yml')
 
-SUITS = ["♠", "♥", "♦", "♣"]
+SUITS = ['♠', '♥', '♦', '♣']
 
-VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
+VALUES = %w[2 3 4 5 6 7 8 9 10 J Q K A]
 
 DEALER_STAYS = 17
 
@@ -27,13 +27,14 @@ def starred_message(key, *args)
 end
 
 def get_name
-  system "clear"
+  system 'clear'
   loop do
-    prompt("enter_name")
-    name = gets.chomp.strip.split.map(&:capitalize).join(" ")
-    system "clear"
+    prompt('enter_name')
+    name = gets.chomp.strip.split.map(&:capitalize).join(' ')
+    system 'clear'
     break name unless name.empty?
-    prompt("invalid_name")
+
+    prompt('invalid_name')
   end
 end
 
@@ -46,50 +47,49 @@ def distribute_cards(deck, player_cards, dealer_cards)
     player_cards << deck.pop
     dealer_cards << deck.pop
   end
-  puts messages("initial_dealer", dealer_cards[0])
-  puts messages("initial_player", player_cards[0], player_cards[1],
+  puts messages('initial_dealer', dealer_cards[0])
+  puts messages('initial_player', player_cards[0], player_cards[1],
                 total(player_cards))
-  return player_cards, dealer_cards
+  [player_cards, dealer_cards]
 end
 
 def player_decision
   loop do
-    prompt("hit_or_stay")
+    prompt('hit_or_stay')
     decision = gets.chomp.downcase
-    return decision if ["h", "s"].include?(decision)
-    puts messages("invalid_hit_or_stay")
+    return decision if %w[h s].include?(decision)
+
+    puts messages('invalid_hit_or_stay')
   end
 end
 
 def player_hit(deck, player_cards)
   player_cards << deck.pop
-  puts messages("you_hit")
-  puts messages("updated_player", player_cards, total(player_cards))
+  puts messages('you_hit')
+  puts messages('updated_player', player_cards, total(player_cards))
 end
 
 def hit_stay(deck, player_cards)
   loop do
     player_turn = player_decision
 
-    if player_turn == "h"
-      player_hit(deck, player_cards)
-    end
+    player_hit(deck, player_cards) if player_turn == 'h'
 
-    break if player_turn == "s" || busted?(player_cards)
+    break if player_turn == 's' || busted?(player_cards)
   end
   [deck, player_cards]
 end
 
 def dealer_turn(deck, dealer_cards)
-  puts messages("dealer_turn")
+  puts messages('dealer_turn')
 
   loop do
     break if total(dealer_cards) >= DEALER_STAYS
 
-    puts messages("dealer_hit")
+    puts messages('dealer_hit')
     dealer_cards << deck.pop
     sleep 0.3
-    puts messages("updated_dealer_cards", dealer_cards)
+    puts messages('updated_dealer_cards', dealer_cards)
   end
 end
 
@@ -98,7 +98,7 @@ def total(cards)
 
   sum = 0
   values.each do |value|
-    sum += if value == "A"
+    sum += if value == 'A'
              11
            elsif value.to_i == 0
              10
@@ -107,7 +107,7 @@ def total(cards)
            end
   end
 
-  values.select { |value| value == "A" }.count.times do
+  values.select { |value| value == 'A' }.count.times do
     sum -= 10 if sum > GOAL_SCORE
   end
 
@@ -140,15 +140,15 @@ def display_result(dealer_cards, player_cards)
   sleep 0.3
   case result
   when :player_busted
-    puts(messages("round_result")["you_busted"])
+    puts(messages('round_result')['you_busted'])
   when :dealer_busted
-    puts(messages("round_result")["dealer_busted"])
+    puts(messages('round_result')['dealer_busted'])
   when :player
-    puts(messages("round_result")["you_win"])
+    puts(messages('round_result')['you_win'])
   when :dealer
-    puts(messages("round_result")["dealer_wins"])
+    puts(messages('round_result')['dealer_wins'])
   when :tie
-    puts(messages("round_result")["tie"])
+    puts(messages('round_result')['tie'])
   end
 end
 
@@ -157,58 +157,58 @@ def player_bust?(player_cards, dealer_cards)
     display_result(dealer_cards, player_cards)
     true
   else
-    puts messages("you_stayed", total(player_cards))
+    puts messages('you_stayed', total(player_cards))
     false
   end
 end
 
 def dealer_bust?(dealer_cards, player_cards)
   if busted?(dealer_cards)
-    puts messages("dealer_total", total(dealer_cards))
+    puts messages('dealer_total', total(dealer_cards))
     display_result(dealer_cards, player_cards)
     true
   else
-    puts messages("dealer_stay", total(dealer_cards))
+    puts messages('dealer_stay', total(dealer_cards))
     false
   end
 end
 
 def display_final_result(dealer_cards, player_cards)
-  puts messages("separator")
-  puts messages("final_dealer_total", dealer_cards, total(dealer_cards))
-  puts messages("final_player_total", player_cards, total(player_cards))
-  puts messages("separator")
+  puts messages('separator')
+  puts messages('final_dealer_total', dealer_cards, total(dealer_cards))
+  puts messages('final_player_total', player_cards, total(player_cards))
+  puts messages('separator')
 
   display_result(dealer_cards, player_cards)
 end
 
 def farewell(name)
-  system "clear"
-  puts messages("separator")
-  puts messages("thank_you", name)
+  system 'clear'
+  puts messages('separator')
+  puts messages('thank_you', name)
 end
 
 def play_again?(name)
   loop do
-    puts ""
-    puts messages("separator")
-    prompt("play_again")
+    puts ''
+    puts messages('separator')
+    prompt('play_again')
     answer = gets.chomp.strip.downcase
-    if messages("options_neg").include?(answer)
+    if messages('options_neg').include?(answer)
       farewell(name)
       return false
-    elsif messages("options_pos").include?(answer)
+    elsif messages('options_pos').include?(answer)
       return true
     else
-      system "clear"
-      puts messages("invalid_choice")
+      system 'clear'
+      puts messages('invalid_choice')
     end
   end
 end
 
 name = get_name
-system "clear"
-puts messages("welcome", name)
+system 'clear'
+puts messages('welcome', name)
 
 loop do
   deck = initialize_deck
@@ -220,6 +220,7 @@ loop do
 
   if player_bust?(player_cards, dealer_cards)
     next if play_again?(name)
+
     break
   end
 
@@ -227,6 +228,7 @@ loop do
 
   if dealer_bust?(dealer_cards, player_cards)
     next if play_again?(name)
+
     break
   end
 
