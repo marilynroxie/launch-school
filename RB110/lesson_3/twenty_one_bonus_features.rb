@@ -2,9 +2,9 @@ require 'yaml'
 
 MESSAGES = YAML.load_file('twenty_one_messages.yml')
 
-SUITS = ['♥', '♠', '♦', '♣'].freeze
+SUITS = ["♥", "♠", "♦", "♣"]
 
-VALUES = %w(2 3 4 5 6 7 8 9 10 J Q K A).freeze
+VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
 
 ROUNDS = 5
 
@@ -71,12 +71,15 @@ def ask_start(name)
 end
 
 def display_rules(name)
-  prompt('rules_question')
+  messages('small_rules').each_line do |rule|
+    sleep 0.7
+    puts rule
+  end
   input = gets.chomp
   clear_screen
   return unless input.downcase == 'rules'
 
-  messages('rules').each_line do |rule|
+  messages('full_rules').each_line do |rule|
     sleep 0.7
     puts rule
   end

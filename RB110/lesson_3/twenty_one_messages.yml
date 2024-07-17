@@ -3,8 +3,21 @@ invalid_name: "Please enter a valid name."
 
 welcome: "Welcome to Twenty-One, %s!"
 
-rules_question: "Type 'rules' to read the rules. Press any other key to skip rules and start the game."
-rules: |+
+small_rules: |+
+
+  The goal of Twenty-One is to try to get as close to 21 as possible, without going over.
+
+  You win the round either if you have a higher total than the dealer without "busting", or if the dealer busts.
+
+  If you go over 21, it's a "bust" and you lose!
+
+  If the dealer goes over 21, they "bust" and you win!
+
+  Win five rounds in this match to become the Grand Winner!
+
+  => Type 'rules' to read the full rules. Press any other key to skip rules and start the game.
+
+full_rules: |+
 
   Rules:
 
