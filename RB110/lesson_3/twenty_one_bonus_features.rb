@@ -236,7 +236,7 @@ def display_grand(score, grand_winners)
   starred_message('separator')
 end
 
-def set_goal_score(dealer_stays = DEALER_STAYS_DEFAULT,
+def update_goal_score(dealer_stays = DEALER_STAYS_DEFAULT,
                       goal_score = GOAL_SCORE_DEFAULT)
   clear_screen
   prompt('change_goal_score', goal_score)
@@ -447,7 +447,7 @@ grand_winners = {
 }
 
 loop do
-  dealer_stays, goal_score = set_goal_score(DEALER_STAYS_DEFAULT,
+  dealer_stays, goal_score = update_goal_score(DEALER_STAYS_DEFAULT,
                                                GOAL_SCORE_DEFAULT)
   round = 0
   score = { player: 0, dealer: 0 }
