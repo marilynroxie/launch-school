@@ -33,7 +33,7 @@ def add_suspense
   end
 end
 
-def get_name
+def ask_name
   system 'clear'
   loop do
     prompt('enter_name')
@@ -45,18 +45,18 @@ def get_name
   end
 end
 
-def farewell(name, goal_score)
+def display_farewell(name, goal_score)
   system 'clear'
   puts messages('thank_you', display_game_name(goal_score), name)
   exit
 end
 
-def game_start(name)
+def ask_start(name)
   prompt('game_start')
   loop do
     choice = gets.chomp.strip.downcase
     if messages('options_neg').include?(choice)
-      farewell(name, GOAL_SCORE_DEFAULT)
+      display_farewell(name, GOAL_SCORE_DEFAULT)
     elsif messages('options_pos').include?(choice)
       system 'clear'
       return true
@@ -76,10 +76,10 @@ def display_rules(name)
     sleep 0.7
     puts rule
   end
-  game_start(name)
+  ask_start(name)
 end
 
-def get_goal_score
+def ask_goal_score
   loop do
     system 'clear'
     prompt('enter_goal_score')
@@ -88,7 +88,7 @@ def get_goal_score
   end
 end
 
-def get_choice
+def ask_choice
   loop do
     choice = gets.chomp.strip.downcase
     if messages('options_neg').include?(choice)
@@ -101,13 +101,13 @@ def get_choice
   end
 end
 
-def change_goal_score?(dealer_stays = DEALER_STAYS_DEFAULT,
-                       goal_score = GOAL_SCORE_DEFAULT)
+def choose_goal_score(dealer_stays = DEALER_STAYS_DEFAULT,
+                      goal_score = GOAL_SCORE_DEFAULT)
   system 'clear'
   prompt('change_goal_score', goal_score)
-  return [dealer_stays, goal_score] unless get_choice
+  return [dealer_stays, goal_score] unless ask_choice
 
-  goal_score = get_goal_score
+  goal_score = ask_goal_score
   [goal_score - 4, goal_score]
 end
 
@@ -246,7 +246,7 @@ def distribute_cards(deck, player_cards, dealer_cards, goal_score)
   [player_total, dealer_total]
 end
 
-def get_hit_or_stay
+def ask_hit_or_stay
   loop do
     prompt('hit_or_stay')
     decision = gets.chomp.strip.downcase
@@ -271,7 +271,7 @@ end
 
 def player_turn(deck, player_cards, goal_score, player_total)
   loop do
-    case get_hit_or_stay
+    case ask_hit_or_stay
     when 'h', 'hit'
       player_total = player_hit(deck, player_cards, goal_score)
       return [player_cards, player_total] if busted?(player_total, goal_score)
@@ -400,21 +400,21 @@ def continue?(name, score, goal_score)
   return false if score[:player] == ROUNDS || score[:dealer] == ROUNDS
 
   prompt('continue')
-  choice = get_choice
+  choice = ask_choice
 
-  farewell(name, goal_score) unless choice
+  display_farewell(name, goal_score) unless choice
 
   choice
 end
 
 def play_again?(name, goal_score)
   prompt('play_again')
-  choice = get_choice
-  farewell(name, goal_score) unless choice
+  choice = ask_choice
+  display_farewell(name, goal_score) unless choice
   choice
 end
 
-name = get_name
+name = ask_name
 system 'clear'
 puts messages('welcome', name)
 display_rules(name)
@@ -426,7 +426,7 @@ grand_winners = {
 }
 
 loop do
-  dealer_stays, goal_score = change_goal_score?(DEALER_STAYS_DEFAULT,
+  dealer_stays, goal_score = choose_goal_score?(DEALER_STAYS_DEFAULT,
                                                 GOAL_SCORE_DEFAULT)
   round = 0
   score = { player: 0, dealer: 0 }
