@@ -462,7 +462,7 @@ loop do
                                                   dealer_cards, goal_score)
     player_cards, player_total = player_turn(deck, player_cards, goal_score,
                                              player_total)
-
+    clear_screen
     if player_bust?(player_total, goal_score)
       end_round_sequence(score, dealer_total, player_total, goal_score)
       display_final_result(dealer_cards, player_cards,
