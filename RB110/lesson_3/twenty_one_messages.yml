@@ -111,7 +111,7 @@ round_result:
   dealer_wins: "Dealer wins!"
   tie: "It's a tie!"
 
-continue: "Continue? (Press enter to continue. Type 'quit' to exit the game entirely)"
+continue: "Continue? (Press enter to continue. Type 'quit' or 'q' to exit the game entirely)"
 invalid_choice: "Sorry, that's not a valid choice."
 
 scoreboard: "Match Scoreboard: Player: %s | Dealer: %s"

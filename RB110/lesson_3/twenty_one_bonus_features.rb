@@ -33,12 +33,16 @@ def add_suspense
   end
 end
 
+def clear_screen
+  system('clear') || system('cls')
+end
+
 def ask_name
-  system 'clear'
+  clear_screen
   loop do
     prompt('enter_name')
     name = gets.chomp.strip.split.map(&:capitalize).join(' ')
-    system 'clear'
+    clear_screen
     break name unless name.empty?
 
     prompt('invalid_name')
@@ -46,7 +50,7 @@ def ask_name
 end
 
 def display_farewell(name, goal_score)
-  system 'clear'
+  clear_screen
   puts messages('thank_you', display_game_name(goal_score), name)
   exit
 end
@@ -58,7 +62,7 @@ def ask_start(name)
     if messages('options_neg').include?(choice)
       display_farewell(name, GOAL_SCORE_DEFAULT)
     elsif messages('options_pos').include?(choice)
-      system 'clear'
+      clear_screen
       return true
     else
       puts messages('invalid_choice')
@@ -69,7 +73,7 @@ end
 def display_rules(name)
   prompt('rules_question')
   input = gets.chomp
-  system 'clear'
+  clear_screen
   return unless input.downcase == 'rules'
 
   messages('rules').each_line do |rule|
@@ -81,7 +85,7 @@ end
 
 def ask_goal_score
   loop do
-    system 'clear'
+    clear_screen
     prompt('enter_goal_score')
     choice = gets.chomp.to_i
     return choice if [21, 31, 41, 51].include?(choice)
@@ -103,7 +107,7 @@ end
 
 def choose_goal_score(dealer_stays = DEALER_STAYS_DEFAULT,
                       goal_score = GOAL_SCORE_DEFAULT)
-  system 'clear'
+  clear_screen
   prompt('change_goal_score', goal_score)
   return [dealer_stays, goal_score] unless ask_choice
 
@@ -404,11 +408,11 @@ def continue?(name, score, goal_score)
     choice = gets.chomp.strip.downcase
     if choice.empty?
       return true
-    elsif choice == 'quit'
+    elsif choice == 'quit' || choice == 'q'
       display_farewell(name, goal_score)
       exit
     else
-      system 'clear'
+      clear_screen
       puts messages("invalid_choice")
     end
   end
@@ -422,7 +426,7 @@ def play_again?(name, goal_score)
 end
 
 name = ask_name
-system 'clear'
+clear_screen
 puts messages('welcome', name)
 display_rules(name)
 grand_winners = {
@@ -438,7 +442,7 @@ loop do
   round = 0
   score = { player: 0, dealer: 0 }
   until score[:player] == ROUNDS || score[:dealer] == ROUNDS
-    system 'clear'
+    clear_screen
     round += 1
     display_round_data(round, goal_score, score)
     deck = initialize_deck
