@@ -70,21 +70,36 @@ def ask_start(name)
   end
 end
 
-def display_rules(name)
-  messages('small_rules').each_line do |rule|
-    sleep 0.7
-    puts rule
-  end
+def ask_display_rules(name)
+  puts messages('small_rules')
   input = gets.chomp
   clear_screen
-  return unless input.downcase == 'rules'
+  display_full_rules(name) if input.downcase == 'rules'
+end
 
+def display_full_rules(name)
   messages('full_rules').each_line do |rule|
     sleep 0.7
     puts rule
   end
   ask_start(name)
 end
+
+# def display_rules(name)
+#   messages('small_rules').each_line do |rule|
+#     sleep 0.7
+#     puts rule
+#   end
+#   input = gets.chomp
+#   clear_screen
+#   return unless input.downcase == 'rules'
+
+#   messages('full_rules').each_line do |rule|
+#     sleep 0.7
+#     puts rule
+#   end
+#   ask_start(name)
+# end
 
 def ask_goal_score
   loop do
@@ -431,7 +446,7 @@ end
 name = ask_name
 clear_screen
 puts messages('welcome', name)
-display_rules(name)
+ask_display_rules(name)
 grand_winners = {
   player: 0,
   dealer: 0,
