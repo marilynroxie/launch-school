@@ -1,7 +1,3 @@
-# Todo
-# Don't have screen build up anywhere a user enters an invalid choice;
-# see continue? implementation
-
 require 'yaml'
 
 MESSAGES = YAML.load_file('twenty_one_messages.yml')
