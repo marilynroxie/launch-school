@@ -85,22 +85,6 @@ def display_full_rules(name)
   ask_start(name)
 end
 
-# def display_rules(name)
-#   messages('small_rules').each_line do |rule|
-#     sleep 0.7
-#     puts rule
-#   end
-#   input = gets.chomp
-#   clear_screen
-#   return unless input.downcase == 'rules'
-
-#   messages('full_rules').each_line do |rule|
-#     sleep 0.7
-#     puts rule
-#   end
-#   ask_start(name)
-# end
-
 def ask_goal_score
   loop do
     clear_screen
@@ -141,6 +125,10 @@ def display_game_name(goal_score)
   when 51 then 'Fifty-One'
   else 'Whatever-One'
   end
+end
+
+def match_over?(score)
+  score[:player] == ROUNDS || score[:dealer] == ROUNDS
 end
 
 def display_scoreboard(score)
@@ -419,7 +407,7 @@ def grand_display(score, grand_winners)
 end
 
 def continue?(name, score, goal_score)
-  return false if score[:player] == ROUNDS || score[:dealer] == ROUNDS
+  return false if match_over?(score)
 
   loop do
     prompt('continue')
@@ -459,7 +447,7 @@ loop do
                                                GOAL_SCORE_DEFAULT)
   round = 0
   score = { player: 0, dealer: 0 }
-  until score[:player] == ROUNDS || score[:dealer] == ROUNDS
+  until match_over?(score)
     clear_screen
     round += 1
     display_round_data(round, goal_score, score)
