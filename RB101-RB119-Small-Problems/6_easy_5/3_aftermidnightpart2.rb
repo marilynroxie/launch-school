@@ -7,7 +7,7 @@ def after_midnight(time)
 end
 
 def before_midnight(time)
-  (MINUTES_PER_DAY - after_midnight(time)) % MINUTES_PER_DAY
+  -after_midnight(time) % MINUTES_PER_DAY
 end
 
 p after_midnight('00:00') == 0
