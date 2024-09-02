@@ -1,6 +1,7 @@
 def repeater(str)
-  str = str.split("")
-  str.each { |char| char.concat(char) }.join("")
+  str.split("").each do |char|
+    char.concat(char)
+  end.join("")
 end
 
 p repeater('Hello') == "HHeelllloo"
