@@ -1,9 +1,8 @@
-def reverse_words(str)
-  str.split.each do |word|
-    word.reverse! if word.size >= 5
-  end.join(" ")
+def reverse_sentence(str)
+  str.split.reverse.join(" ")
 end
 
-p reverse_words('Professional') == 'lanoisseforP'
-p reverse_words('Walk around the block') == 'Walk dnuora the kcolb'
-p reverse_words('Launch School') == 'hcnuaL loohcS'
+puts reverse_sentence('Hello World') == 'World Hello'
+puts reverse_sentence('Reverse these words') == 'words these Reverse'
+puts reverse_sentence('') == ''
+puts reverse_sentence('    ') == '' # Any number of spaces results in ''
