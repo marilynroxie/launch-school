@@ -6,9 +6,9 @@ def swap(str)
   str.join(" ")
 end
 
-p swap('Oh what a wonderful day it is') == 'hO thaw a londerfuw yad ti si'
-p swap('Abcde') == 'ebcdA'
-p swap('a') == 'a'
+p swap("Oh what a wonderful day it is") == "hO thaw a londerfuw yad ti si"
+p swap("Abcde") == "ebcdA"
+p swap("a") == "a"
 
 # Further Exploration
 
@@ -20,6 +20,11 @@ end
 
 # and called the method like this:
 
-swap_first_last_characters(word[0], word[-1])
+# swap_first_last_characters(word[0], word[-1])
 
 # Would this method work? Why or why not?
+word = "wonderful"
+p swap_first_last_characters(word[0], word[-1]) # ["l", "w"]
+p word # "wonderful"
+
+# This doesn't work because the caller is not mutated, thus only copies are being operated on; only the elements in an array are returned.
