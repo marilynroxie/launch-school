@@ -172,27 +172,45 @@ p to_weird_case(original) == expected
 # Understanding the Problem
 # Inputs: array of integers
 # Outputs: array of integers, two numbers representing those that are closest together in value (absolute difference)
-# Explicit: return first pair if there are multiple equally close paris
-# Implicit: no negative numbers, no empty arrays, no arr.size < 2 implied, no arr.size < 4 shown in examples, does not imply numbers that are actually next to each other, but order is maintained
+# Explicit: return first pair with respect to array order if there are multiple equally close pairs
+# Implicit: no negative numbers, no empty arrays, no arr.size < 2 implied, no arr.size < 4 shown in examples
+
+# Data structure
+# Array of pairs and returning an array of two integers derived from the original array
+
+# Algorithm
+# Create an empty pairs array storing all possible pairs
+# Iterate through the input array over elements and indices
+# Iterate through the input array again over parameters representing the next number and index that come after the first
+# Add pairs of elements to the pairs array if the second index is greater than the first
+# Return the minimum absolute value of the first element - the second element
+
+# Code
+
+def closest_numbers(arr)
+  pairs = []
+  arr.each_with_index do |num1, idx1|
+    arr.each_with_index do |num2, idx2|
+      pairs << [num1, num2] if idx2 > idx1
+    end
+  end
+
+  pairs.min_by { |a, b| (a - b).abs }
+end
 
 # Examples / Test Cases
 
-# p closest_numbers([5, 25, 15, 11, 20]) == [15, 11]
+p closest_numbers([5, 25, 15, 11, 20]) == [15, 11]
 
 # 15 - 11 = 4, closest together
 
-# p closest_numbers([19, 25, 32, 4, 27, 16]) == [25, 27]
+p closest_numbers([19, 25, 32, 4, 27, 16]) == [25, 27]
 
 # 27 - 25 = 2, closest together
 
-# p closest_numbers([12, 22, 7, 17]) == [12, 7]
+p closest_numbers([12, 22, 7, 17]) == [12, 7]
 
 # 12 - 7 = 5, closest together
-
-# Data structure
-# Array of two integers derived from the original array
-
-# Algorithm
 
 # Problem 5
 
