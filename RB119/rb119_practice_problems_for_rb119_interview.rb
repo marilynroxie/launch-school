@@ -164,3 +164,32 @@ p to_weird_case("aaA bB c") == "aaA bB c"
 original = "Mary Poppins' favorite word is supercalifragilisticexpialidocious"
 expected = "Mary Poppins' fAvOrItE word is sUpErCaLiFrAgIlIsTiCeXpIaLiDoCiOuS"
 p to_weird_case(original) == expected
+
+# Problem 4
+
+# Create a method that takes an array of integers as an argument and returns an array of two numbers that are closest together in value. If there are multiple pairs that are equally close, return the pair that occurs first in the array.
+
+# Understanding the Problem
+# Inputs: array of integers
+# Outputs: array of integers, two numbers representing those that are closest together in value (absolute diffrence)
+# Explicit: return first pair if there are multiple equally close paris
+# Implicit: no negative numbers, no empty arrays, no arr.size < 2 implied, no arr.size < 4 shown in examples, does not imply numbers that are actually next to each other, but order is maintained
+
+# Examples / Test Cases
+
+p closest_numbers([5, 25, 15, 11, 20]) == [15, 11]
+
+# 15 - 11 = 4, closest together
+
+p closest_numbers([19, 25, 32, 4, 27, 16]) == [25, 27]
+
+# 27 - 25 = 2, closest together
+
+p closest_numbers([12, 22, 7, 17]) == [12, 7]
+
+# 12 - 7 = 5, closest together
+
+# Data structure
+# Array of two integers derived from the original array
+
+# Algorithm
