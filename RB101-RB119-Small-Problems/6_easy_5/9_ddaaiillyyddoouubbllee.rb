@@ -11,3 +11,7 @@ p crunch('4444abcabccba') == '4abcabcba'
 p crunch('ggggggggggggggg') == 'g'
 p crunch('a') == 'a'
 p crunch('') == ''
+
+# Further exploration
+
+# Can you determine why we didn't use String#each_char or String#chars to iterate through the string? How would you update this method to use String#each_char or String#chars?
