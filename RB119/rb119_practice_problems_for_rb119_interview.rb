@@ -171,7 +171,7 @@ p to_weird_case(original) == expected
 
 # Understanding the Problem
 # Inputs: array of integers
-# Outputs: array of integers, two numbers representing those that are closest together in value (absolute diffrence)
+# Outputs: array of integers, two numbers representing those that are closest together in value (absolute difference)
 # Explicit: return first pair if there are multiple equally close paris
 # Implicit: no negative numbers, no empty arrays, no arr.size < 2 implied, no arr.size < 4 shown in examples, does not imply numbers that are actually next to each other, but order is maintained
 
@@ -209,6 +209,8 @@ p to_weird_case(original) == expected
 # output is string, but hash could be used to store frequencies and string can be split into an array
 
 # Algorithm
+# Form an array of every possible pair
+# Find the minimum absolute value from the pairs, maintaining order from the original array
 
 # Set a frequencies hash to 0
 # Split string into array of characters
