@@ -193,3 +193,63 @@ p closest_numbers([12, 22, 7, 17]) == [12, 7]
 # Array of two integers derived from the original array
 
 # Algorithm
+
+# Problem 5
+
+# Create a method that takes a string argument and returns the character that occurs most often in the string. If there are multiple characters with the same greatest frequency, return the one that appears first in the string. When counting characters, consider uppercase and lowercase versions to be the same.
+
+# Understanding the Problem
+
+# input: string
+# output: string (one character) representing highest frequency
+# explicit: uppercase and lowercase are treated the same, if multiple characters have same frequency return the first one
+# implicit: special characters and spaces are present in the string
+
+# Data structure
+# output is string, but hash could be used to store frequencies and string can be split into an array
+
+# Algorithm
+
+# Set a frequencies hash to 0
+# Split string into array of characters
+# Iterate through array and count each character (downcase), adding character as a key and count as a value
+# Iterate through frequencies, taking a block parameter of letter and count
+# Return the highest count that appears first in the frequencies hash
+
+# Code
+
+def most_common_char(str)
+  frequencies = Hash.new(0)
+
+  str.downcase.chars.each do |char|
+    frequencies[char] += 1
+  end
+
+  frequencies.each do |letter, count|
+    return letter if count == frequencies.values.max
+  end
+end
+
+# Examples / Test Cases
+
+p most_common_char("Hello World") == "l"
+
+# 3 ls = most common
+
+p most_common_char("Mississippi") == "i"
+
+# 4 is = most common
+
+p most_common_char("Happy birthday!") == "h"
+
+# 2 hs = most common
+
+p most_common_char("aaaaaAAAA") == "a"
+
+# all as = most common
+
+my_str = "Peter Piper picked a peck of pickled peppers."
+p most_common_char(my_str) == "p"
+
+my_str = "Peter Piper repicked a peck of repickled peppers. He did!"
+p most_common_char(my_str) == "e"
