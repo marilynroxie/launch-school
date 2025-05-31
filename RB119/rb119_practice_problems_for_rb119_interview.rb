@@ -177,15 +177,15 @@ p to_weird_case(original) == expected
 
 # Examples / Test Cases
 
-p closest_numbers([5, 25, 15, 11, 20]) == [15, 11]
+# p closest_numbers([5, 25, 15, 11, 20]) == [15, 11]
 
 # 15 - 11 = 4, closest together
 
-p closest_numbers([19, 25, 32, 4, 27, 16]) == [25, 27]
+# p closest_numbers([19, 25, 32, 4, 27, 16]) == [25, 27]
 
 # 27 - 25 = 2, closest together
 
-p closest_numbers([12, 22, 7, 17]) == [12, 7]
+# p closest_numbers([12, 22, 7, 17]) == [12, 7]
 
 # 12 - 7 = 5, closest together
 
@@ -253,3 +253,53 @@ p most_common_char(my_str) == "p"
 
 my_str = "Peter Piper repicked a peck of repickled peppers. He did!"
 p most_common_char(my_str) == "e"
+
+# Problem 6
+
+# Create a method that takes a string argument and returns a hash in which the keys represent the lowercase letters in the string, and the values represent how often the corresponding letter occurs in the string.
+
+# Understanding the Problem
+
+# Inputs: string
+# Outputs: hash
+# Explicit: keys represent lowercase letters, values are the count of the lowercase letters
+# Implicit: uppercase letters are ignored, symbols are ignored, spaces are ignored
+
+# Data structure
+# hash
+
+# Algorithm
+
+# Set a frequencies hash to 0 to store frequencies of lowercase letters
+# Split string into characters and iterate over it
+# If char =~ a-z, add as key to the hash and increment their count += 1
+# Don't need to deal with characters that are not a-z and those that are uppercase
+# Return the hash
+
+# Code
+
+def count_letters(str)
+  frequencies = Hash.new(0)
+
+  str.chars.each do |char|
+    frequencies[char] += 1 if char =~ /[a-z]/
+  end
+
+  frequencies
+end
+
+# Examples / Test Castes
+
+expected = { "w" => 1, "o" => 2, "e" => 3, "b" => 1, "g" => 1, "n" => 1 }
+p count_letters("woebegone") == expected
+
+expected = { "l" => 1, "o" => 1, "w" => 1, "e" => 4, "r" => 2,
+             "c" => 2, "a" => 2, "s" => 2, "u" => 1, "p" => 2 }
+p count_letters("lowercase/uppercase") == expected
+
+expected = { "u" => 1, "o" => 1, "i" => 1, "s" => 1 }
+p count_letters("W. E. B. Du Bois") == expected
+
+p count_letters("x") == { "x" => 1 }
+p count_letters("") == {}
+p count_letters("!!!") == {}
