@@ -436,7 +436,6 @@ def longest_vowel_substring(str)
   substrings.empty? ? 0 : substrings.max_by { |x| x.length }.count
 end
 
-p "processing"
 # Examples / test cases
 
 p longest_vowel_substring("cwm") == 0
@@ -511,7 +510,6 @@ def count_substrings(str1, str2)
   count
 end
 
-p "processing"
 # Examples / Test Cases
 
 p count_substrings("babab", "bab") == 1
@@ -545,3 +543,56 @@ p count_substrings("bbbaabbbbaab", "bbaab") == 2
 p count_substrings("bbbaabbbbaabb", "bbbaabb") == 1
 
 # "bbbaabb" is found once
+
+# Problem 10
+
+# Create a method that takes a string of digits as an argument and returns the number of even-numbered substrings that can be formed. For example, in the case of '1432', the even-numbered substrings are '14', '1432', '4', '432', '32', and '2', for a total of 6 substrings.
+
+# If a substring occurs more than once, you should count each occurrence as a separate substring.
+
+# Understanding the Problem
+
+# Inputs: String (representing a number, but not given as integer)
+# Outputs: Integer (representing count of seven substrings)
+# Implicit: No empty strings given as argument, count will never be less than 0
+# Explicit: Duplicate substrings are counted
+
+# Data structure
+# Array representing string split into elements, then integer representing count
+
+# Algorithm
+# Split string into characters
+# Initialize an empty array of substrings
+# From the start to the end of the array -1 to avoid going out of bounds
+# add str[start..ending] if str[ending].to_i.even? to substrings
+# count substrings array at the end
+
+# Code
+
+def even_substrings(str)
+  str = str.chars
+  substrings = []
+
+  0.upto(str.length - 1) do |start|
+    start.upto(str.length - 1) do |ending|
+      substrings << str[start..ending].join if str[ending].to_i.even?
+    end
+  end
+  substrings.count
+end
+
+# Examples / Test Cases
+
+p even_substrings("1432") == 6
+
+# '14', '1432', '4', '432', '32', and '2'
+
+p even_substrings("3145926") == 16
+
+p even_substrings("2718281") == 16
+
+p even_substrings("13579") == 0
+
+# No even numbers = 0
+
+p even_substrings("143232") == 12
