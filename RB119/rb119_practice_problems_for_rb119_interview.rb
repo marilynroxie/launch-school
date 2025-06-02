@@ -396,3 +396,73 @@ p pairs([32, 32, 32]) == 1
 # Array with three elements that are identical returns 1 because there is one pair and the third is not part of it
 
 p pairs([7, 7, 7, 7, 7, 7, 7]) == 3
+
+# Problem 8
+
+# Create a method that takes a non-empty string as an argument. The string consists entirely of lowercase alphabetic characters. The method should return the length of the longest vowel substring. The vowels of interest are "a", "e", "i", "o", and "u".
+
+# Understanding the Problem
+
+# Inputs: string
+# Outputs: integer (representing length of longest vowel substring)
+# Explicit requirements: interested in aeiou
+# Implicit requirements: length is 0 when no vowels are found, integer can't be < 0, all examples are lowercase so capitalization is not a concern here
+
+# Data structure
+# Array for splitting up string, array for storing vowel substrings, integer for final count of longest one
+
+# Algorithm
+# Initialize array of vowels
+# Split string into array of characters
+# Initialize empty array to store vowel substrings
+# Iterate through array of original string characters
+# Should move through array and check if the range of the beginning to ending character is a vowel;
+# Build array of vowel substrings
+# Check if substrings array is empty; return 0 if so, otherwise find the max length of substring in substrings array and return the count of chars
+
+# Code
+
+def longest_vowel_substring(str)
+  vowels = %w(a e i o u)
+  str = str.chars
+  substrings = []
+
+  0.upto(str.length - 1) do |start|
+    start.upto(str.length - 1) do |ending|
+      substrings << str[start..ending] if (str[start..ending]).all? { |char| vowels.include?(char) }
+    end
+  end
+
+  substrings.empty? ? 0 : substrings.max_by { |x| x.length }.count
+end
+
+p "processing"
+# Examples / test cases
+
+p longest_vowel_substring("cwm") == 0
+
+# No vowels found
+
+p longest_vowel_substring("many") == 1
+
+# 1 substring found, simply "a"
+
+p longest_vowel_substring("launchschoolstudents") == 2
+
+# 2 substrings found of the same longest length: "au", "oo"
+
+p longest_vowel_substring("eau") == 3
+
+# "eau" is the longest (three characters)
+
+p longest_vowel_substring("beauteous") == 3
+
+# "eau" and "eou" are equally long (three characters)
+
+p longest_vowel_substring("sequoia") == 4
+
+# "uoia" is the longest (four characters)
+
+p longest_vowel_substring("miaoued") == 5
+
+# "iaoue" is the longest (five characters)
