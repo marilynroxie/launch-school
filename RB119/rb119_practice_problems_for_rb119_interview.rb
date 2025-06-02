@@ -466,3 +466,82 @@ p longest_vowel_substring("sequoia") == 4
 p longest_vowel_substring("miaoued") == 5
 
 # "iaoue" is the longest (five characters)
+
+# Problem 9
+
+# Create a method that takes two string arguments and returns the number of times that the second string occurs in the first string. Note that overlapping strings don't count: 'babab' contains 1 instance of 'bab', not 2.
+
+# You may assume that the second argument is never an empty string.
+
+# Understanding the Problem
+
+# Inputs: strings: the second string represents the item we are counting occurrences of in the first
+# Outputs: integer representing count of second argument's occurrences
+# Implicit: integer will not be negative, first argument can be empty
+# Explicit: overlapping strings can't be counted, second argument will never be empty
+
+# Data structure
+# Array to add substrings, integer to represent count of occurrences of second argument
+
+# Algorithm
+
+# Initialize variable at 0 to store count of substrings
+# Set increment variable to 0 to keep track of position in str1
+# While the increment is less than or equal to the length of string 1 minus string 2:
+# - if str1[i, str2.length] == str2, increase count by 1
+# - increase increment to the length of str2
+# - otherwise increment by one
+# return count at the end
+
+# Code
+
+def count_substrings(str1, str2)
+  count = 0
+  i = 0
+
+  while i <= str1.length - str2.length
+    if str1[i, str2.length] == str2
+      count += 1
+      i += str2.length
+    else
+      i += 1
+    end
+  end
+
+  count
+end
+
+p "processing"
+# Examples / Test Cases
+
+p count_substrings("babab", "bab") == 1
+
+# "bab" is found once (overlap doesn't count)
+
+p count_substrings("babab", "ba") == 2
+
+# "ba" is found in two unique places
+
+p count_substrings("babab", "b") == 3
+
+# "b" is found three times
+
+p count_substrings("babab", "x") == 0
+
+# "x" isn't found anywhere
+
+p count_substrings("", "x") == 0
+
+# first argument is empty, so no substrings can be found
+
+p count_substrings("bbbaabbbbaab", "baab") == 2
+
+# "baab" is found twice
+
+p count_substrings("bbbaabbbbaab", "bbaab") == 2
+
+# "bbaab" is found twice
+
+p count_substrings("bbbaabbbbaabb", "bbbaabb") == 1
+
+# "bbbaabb" is found once
