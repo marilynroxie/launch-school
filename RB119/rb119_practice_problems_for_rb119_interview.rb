@@ -596,3 +596,98 @@ p even_substrings("13579") == 0
 # No even numbers = 0
 
 p even_substrings("143232") == 12
+
+# Problem 11
+
+# Create a method that takes a nonempty string as an argument and returns an array consisting of a string and an integer. If we call the string argument s, the string component of the returned array t, and the integer component of the returned array k, then s, t, and k must be related to each other such that s == t * k. The values of t and k should be the shortest possible substring and the largest possible repeat count that satisfies this equation.
+
+# You may assume that the string argument consists entirely of lowercase alphabetic letters.
+
+# Understanding the Problem
+
+# Inputs: string (s)
+# Outputs: two element array of shortest substring (string) (t) and largest repeat count (integer) (k); s == t * k
+# Explicit: string argument is downcase letters only, string will never be empty
+# Implicit: integer will not be negative, nor less than 1 in any examples shown
+
+# Data structures
+# Array when working with string, return value will be an array of [k, t]
+# representing the shortest substring (t) and repeat count (k) respectively
+
+# Algorithm
+# Iterate over possible substrings from 1 to the length of the string
+# For every length, get slice of str[0, substring_length]
+# return [substring, str.length / substring_length] if str == substring * (str.length / substring_length)
+# Return array of [t, k] (which is substring, repeat count)
+# Need to work on detailing this more
+
+# Code
+
+def repeated_substring(str)
+  (1..str.length).each do |substring_length|
+    substring = str[0, substring_length]
+    return [substring, str.length / substring_length] if str == substring * (str.length / substring_length)
+  end
+end
+
+# Examples / Test Cases
+
+p repeated_substring("xyzxyzxyz") == ["xyz", 3]
+
+# xyzxyzxyz is made up of xyz three times
+
+p repeated_substring("xyxy") == ["xy", 2]
+
+# xy is made up of xy two times
+
+p repeated_substring("xyz") == ["xyz", 1]
+
+# xyz is made up of xyz one time
+
+p repeated_substring("aaaaaaaa") == ["a", 8]
+
+# aaaaaaaa is made up of a repeated eight times
+
+p repeated_substring("superduper") == ["superduper", 1]
+
+# "superduper" is made up of "superduper" once
+
+# Problem 12
+
+# Create a method that takes a string as an argument and returns true if the string is a pangram, false if it is not.
+
+# Pangrams are sentences that contain every letter of the alphabet at least once. For example, the sentence "Five quacking zephyrs jolt my wax bed." is a pangram since it uses every letter at least once. Note that case is irrelevant.
+
+# Understanding the Problem
+
+# Inputs: string
+# Outputs: boolean true or false
+# Explicit: Return true if string contains every letter of the alphabet one or more times; false if not; case does not matter
+# Implicit: punctuation and spaces don't matter here
+
+# Data structure
+# Array of characters a-z
+
+# Algorithm
+# Initialize a variable storing an array of letters "a" to "z"
+# Split string into characters
+# Select only characters that are included in "a" to "z"; sort only unique elements and compare to original letters array
+# Will return true if there is a match and false if not
+
+# Code
+
+def is_pangram(str)
+  letters = Array("a".."z")
+  str.downcase.chars.select { |x| ("a".."z").include?(x) }.sort.uniq == letters
+end
+
+# Examples / test cases
+
+p is_pangram("The quick, brown fox jumps over the lazy dog!") == true
+p is_pangram("The slow, brown fox jumps over the lazy dog!") == false
+p is_pangram("A wizard's job is to vex chumps quickly in fog.") == true
+p is_pangram("A wizard's task is to vex chumps quickly in fog.") == false
+p is_pangram("A wizard's job is to vex chumps quickly in golf.") == true
+
+my_str = "Sixty zippers were quickly picked from the woven jute bag."
+p is_pangram(my_str) == true
