@@ -332,10 +332,67 @@ p count_letters("!!!") == {}
 
 # If a certain number occurs more than twice, count each complete pair once. For instance, for [1, 1, 1, 1] and [2, 2, 2, 2, 2], the method should return 2. The first array contains two complete pairs while the second has an extra 2 that isn't part of the other two pairs.
 
+# Understanding the Problem
+
+# inputs: array
+# outputs: integer (representing count of identical pairs of integers in array)
+# explicit requirements: count each pair once if a number occurs > 2 times
+# implicit requirements: integer will be from 0 to 1 (no negative numbers, of course), empty array or single element array returns 0
+
+# Array with seven elements that are identical returns three because there are three pairs and the final element is not part of them
+
+# Data structure
+# Work with array, return integer representing identical pairs
+
+# Algorithm
+# Initialize an empty array for pairs
+# Initialize an empty array for used indexes when iterating through the input array
+# Iterate through the array with each_with_index and a nested call with each_with_index again
+# If the second index is greater than the first, both elements equal each other, and the used indexes array doesn't include the first index, then add [element1, element2] to pairs
+# Get the length of the pairs array
+
+# Code
+
+def pairs(arr)
+  pairs = []
+  used_indices = []
+
+  arr.each_with_index do |element1, idx1|
+    arr.each_with_index do |element2, idx2|
+      if idx2 > idx1 && element1 == element2 && used_indices.include?(idx1) == false
+        pairs << [element1, element2]
+        used_indices << idx1
+        used_indices << idx2
+      end
+    end
+  end
+  pairs.length
+end
+
+# Examples / Test Cases
+
 p pairs([3, 1, 4, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7]) == 3
+
+# Returns three because the identical pairs are: [3, 3], [5, 5], and [9, 9] (extra 5 is not counted)
+
 p pairs([2, 7, 1, 8, 2, 8, 1, 8, 2, 8, 4]) == 4
+
+# Returns four because the identical pairs are: [1, 1], [2, 2], [8, 8], and [8, 8]
+
 p pairs([]) == 0
+
+# Empty array returns 0 because there are no pairs
+
 p pairs([23]) == 0
+
+# Array with single integer returns 0 because there are no pairs
+
 p pairs([997, 997]) == 1
+
+# Array with two elements that are identical returns 1 because there is one pair
+
 p pairs([32, 32, 32]) == 1
+
+# Array with three elements that are identical returns 1 because there is one pair and the third is not part of it
+
 p pairs([7, 7, 7, 7, 7, 7, 7]) == 3
