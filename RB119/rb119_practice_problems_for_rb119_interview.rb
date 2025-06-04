@@ -754,3 +754,60 @@ p unscramble("phyarunstola", "pythonrules") == false
 p unscramble("boldface", "coal") == true
 
 # the word coal is found in the word boldface
+
+# Problem 14
+
+# Create a method that takes a single integer argument and returns the sum of all the multiples of 7 or 11 that are less than the argument. If a number is a multiple of both 7 and 11, count it just once.
+
+# For example, the multiples of 7 and 11 that are below 25 are 7, 11, 14, 21, and 22. The sum of these multiples is 75.
+
+# If the argument is negative, return 0.
+
+# Understanding the Problem
+
+# inputs: integer
+# outputs: integer representing sums of all multiples of 7 or 11 < argument integer
+# implicit: if 0 is an argument, return 0 as well of course
+# explicit: count integer once if it is both a multiple of 7 and 11, return 0 if argument is negative
+
+# Data structure
+# Arrays to hold multiples
+
+# Algorithm
+
+# Code
+
+# Initialize empty array
+# Count 1.upto the argument number - 1
+# Check if each count is a multiple of 7 or 11 (== 0); if so, add it to the array
+# Sum array of multiples
+
+def seven_eleven(num)
+  arr = []
+
+  1.upto(num - 1).each do |i|
+    arr << i if (i % 7) == 0 || (i % 11) == 0
+  end
+
+  arr.sum
+end
+
+# Examples / Test cases
+
+p seven_eleven(10) == 7
+
+p seven_eleven(11) == 7
+
+p seven_eleven(12) == 18
+
+p seven_eleven(25) == 75
+
+p seven_eleven(100) == 1153
+
+p seven_eleven(0) == 0
+
+# returns 0 because there are no multiples
+
+p seven_eleven(-100) == 0
+
+# returns 0 because it is negative
