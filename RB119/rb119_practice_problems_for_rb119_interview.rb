@@ -691,3 +691,66 @@ p is_pangram("A wizard's job is to vex chumps quickly in golf.") == true
 
 my_str = "Sixty zippers were quickly picked from the woven jute bag."
 p is_pangram(my_str) == true
+
+# Problem 13
+
+# Create a method that takes two strings as arguments and returns true if some portion of the characters in the first string can be rearranged to match the characters in the second. Otherwise, the method should return false.
+
+# You may assume that both string arguments only contain lowercase alphabetic characters. Neither string will be empty.
+
+# Understanding the Problem
+
+# inputs: two strings
+# outputs: boolean true or false
+# implicit:
+# - some portion
+# - does not need to be all the same letters, there can be leftover letters in the first string
+# e.g. p unscramble("ab", "aaa") should not return true as there needs to be three as. it seems to be a requirement that the quantities are also checked
+# explicit: lowercase alphabetic characters, not empty
+
+# Data structure
+# Arrays for characters, hashes to store frequencies
+
+# Algorithm
+
+# Split both strings into characters
+# Create a hash to store frequencies of letters in the first string
+# Create a hash to store frequencies of letters in the second string
+# Check if all characters in the second string are found in the first at the same or greater frequency; return true if true and false if false
+
+# Code
+
+def unscramble(str1, str2)
+  str1 = str1.chars
+  str2 = str2.chars
+
+  frequencies1 = Hash.new(0)
+  frequencies2 = Hash.new(0)
+
+  str1.each do |char|
+    frequencies1[char] += 1
+  end
+
+  str2.each do |char|
+    frequencies2[char] += 1
+  end
+
+  frequencies2.all? { |char, count| frequencies1[char] >= count }
+end
+
+# Examples/ Test Cases
+
+p unscramble("ansucchlohlo", "launchschool") == true
+# when broken up, each string contains the same exact letters so it's a given that some portion can be rearranged - all of it can!
+
+p unscramble("phyarunstole", "pythonrules") == true
+
+# "pythonrules can be found within the first string"
+
+p unscramble("phyarunstola", "pythonrules") == false
+
+# slight difference from the first that makes this no longer possible
+
+p unscramble("boldface", "coal") == true
+
+# the word coal is found in the word boldface
