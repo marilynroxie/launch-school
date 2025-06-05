@@ -4,13 +4,42 @@ Basic nested iteration problems
 
 sample = [1, 2, 3, 4, 5]
 
+# Problem 1
+
 # Generate all sequential pairs of the array
 
-p sequential_pairs(sample) == [[1, 2], [2, 3], [3, 4], [4, 5]]
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays / nested array
+# explicit: will be an array of subarrays representing every sequential number possible until end of array
+# implicit: cannot go out of bounds (e.g. no [5, 6] if the last array element in original argument is 5), it is fine for
+# array numbers to repeat
+
+# Data structure
+# Array to store subarrays
+
+# Algorithm
+
+# Initialize empty array to store subarrays in
+# Iterate over 0..arr.length - 2 and add [arr[element], arr[element + 1]] to subarrays array
+# Return array of subarray
+
+# Code
+
+def sequential_pairs(arr)
+  subarrays = []
+  (0..arr.length - 2).each do |idx|
+    subarrays << [arr[idx], arr[idx + 1]]
+  end
+  subarrays
+end
+
+p group_sequential_pairs(sample) == [[1, 2], [2, 3], [3, 4], [4, 5]]
 
 # Group the array into sequential pairs. "Consume" elements - if they're part of one pair, they can't be part of any other
 
-p sequential_pairs(sample) == [[1, 2], [3, 4], [5]]
+p group_sequential_pairs(sample) == [[1, 2], [3, 4], [5]]
 
 # Group the array into concentric pairs - the first and last elements, then the second and second-last, etc. Consume elements as before.
 
