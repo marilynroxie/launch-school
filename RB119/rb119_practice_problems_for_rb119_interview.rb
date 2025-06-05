@@ -853,3 +853,67 @@ p greatest_product("23456") == 360      # 3 * 4 * 5 * 6
 p greatest_product("3145926") == 540    # 5 * 9 * 2 * 6
 p greatest_product("1828172") == 128    # 1 * 8 * 2 * 8
 p greatest_product("123987654") == 3024 # 9 * 8 * 7 * 6
+
+# Problem 16
+
+# Create a method that returns the count of distinct case-insensitive alphabetic characters and numeric digits that occur more than once in the input string. You may assume that the input string contains only alphanumeric characters.
+
+# Understanding the Problem
+
+# inputs: string
+# outputs: integer (representing counts of characters that occur more than once)
+# explicit: case doesn't matter, alphanumeric characters only, distinct letters occurring more than once counted and returned
+# implicit: no empty strings
+
+# Data structure
+# Array to store characters that appear more than once
+
+# Algorithm
+
+# Split string into array of downcase characters
+# Initialize empty array to store characters that appear more than once
+# Iterate over array of strings and select only the ones that appear more than once
+# Add these to the array
+# Return count of unique items in array
+
+# Code
+
+def distinct_multiples(str)
+  arr = []
+  str = str.downcase.chars
+  str.select do |char|
+    arr << char if str.count(char) > 1
+  end
+
+  arr.uniq.count
+end
+
+# Examples / Test Cases
+
+p distinct_multiples("xyz") == 0               # (none
+
+# each character only appears once
+
+p distinct_multiples("xxyypzzr") == 3          # x, y, z
+
+# x appears twice, y appears twice, z appears twice; thus 3 is returned
+
+p distinct_multiples("xXyYpzZr") == 3          # x, y, z
+
+# x appears twice, y appears twice, z appears twice; 3 is returned (case insensitive)
+
+p distinct_multiples("unununium") == 2         # u, n
+
+# u appears four times, n appears three times; 2 is returned
+
+p distinct_multiples("multiplicity") == 3      # l, t, i
+
+# l appears twice, t appears twice, i appears twice; 3 is returned
+
+p distinct_multiples("7657") == 1              # 7
+
+# 7 appears twice; 1 is returned
+
+p distinct_multiples("3141592653589793") == 4  # 3, 1, 5, 9
+
+p distinct_multiples("2718281828459045") == 5  # 2, 1, 8, 4, 5
