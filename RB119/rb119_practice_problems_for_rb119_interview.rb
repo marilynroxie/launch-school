@@ -811,3 +811,45 @@ p seven_eleven(0) == 0
 p seven_eleven(-100) == 0
 
 # returns 0 because it is negative
+
+# Problem 15
+
+# Create a method that takes a string argument that consists entirely of numeric digits and computes the greatest product of four consecutive digits in the string. The argument will always have more than 4 digits.
+
+# Understanding the Problem
+
+# inputs: string
+# outputs: integer
+# implicit: can't go out of bounds when summing of course, must convert string representing number to an integer
+# explicit: always has more than four digits
+
+# Data structure
+# array when splitting up string into characters, then integers when summing
+
+# Algorithm
+
+# Split string into characters and convert them all to integers
+# Initialize array to store products
+# Iterate through 0.upto(arr.size -4) to avoid going out of bounds
+# Add all products idx..idx + 3 to array
+# Return maximum product
+
+# Code
+
+def greatest_product(str)
+  arr = str.chars.map(&:to_i)
+  products = []
+
+  0.upto(arr.size - 4) do |idx|
+    products << arr[idx..idx + 3].inject(:*)
+  end
+
+  products.max
+end
+
+# Examples / Test Cases
+
+p greatest_product("23456") == 360      # 3 * 4 * 5 * 6
+p greatest_product("3145926") == 540    # 5 * 9 * 2 * 6
+p greatest_product("1828172") == 128    # 1 * 8 * 2 * 8
+p greatest_product("123987654") == 3024 # 9 * 8 * 7 * 6
