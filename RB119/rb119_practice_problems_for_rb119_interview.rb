@@ -969,3 +969,64 @@ p nearest_prime_sum([2, 12, 8, 4, 6]) == 5 # Nearest prime to 32 is 37
 
 # Nearest prime to 163 is 167
 p nearest_prime_sum([50, 39, 49, 6, 17, 2]) == 4
+
+# Problem 18
+
+# Create a method that takes an array of integers as an argument. Determine and return the index N for which all numbers with an index less than N sum to the same value as the numbers with an index greater than N. If there is no index that would make this happen, return -1.
+
+# If you are given an array with multiple answers, return the index with the smallest value.
+
+# The sum of the numbers to the left of index 0 is 0. Likewise, the sum of the numbers to the right of the last element is 0.
+
+# Understanding the Problem
+
+# inputs: array
+# outputs integer (representing index meeting requirements, or -1)
+# explicit: sum of numbers out of bounds is always 0, return -1 if there is no index producing the desired result
+# return smallest index if there are multiple indices meeting requirements
+# implicit: no empty arrays
+
+# Data structure
+# Working with array to determine sums
+
+# Algorithm
+
+# 0..(arr.length - 1).each iteration
+# Calculate sums to the left and right of each index and store them without going out of bounds
+# Return first valid index where sums are equal and -1 otherwise
+
+# Code
+
+def equal_sum_index(arr)
+  (0..arr.length - 1).each do |i|
+    left_sum = arr[0...i].sum
+    right_sum = arr[(i + 1)..-1].sum
+
+    return i if left_sum == right_sum
+  end
+  -1
+end
+
+# Examples / Test Cases
+
+p equal_sum_index([1, 2, 4, 4, 2, 3, 2]) == 3
+
+# [1, 2, 4].sum and [2, 3, 2].sum are equal (they are both 7)
+# index 3 is the point where each of these are on the left and right respectively
+
+p equal_sum_index([7, 99, 51, -48, 0, 4]) == 1
+
+# [0, 7].sum and [51, -48, 0, 4].sum == 7; 99 at index 1 is the point where each of these are on the left and right
+
+p equal_sum_index([17, 20, 5, -60, 10, 25]) == 0
+
+# at index 0 (no elements to the left), [20, 5, -60, 10, 25].sum = 0
+
+p equal_sum_index([0, 2, 4, 4, 2, 3, 2]) == -1
+
+# no condition is met
+
+# The following test case could return 0 or 3. Since we're
+# supposed to return the smallest correct index, the correct
+# return value is 0.
+p equal_sum_index([0, 20, 10, -60, 5, 25]) == 0
