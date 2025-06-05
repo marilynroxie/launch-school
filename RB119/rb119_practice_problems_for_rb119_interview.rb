@@ -1030,3 +1030,34 @@ p equal_sum_index([0, 2, 4, 4, 2, 3, 2]) == -1
 # supposed to return the smallest correct index, the correct
 # return value is 0.
 p equal_sum_index([0, 20, 10, -60, 5, 25]) == 0
+
+# Problem 19
+
+# Create a method that takes an array of integers as an argument and returns the integer that appears an odd number of times. There will always be exactly one such integer in the input array.
+
+# Understanding the Problem
+# inputs: array
+# outputs: integer (negative, 0, positive) representing the one integer that appears an odd number of times
+# explicit: array will have at least one element, only one integer that appears an odd # of times
+# implicit: no empty arrays, no elements other than integers
+
+# Data structure
+# Array for counting occurrences of integer
+
+# Algorithm
+# Iterate through array
+# Return first number that has a count of odd?
+
+# Code
+
+def odd_fellow(arr)
+  arr.each do |num|
+    return num if arr.count(num).odd?
+  end
+end
+
+p odd_fellow([4]) == 4
+p odd_fellow([7, 99, 7, 51, 99]) == 51
+p odd_fellow([7, 99, 7, 51, 99, 7, 51]) == 7
+p odd_fellow([25, 10, -6, 10, 25, 10, -6, 10, -6]) == -6
+p odd_fellow([0, 0, 0]) == 0
