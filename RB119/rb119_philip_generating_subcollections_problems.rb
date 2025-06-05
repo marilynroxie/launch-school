@@ -35,9 +35,41 @@ def sequential_pairs(arr)
   subarrays
 end
 
-p group_sequential_pairs(sample) == [[1, 2], [2, 3], [3, 4], [4, 5]]
+p sequential_pairs(sample) == [[1, 2], [2, 3], [3, 4], [4, 5]]
 
 # Group the array into sequential pairs. "Consume" elements - if they're part of one pair, they can't be part of any other
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays / nested array
+# explicit: each number can only be represented once
+# implicit: can't go out of bounds (if last element is 5, you would not include 6)
+
+# Data structure
+# Array of subarrays
+
+# Algorithm
+
+# Initialize array of subarrays
+# Iterate over array argument
+# Add [arr[idx], arr[idx + 1]] unless subarrays.flatten.include?(arr[idx]) or arr[idx].nil?
+# Return subarrays
+
+# Code
+
+sample = [1, 2, 3, 4, 5]
+
+def group_sequential_pairs(arr)
+  subarrays = []
+
+  (0..arr.length).each do |idx|
+    next if subarrays.flatten.include?(arr[idx]) || arr[idx].nil?
+    arr[idx + 1].nil? ? subarrays << [arr[idx]] : subarrays << [arr[idx], arr[idx + 1]]
+  end
+
+  subarrays
+end
 
 p group_sequential_pairs(sample) == [[1, 2], [3, 4], [5]]
 
