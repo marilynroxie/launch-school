@@ -37,6 +37,8 @@ end
 
 p sequential_pairs(sample) == [[1, 2], [2, 3], [3, 4], [4, 5]]
 
+# Problem 2
+
 # Group the array into sequential pairs. "Consume" elements - if they're part of one pair, they can't be part of any other
 
 # Understanding the Problem
@@ -73,7 +75,47 @@ end
 
 p group_sequential_pairs(sample) == [[1, 2], [3, 4], [5]]
 
+# Problem 3
+
 # Group the array into concentric pairs - the first and last elements, then the second and second-last, etc. Consume elements as before.
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays / nested array
+# explicit: each element must only appear once (consumed)
+# implicit: don't go out of bounds (no nil)
+
+# Data structure
+# Array to include subarrays
+
+# Algorithm
+
+# Initialize array to store subarrays
+# Duplicate array
+# Until the duplicate array is empty
+# If new_arr.size == 1 subarrays << [new_arr.pop]
+# Otherwise subarrays << [new_arr.shift, new_arr.pop]
+# Return array of subarrays
+
+# Code
+
+sample = [1, 2, 3, 4, 5]
+
+def concentric_pairs(arr)
+  subarrays = []
+  new_arr = arr.dup
+
+  until new_arr.empty?
+    if new_arr.size == 1
+      subarrays << [new_arr.pop]
+    else
+      subarrays << [new_arr.shift, new_arr.pop]
+    end
+  end
+
+  subarrays
+end
 
 p concentric_pairs(sample) == [[1, 5], [2, 4], [3]]
 
