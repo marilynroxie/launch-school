@@ -1061,3 +1061,38 @@ p odd_fellow([7, 99, 7, 51, 99]) == 51
 p odd_fellow([7, 99, 7, 51, 99, 7, 51]) == 7
 p odd_fellow([25, 10, -6, 10, 25, 10, -6, 10, -6]) == -6
 p odd_fellow([0, 0, 0]) == 0
+
+# Problem 20
+
+# Create a method that takes an array of numbers, all of which are the same except one. Find and return the number in the array that differs from all the rest.
+
+# The array will always contain at least 3 numbers, and there will always be exactly one number that is different.
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: integer (representing the one unique number in array)
+# explicit: arr.size >= 3, always be only one number different
+# implicit: no empty arrays, no elements other than integers
+
+# Data structure
+# Working through array to determine unique number
+
+# Algorithm
+
+# Iterate through array
+# Return num if arr.count(num) == 1
+
+# Code
+
+def what_is_different(arr)
+  arr.each do |num|
+    return num if arr.count(num) == 1
+  end
+end
+
+p what_is_different([0, 1, 0]) == 1
+p what_is_different([7, 7, 7, 7.7, 7]) == 7.7
+p what_is_different([1, 1, 1, 1, 1, 1, 1, 11, 1, 1, 1, 1]) == 11
+p what_is_different([3, 4, 4, 4]) == 3
+p what_is_different([4, 4, 4, 3]) == 3
