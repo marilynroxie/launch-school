@@ -207,7 +207,41 @@ p all_ascending_pairs(sample) == [[1, 2], [1, 3], [1, 4], [1, 5],
                                   [3, 4], [3, 5],
                                   [4, 5]]
 
+# Problem 6
+
 # Generate the cross product of an array with itself. This is similar to pairs, but we include the pair of the element with itself.
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays
+# explicit: element with itself in the pair is fine e.g. [1, 1]
+# implicit: don't go out of bounds
+
+# Data structure
+# array of subarrays
+
+# Algorithm
+# Initialize array of subarrays
+# Nested loop of arr.each to capture element1 and element2 (indices are not needed here)
+# Add all [element1, element2] pairs to subarray since duplicates of numbers are fine
+# Return array of subarrays
+
+# Code
+
+def cross_product(arr)
+  subarrays = []
+
+  arr.each do |i1|
+    arr.each do |i2|
+      subarrays << [i1, i2]
+    end
+  end
+
+  subarrays
+end
+
+sample = [1, 2, 3, 4, 5]
 
 p cross_product(sample) == [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
                             [2, 1], [2, 2], [2, 3], [2, 4], [2, 5],
