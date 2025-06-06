@@ -119,7 +119,43 @@ end
 
 p concentric_pairs(sample) == [[1, 5], [2, 4], [3]]
 
+# Problem 4
+
 # Generate all possible pairs of the array
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays
+# explicit: repeating numbers are fine and expected except for the number and itself (e.g. [1, 1])
+# implicit: don't go out of bounds
+
+# Data structure
+# Array of subarrays
+
+# Algorithm
+
+# Initialize empty array to store subarrays in
+# Iterate through nested each_with_index to identify first and second elements
+# Add [element1, element2] to subarray if their indices are not the same
+# Return array of subarrays
+
+# Code
+
+def all_pairs(arr)
+  subarrays = []
+
+  arr.each_with_index do |i1, idx1|
+    arr.each_with_index do |i2, idx2|
+      if idx1 != idx2
+        subarrays << [i1, i2]
+      end
+    end
+  end
+  subarrays
+end
+
+sample = [1, 2, 3, 4, 5]
 
 p all_pairs(sample) == [[1, 2], [1, 3], [1, 4], [1, 5],
                         [2, 1], [2, 3], [2, 4], [2, 5],
