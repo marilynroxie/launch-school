@@ -163,7 +163,44 @@ p all_pairs(sample) == [[1, 2], [1, 3], [1, 4], [1, 5],
                         [4, 1], [4, 2], [4, 3], [4, 5],
                         [5, 1], [5, 2], [5, 3], [5, 4]]
 
+# Problem 5
+
 # Generate all possible pairs of the array, but only in ascending order (that is, the element earlier in the argued array should come first in its subarray)
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays / nested array
+# explicit: ascending order required (e.g. [2, 1] is unacceptable)
+# implicit: don't go out of bounds
+
+# Data structure
+# nested array
+
+# Algorithm
+
+# Initialize empty array to store subarrays
+# Iterate over array argument with nested each_with_index loop
+# Add [element1, element2] to subarray only if idx2 > idx 1
+# Return subarray
+
+# Code
+
+def all_ascending_pairs(arr)
+  subarray = []
+
+  arr.each_with_index do |i1, idx1|
+    arr.each_with_index do |i2, idx2|
+      if idx2 > idx1
+        subarray << [i1, i2]
+      end
+    end
+  end
+
+  subarray
+end
+
+sample = [1, 2, 3, 4, 5]
 
 p all_ascending_pairs(sample) == [[1, 2], [1, 3], [1, 4], [1, 5],
                                   [2, 3], [2, 4], [2, 5],
