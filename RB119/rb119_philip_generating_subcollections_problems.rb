@@ -249,7 +249,41 @@ p cross_product(sample) == [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
                             [4, 1], [4, 2], [4, 3], [4, 4], [4, 5],
                             [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]]
 
+# Problem 7
+
 # Generate all consecutive subarrays beginning from the first array element
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays / nested array
+# explicit: order from smallest to largest in groups until array is exhausted
+# implicit: no going out of bounds, smallest subarray has a size of one element
+
+# Data Structure
+# Array of subarrays
+
+# Algorithm
+
+# Initialize empty array to store subarrays
+# From the range 0...arr.size, iterate over the elements
+# Slice arr[0..i] and add these slices to subarrays
+# Return te array of subarrays
+
+# Code
+
+def first_subarrays(arr)
+  subarrays = []
+
+  (0...arr.size).each do |i|
+    subarrays << arr[0..i]
+  end
+
+  subarrays
+end
+
+sample = [1, 2, 3, 4, 5]
+
 p first_subarrays(sample) == [[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4, 5]]
 
 # Generate all consecutive subarrays ending with the last array element
