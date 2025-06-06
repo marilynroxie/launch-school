@@ -266,7 +266,7 @@ p cross_product(sample) == [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
 # Algorithm
 
 # Initialize empty array to store subarrays
-# From the range 0...arr.size, iterate over the elements
+# From the range 0...arr.size, iterate over the indices
 # Slice arr[0..i] and add these slices to subarrays
 # Return te array of subarrays
 
@@ -275,7 +275,7 @@ p cross_product(sample) == [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
 def first_subarrays(arr)
   subarrays = []
 
-  (0...arr.size).each do |i|
+  (0...arr.size).each do |idx|
     subarrays << arr[0..i]
   end
 
@@ -286,7 +286,39 @@ sample = [1, 2, 3, 4, 5]
 
 p first_subarrays(sample) == [[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4, 5]]
 
+# Problem 8
+
 # Generate all consecutive subarrays ending with the last array element
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays
+# explicit: in consecutive order from largest to smallest slices of the original array
+# implicit: don't go out of bounds
+
+# Data structure
+# Array of subarrays
+
+# Algorithm
+
+# Initialize an empty array to store subarrays
+# For the range 0...arr.size, iterate through the elements
+# Add the sliced subarrays << arr[idx..-1]
+# Return array of subarrays
+
+# Code
+
+def last_subarrays_v1(arr)
+  subarrays = []
+
+  (0...arr.size).each do |idx|
+    subarrays << arr[idx..-1]
+  end
+
+  subarrays
+end
+
 p last_subarrays(sample) == [[1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5], [4, 5], [5]]
 
 # Generate all consecutive subarrays of the array
