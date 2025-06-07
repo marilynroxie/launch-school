@@ -321,7 +321,41 @@ end
 
 p last_subarrays(sample) == [[1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5], [4, 5], [5]]
 
+# Problem 9
+
 # Generate all consecutive subarrays of the array
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays
+# explicit: subarrays are smallest to largest
+# implicit: can't go out of bounds
+
+# Data structure
+# Array to store subarrays
+
+# Algorithm
+
+# Initialize empty array for storing subarrays
+# Iterate through argument array
+# For each starting index in 0...arr.size (outer loop) add arr[start_idx..end_idx]] (inner loop) to subarrays
+# Return sorted subarrays
+
+# Code
+
+def consecutive_subarrays(arr)
+  subarrays = []
+
+  (0...arr.size).each do |start_idx|
+    (start_idx...arr.size).each do |end_idx|
+      subarrays << arr[start_idx..end_idx]
+    end
+  end
+
+  subarrays.sort
+end
+
 p consecutive_subarrays(sample) == [[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4, 5],
                                     [2], [2, 3], [2, 3, 4], [2, 3, 4, 5],
                                     [3], [3, 4], [3, 4, 5],
