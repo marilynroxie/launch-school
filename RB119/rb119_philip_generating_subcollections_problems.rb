@@ -276,7 +276,7 @@ def first_subarrays(arr)
   subarrays = []
 
   (0...arr.size).each do |idx|
-    subarrays << arr[0..i]
+    subarrays << arr[0..idx]
   end
 
   subarrays
