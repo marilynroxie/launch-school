@@ -309,7 +309,7 @@ p first_subarrays(sample) == [[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4,
 
 # Code
 
-def last_subarrays_v1(arr)
+def last_subarrays(arr)
   subarrays = []
 
   (0...arr.size).each do |idx|
