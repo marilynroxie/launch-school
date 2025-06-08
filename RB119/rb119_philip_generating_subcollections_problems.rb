@@ -187,17 +187,17 @@ p all_pairs(sample) == [[1, 2], [1, 3], [1, 4], [1, 5],
 # Code
 
 def all_ascending_pairs(arr)
-  subarray = []
+  subarrays = []
 
   arr.each_with_index do |i1, idx1|
     arr.each_with_index do |i2, idx2|
       if idx2 > idx1
-        subarray << [i1, i2]
+        subarrays << [i1, i2]
       end
     end
   end
 
-  subarray
+  subarrays
 end
 
 sample = [1, 2, 3, 4, 5]
@@ -319,6 +319,8 @@ def last_subarrays(arr)
   subarrays
 end
 
+sample = [1, 2, 3, 4, 5]
+
 p last_subarrays(sample) == [[1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5], [4, 5], [5]]
 
 # Problem 9
@@ -356,30 +358,113 @@ def consecutive_subarrays(arr)
   subarrays.sort
 end
 
+sample = [1, 2, 3, 4, 5]
+
 p consecutive_subarrays(sample) == [[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4, 5],
                                     [2], [2, 3], [2, 3, 4], [2, 3, 4, 5],
                                     [3], [3, 4], [3, 4, 5],
                                     [4], [4, 5],
                                     [5]]
 
+# Problem 10
+
 # Generate all subarrays (consecutive or not) from the array where the elements are in ascending order
-p ordered_subarrays(sample) == [[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4, 5],
-                                [1, 2, 3, 5], [1, 2, 4], [1, 2, 4, 5], [1, 2, 5],
-                                [1, 3], [1, 3, 4], [1, 3, 4, 5], [1, 3, 5],
-                                [1, 4], [1, 4, 5], [1, 5],
-                                [2], [2, 3], [2, 3, 4], [2, 3, 5],
-                                [2, 4], [2, 4, 5], [2, 5],
-                                [3], [3, 4], [3, 4, 5], [3, 5], [4], [4, 5], [5]]
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays
+# explicit: elements must be in ascending order (.e.g no [2, 1])
+# implicit: don't go out of bounds
+# note: added [2, 3, 4, 5] because it was missing from test case and belongs there
+
+# Data Structure
+# Array of subarrays
+
+# Algorithm
+
+# Code
+
+# def ordered_subarrays(array_size, length)
+# end
+
+sample = [1, 2, 3, 4, 5]
+
+# p ordered_subarrays(sample) == [[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4, 5],
+#                                 [1, 2, 3, 5], [1, 2, 4], [1, 2, 4, 5], [1, 2, 5],
+#                                 [1, 3], [1, 3, 4], [1, 3, 4, 5], [1, 3, 5],
+#                                 [1, 4], [1, 4, 5], [1, 5],
+#                                 [2], [2, 3], [2, 3, 4], [2, 3, 4, 5], [2, 3, 5],
+#                                 [2, 4], [2, 4, 5], [2, 5],
+#                                 [3], [3, 4], [3, 4, 5], [3, 5], [4], [4, 5], [5]]
+
+# Problem 11
 
 # Generate all permutations of the array - that is, every possible array that can be formed by ordering the elements of the argued array
-p permutations(sample) == sample.permutation.to_a # check against the provided Array method
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays
+# explicit: all permutations possible
+# implicit: don't go out of bounds, ascending, descending, anything goes; not empty, don't use built-in permutation method
+
+# Data structure
+# Array of subarrays
+
+# Algorithm
+# Initialize empty array to store subarrays in
+# Recursive call
+
+# Code
+
+sample = [1, 2, 3, 4, 5]
+
+# p permutations(sample) == sample.permutation.to_a # check against the provided Array method
+
+# Problem 12
 
 # Generate all subarray permutations of the array - all subarrays, consecutive or not, in any order.
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays
+# explicit: ascending or descending is fine
+# implicit: don't go out of bounds, don't use Ruby's built-in permutation method
+
 small_sample = [1, 2, 3]
-p sub_permutations(small_sample) == [[1], [1, 2], [1, 2, 3], [1, 3], [1, 3, 2],
-                                     [2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1],
-                                     [3], [3, 1], [3, 1, 2], [3, 2], [3, 2, 1]]
+# p sub_permutations(small_sample) == [[1], [1, 2], [1, 2, 3], [1, 3], [1, 3, 2],
+#                                      [2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1],
+#                                      [3], [3, 1], [3, 1, 2], [3, 2], [3, 2, 1]]
+
+# Problem 13
 
 # Rotate the argued array so that the rows are now columns and vice versa. The object returned by argued_array[x][y] should be the same object returned by rotated_array[y][x]
+
+# Understanding the Problem
+
+# inputs: array
+# outputs: array of subarrays
+# explicit: arrays become as they appear up to down when written out:
+# 1 2 3
+# 4 5 7
+# 7 8 9
+# implicit: don't go out of bounds
+
+# Algorithm
+# Outer loop that iterates through each column index
+# Inner loop that, for each column index, maps through each row of the input array
+# Get element at the current column index from each row
+# Outer map returns transformed, nested array
+
+# Code
+
+def rotation(arr)
+  (0...arr.size).map do |col|
+    arr.map { |row| row[col] }
+  end
+end
+
 nested_sample = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 p rotation(nested_sample) == [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
