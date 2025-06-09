@@ -5,7 +5,7 @@
 # When counting numbers, only count unique values. That is, if a number occurs multiple times in the array, it should only be counted once.
 
 # Inputs: array of integers
-# Outputs: array of integers with each number representing how many numbers are smaller than the original in the same place
+# Outputs: array of integers, with each integer representing how many numbers are smaller the element from the argument array at the same index
 # Implicit: no empty arrays, no negative numbers, same size as original array
 # Explicit: only count unique values
 
@@ -14,18 +14,16 @@
 
 # Algorithm
 
-# Assign a value to a variable representing all unique numbers
-# Transform the original array
-# Within the block of the transformation, count unique values and compare each to every element in the original array
+# Transform the original array by iterating over every element
+# For each element in the original array...
+# - count unique values and compare how many are smaller
 # Return the transformed array
 
 # Code
 
 def smaller_numbers_than_current(arr)
-  unique_values = arr.uniq
-
   arr.map do |i|
-    unique_values.count { |num| num < i }
+    arr.uniq.count { |num| num < i }
   end
 end
 
