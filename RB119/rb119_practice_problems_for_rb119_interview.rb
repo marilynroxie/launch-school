@@ -351,39 +351,33 @@ p count_letters("!!!") == {}
 
 # Understanding the Problem
 
-# inputs: array
+# inputs: array of integers
 # outputs: integer (representing count of identical pairs of integers in array)
 # explicit requirements: count each pair once if a number occurs > 2 times
 # implicit requirements: integer will be from 0 to 1 (no negative numbers, of course), empty array or single element array returns 0
 
-# Array with seven elements that are identical returns three because there are three pairs and the final element is not part of them
-
 # Data structure
-# Work with array, return integer representing identical pairs
+# Hash to count frequencies of numbers
 
 # Algorithm
-# Initialize an empty array for pairs
-# Initialize an empty array for used indexes when iterating through the input array
-# Iterate through the array with each_with_index and a nested call with each_with_index again
-# If the second index is greater than the first, both elements equal each other, and the used indexes array doesn't include the first index, then add [element1, element2] to pairs
-# Get the length of the pairs array
+# Initialize a hash with a default value of 0
+# - Enables incrementing counts without needing to verify if key exists
+# For each array element:
+# - Count the frequencies of each element, incrementing by 1 when element is found
+# For each frequency count in the hash values, divide by 2
+# - Dividing by 2 ensures that only complete pairs are counted
+# Return the sum of all values
 
 # Code
 
 def pairs(arr)
-  pairs = []
-  used_indices = []
+  counts = Hash.new(0)
 
-  arr.each_with_index do |element1, idx1|
-    arr.each_with_index do |element2, idx2|
-      if idx2 > idx1 && element1 == element2 && used_indices.include?(idx1) == false
-        pairs << [element1, element2]
-        used_indices << idx1
-        used_indices << idx2
-      end
-    end
+  arr.each do |num|
+    counts[num] += 1
   end
-  pairs.length
+
+  counts.values.sum { |count| count / 2 }
 end
 
 # Examples / Test Cases
@@ -413,6 +407,38 @@ p pairs([32, 32, 32]) == 1
 # Array with three elements that are identical returns 1 because there is one pair and the third is not part of it
 
 p pairs([7, 7, 7, 7, 7, 7, 7]) == 3
+
+# Array with seven elements that are identical returns three because there are three pairs and the final element is not part of them
+
+# Problem 7 - Old Solution
+
+# Data structure - Old Solution
+# Work with array, return integer representing identical pairs
+
+# Algorithm - Old Solution
+# Initialize an empty array for pairs
+# Initialize an empty array for used indexes when iterating through the input array
+# Iterate through the array with each_with_index and a nested call with each_with_index again
+# If the second index is greater than the first, both elements equal each other, and the used indexes array doesn't include the first index, then add [element1, element2] to pairs
+# Get the length of the pairs array
+
+# Problem 7 - Code - Old Solution
+
+# def pairs(arr)
+#   pairs = []
+#   used_indices = []
+
+#   arr.each_with_index do |element1, idx1|
+#     arr.each_with_index do |element2, idx2|
+#       if idx2 > idx1 && element1 == element2 && used_indices.include?(idx1) == false
+#         pairs << [element1, element2]
+#         used_indices << idx1
+#         used_indices << idx2
+#       end
+#     end
+#   end
+#   pairs.length
+# end
 
 # Problem 8
 
