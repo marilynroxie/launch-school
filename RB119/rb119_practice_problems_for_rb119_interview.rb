@@ -760,14 +760,15 @@ p repeated_substring("superduper") == ["superduper", 1]
 
 # Algorithm
 # Initialize a variable storing an array of letters "a" to "z"
-# Split string into characters
-# Select only characters that are included in "a" to "z"; sort only unique elements and compare to original letters array
-# Will return true if there is a match and false if not
+# Split string into downcase characters
+# Select only characters that are included in "a" to "z"
+# Sort only unique elements (remove duplicates) and compare to array of all letters in the alphabet
+# Return true if there is a match and false if not
 
 # Code
 
 def is_pangram(str)
-  letters = Array("a".."z")
+  letters = ("a".."z").to_a
   str.downcase.chars.select { |x| ("a".."z").include?(x) }.sort.uniq == letters
 end
 
