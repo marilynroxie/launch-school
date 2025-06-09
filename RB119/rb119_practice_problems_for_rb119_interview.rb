@@ -452,31 +452,36 @@ p pairs([7, 7, 7, 7, 7, 7, 7]) == 3
 # Implicit requirements: length is 0 when no vowels are found, integer can't be < 0, all examples are lowercase so capitalization is not a concern here
 
 # Data structure
-# Array for splitting up string, array for storing vowel substrings, integer for final count of longest one
+# Array of vowel characters; breaking input string into characters (array)
 
 # Algorithm
 # Initialize array of vowels
-# Split string into array of characters
-# Initialize empty array to store vowel substrings
-# Iterate through array of original string characters
-# Should move through array and check if the range of the beginning to ending character is a vowel;
-# Build array of vowel substrings
-# Check if substrings array is empty; return 0 if so, otherwise find the max length of substring in substrings array and return the count of chars
+# Assign value of 0 to variable representing current length of substring
+# Assign value of 0 to variable representing maximum length of substring
+# Iterate through each character in the string
+# For each character:
+# - If the character is a vowel, increment current length by 1
+# - If the character is not a vowel, reset current length to 0
+# Update the max length to current length if current length is greater than max length
+# Return the max length
 
 # Code
 
 def longest_vowel_substring(str)
   vowels = %w(a e i o u)
-  str = str.chars
-  substrings = []
+  current_length = 0
+  max_length = 0
 
-  0.upto(str.length - 1) do |start|
-    start.upto(str.length - 1) do |ending|
-      substrings << str[start..ending] if (str[start..ending]).all? { |char| vowels.include?(char) }
+  str.each_char do |char|
+    if vowels.include?(char)
+      current_length += 1
+      max_length = current_length if current_length > max_length
+    else
+      current_length = 0
     end
   end
 
-  substrings.empty? ? 0 : substrings.max_by { |x| x.length }.count
+  max_length
 end
 
 # Examples / test cases
@@ -508,6 +513,36 @@ p longest_vowel_substring("sequoia") == 4
 p longest_vowel_substring("miaoued") == 5
 
 # "iaoue" is the longest (five characters)
+
+# Problem 8 - Data structure - Old Solution
+
+# Array for splitting up string, array for storing vowel substrings, integer for final count of longest one
+
+# Problem 8 - Algorithm - Old Solution
+
+# Initialize array of vowels
+# Split string into array of characters
+# Initialize empty array to store vowel substrings
+# Iterate through array of original string characters
+# Should move through array and check if the range of the beginning to ending character is a vowel;
+# Build array of vowel substrings
+# Check if substrings array is empty; return 0 if so, otherwise find the max length of substring in substrings array and return the count of chars
+
+# Problem 8 - Code - Old Solution
+
+# def longest_vowel_substring(str)
+#   vowels = %w(a e i o u)
+#   str = str.chars
+#   substrings = []
+
+#   0.upto(str.length - 1) do |start|
+#     start.upto(str.length - 1) do |ending|
+#       substrings << str[start..ending] if (str[start..ending]).all? { |char| vowels.include?(char) }
+#     end
+#   end
+
+#   substrings.empty? ? 0 : substrings.max_by { |x| x.length }.count
+# end
 
 # Problem 9
 
@@ -1020,6 +1055,8 @@ p nearest_prime_sum([50, 39, 49, 6, 17, 2]) == 4
 # If you are given an array with multiple answers, return the index with the smallest value.
 
 # The sum of the numbers to the left of index 0 is 0. Likewise, the sum of the numbers to the right of the last element is 0.
+
+# Note: this is identical to https://www.codewars.com/kata/5679aa472b8f57fb8c000047/train/ruby
 
 # Understanding the Problem
 
