@@ -560,7 +560,10 @@ p longest_vowel_substring("miaoued") == 5
 # Explicit: overlapping strings can't be counted, second argument will never be empty
 
 # Data structure
-# Array to add substrings, integer to represent count of occurrences of second argument
+
+# No hashes or arrays needed
+# One variable representing count of occurrences of str2
+# Another variable representing index position in str1
 
 # Algorithm
 
@@ -570,7 +573,7 @@ p longest_vowel_substring("miaoued") == 5
 # - if str1[i, str2.length] == str2, increase count by 1
 # - increase increment to the length of str2
 # - otherwise increment by one
-# return count at the end
+# Return count
 
 # Code
 
