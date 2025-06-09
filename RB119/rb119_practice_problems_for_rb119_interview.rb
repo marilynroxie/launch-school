@@ -294,7 +294,7 @@ p most_common_char(my_str) == "e"
 
 # Understanding the Problem
 
-# Inputs: string
+# Inputs: string (can include letters, special characters, spaces)
 # Outputs: hash
 # Explicit: keys represent lowercase letters, values are the count of the lowercase letters
 # Implicit: uppercase letters are ignored, symbols are ignored, spaces are ignored
@@ -304,11 +304,14 @@ p most_common_char(my_str) == "e"
 
 # Algorithm
 
-# Set a frequencies hash to 0 to store frequencies of lowercase letters
-# Split string into characters and iterate over it
-# If char =~ a-z, add as key to the hash and increment their count += 1
-# Don't need to deal with characters that are not a-z and those that are uppercase
-# Return the hash
+# Set a frequencies hash with default value of 0 to store frequencies of lowercase letters
+# - Enables incrementing counts without needing to verify if key exists
+# Split string into characters
+# Iterate over array of characters
+# For each character:
+# - If char =~ a-z, add as key to the hash and increment their count += 1
+# - Don't need to deal with characters that are not a-z and those that are uppercase
+# Return the hash of frequencies
 
 # Code
 
