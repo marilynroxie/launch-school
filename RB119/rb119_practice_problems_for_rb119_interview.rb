@@ -177,17 +177,18 @@ p to_weird_case(original) == expected
 # Inputs: array of integers
 # Outputs: array of integers, two numbers representing those that are closest together in value (absolute difference)
 # Explicit: return first pair with respect to array order if there are multiple equally close pairs
-# Implicit: no negative numbers, no empty arrays, no arr.size < 2 implied, no arr.size < 4 shown in examples
+# Implicit: no negative numbers, no empty arrays, no arr.size < 2 implied, no arr.size < 4 shown in examples, maintain order from original array
 
 # Data structure
 # Array of pairs and returning an array of two integers derived from the original array
 
 # Algorithm
+
 # Create an empty pairs array storing all possible pairs
 # Iterate through the input array over elements and indices
 # Iterate through the input array again over parameters representing the next number and index that come after the first
 # Add pairs of elements to the pairs array if the second index is greater than the first
-# Return the [first element - the second element] pair that represents the minimum absolute difference
+# Return the [first element - the second element] pair with the minimum absolute difference
 
 # Code
 
@@ -236,14 +237,12 @@ p closest_numbers([12, 22, 7, 17]) == [12, 7]
 # input: string
 # output: string (one character) representing highest frequency
 # explicit: uppercase and lowercase are treated the same, if multiple characters have same frequency return the first one
-# implicit: special characters and spaces are present in the string
+# implicit: special characters and spaces are present in the string, empty string should implicitly return empty string
 
 # Data structure
 # output is string, but hash could be used to store frequencies and string can be split into an array
 
 # Algorithm
-# Form an array of every possible pair
-# Find the minimum absolute value from the pairs, maintaining order from the original array
 
 # Set a frequencies hash to 0
 # Split string into array of characters
