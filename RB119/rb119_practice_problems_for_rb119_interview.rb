@@ -962,26 +962,21 @@ p greatest_product("123987654") == 3024 # 9 * 8 * 7 * 6
 # implicit: no empty strings
 
 # Data structure
-# Array to store characters that appear more than once
+# Array of downcase characters; array to select characters appearing more than once
 
 # Algorithm
 
-# Split string into array of downcase characters
-# Initialize empty array to store characters that appear more than once
-# Iterate over array of strings and select only the ones that appear more than once
-# Add these to the array
-# Return count of unique items in array
+# Initialize array with value of split string into array of downcase characters
+# Iterate over array of characters and select only the ones that appear more than once
+# Return count of unique items in array as chained method calls
 
 # Code
 
 def distinct_multiples(str)
-  arr = []
-  str = str.downcase.chars
-  str.select do |char|
-    arr << char if str.count(char) > 1
-  end
-
-  arr.uniq.count
+  characters = str.downcase.chars
+  characters.select do |char|
+    characters.count(char) > 1
+  end.uniq.count
 end
 
 # Examples / Test Cases
