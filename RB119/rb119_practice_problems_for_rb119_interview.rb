@@ -914,7 +914,8 @@ p seven_eleven(-100) == 0
 # Understanding the Problem
 
 # inputs: string
-# outputs: integer
+# outputs: integer representing greatest product of four consecutive digits
+# - e.g. the greatest product of "23456" is 360 because the elements to_i 3 * 4 * 5 * 6 equal 360
 # implicit: can't go out of bounds when summing of course, must convert string representing number to an integer
 # explicit: always has more than four digits
 
@@ -925,7 +926,7 @@ p seven_eleven(-100) == 0
 
 # Split string into characters and convert them all to integers
 # Initialize array to store products
-# Iterate through 0.upto(arr.size -4) to avoid going out of bounds
+# Iterate through 0.upto(arr.size - 4) to avoid going out of bounds
 # Add all products idx..idx + 3 to array
 # Return maximum product
 
