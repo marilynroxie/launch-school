@@ -869,12 +869,15 @@ p unscramble("boldface", "coal") == true
 
 # Code
 
+# Return 0 if num <= 0 to avoid unnecessary processing
 # Initialize empty array
 # Count 1.upto the argument number - 1
 # Check if each count is a multiple of 7 or 11 (== 0); if so, add it to the array
 # Sum array of multiples
 
 def seven_eleven(num)
+  return 0 if num <= 0
+
   arr = []
 
   1.upto(num - 1).each do |i|
