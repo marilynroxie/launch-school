@@ -187,7 +187,7 @@ p to_weird_case(original) == expected
 # Iterate through the input array over elements and indices
 # Iterate through the input array again over parameters representing the next number and index that come after the first
 # Add pairs of elements to the pairs array if the second index is greater than the first
-# Return the minimum absolute value of the first element - the second element
+# Return the [first element - the second element] pair that represents the minimum absolute difference
 
 # Code
 
@@ -207,6 +207,17 @@ end
 p closest_numbers([5, 25, 15, 11, 20]) == [15, 11]
 
 # 15 - 11 = 4, closest together
+# All absolute differences:
+# 5 - 25 = 20
+# 5 - 15 = 10
+# 5 - 11 = 6
+# 5 - 20 = 15
+# 25 - 15 = 10
+# 25 - 11 = 14
+# 25 - 20 = 5
+# 15 - 11 = 4 (smallest difference)
+# 15 - 20 = 5
+# 11 - 20 = 9
 
 p closest_numbers([19, 25, 32, 4, 27, 16]) == [25, 27]
 
