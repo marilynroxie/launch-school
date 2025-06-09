@@ -4,6 +4,8 @@
 
 # When counting numbers, only count unique values. That is, if a number occurs multiple times in the array, it should only be counted once.
 
+# Note: this is very similar to https://leetcode.com/problems/how-many-numbers-are-smaller-than-the-current-number/description/ except the Leetcode problem doesn't need only unique values. Even these same test cases [8,1,2,2,3], [6,5,4,8], and [7,7,7,7] are present in the Leetcode version.
+
 # Inputs: array of integers
 # Outputs: array of integers, with each integer representing how many numbers are smaller the element from the argument array at the same index
 # Implicit: no empty arrays, no negative numbers, same size as original array
