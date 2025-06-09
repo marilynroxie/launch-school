@@ -699,15 +699,17 @@ p even_substrings("143232") == 12
 # Implicit: integer will not be negative, nor less than 1 in any examples shown
 
 # Data structures
-# Array when working with string, return value will be an array of [k, t]
-# representing the shortest substring (t) and repeat count (k) respectively
+# Array when working with string, return value will be an array of [t, k]
+# - Representing the shortest substring (t) and repeat count (k) respectively
 
 # Algorithm
-# Iterate over possible substrings from 1 to the length of the string
-# For every length, get slice of str[0, substring_length]
-# return [substring, str.length / substring_length] if str == substring * (str.length / substring_length)
-# Return array of [t, k] (which is substring, repeat count)
-# Need to work on detailing this more
+# Iterate over possible substrings from 1 to string length
+# For every length:
+# - Get slice of str[0, substring_length], representing a substring
+# - Calculate how many times the substring must repeat (str.length / substring_length) to equal argument string
+# - Check if substring is equal to above calculation
+# Return array of [substring, repeat_count] if equal
+# Return original string and count of 1 [str, 1] if there is no repeating pattern found
 
 # Code
 
