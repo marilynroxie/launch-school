@@ -77,13 +77,11 @@ p smaller_numbers_than_current(my_array) == result
 # Algorithm
 
 # Create range from 0 to array.length - 5
-# - Range will be empty if arr.length < 5
-# - Will implicitly return nil if arr.length < 5
+# - Range will be empty if arr.length < 5, which will implicitly return nil if arr.length < 5
 # For each index in the range:
 # - Get slice arr[i, 5] (five consecutive elements)
 # - Sum the slice
 # Call min on the array of sums to find and return minimum sum
-# - Will implicitly return nil if arr.length < 5
 
 # Code
 
@@ -114,31 +112,35 @@ p minimum_sum([-1, -5, -3, 0, -1, 2, -4]) == -10
 
 # Understanding the Problem
 
-# Inputs: string
-# Outputs: string with modified text (every second character in every third word converted to uppercase) of same length
-# Explicit: string is same size, every second character in every third word is capitalized
-# Implicit: spaces are retained, no punctuation is shown in examples, no non alphabetic or space characters are shown
+# Inputs: string of words separated by single spaces
+# Outputs: string where every second character in every third word has been converted to uppercase; of same length as argument string
+# Explicit: string is same size, every second character in every third word is capitalized; other characters aren't changed, string returned should be a copy
+# Implicit: (single) spaces are retained, no punctuation is shown in examples, no non alphabetic or space characters are shown, empty strings would presumably return empty strings
 
 # Data structure
-# Array when splitting string, output will be string however
+# Array when splitting string, final output will be string joined back together
 
 # Algorithm
 
 # Split string to array of words
 # Iterate through array of words
-# Target every third word (idx + 1 % 3 == 0), leave other words alone
-# Target characters and capitalize every second character (idx + 1 % 2 == 0), leave other characters alone, joining these
-# Join modified string and return it
+# For each word:
+# - Target every third word with (idx + 1) % 3 == 0
+# - Other words are left alone
+# Transforming a word:
+# - Split word into characters
+# - Target characters and capitalize every second character (idx % 2 == 1), odd indices
+# - Other characters are left alone
+# - Join characters back into a word
+# Join modified string (preserving spaces) and return it
 
 # Code
 
 def to_weird_case(str)
-  str = str.split
-
-  str.map.with_index do |word, idx|
+  str.split.map.with_index do |word, idx|
     if (idx + 1) % 3 == 0
       word.chars.map.with_index do |char, idx|
-        if (idx + 1) % 2 == 0
+        if idx % 2 == 1
           char = char.upcase
         else
           char
