@@ -794,7 +794,7 @@ p is_pangram(my_str) == true
 # inputs: two strings
 # outputs: boolean true or false
 # implicit:
-# - some portion
+# - some portion of str2 is in str1
 # - does not need to be all the same letters, there can be leftover letters in the first string
 # e.g. p unscramble("ab", "aaa") should not return true as there needs to be three as. it seems to be a requirement that the quantities are also checked
 # explicit: lowercase alphabetic characters, not empty
@@ -804,25 +804,26 @@ p is_pangram(my_str) == true
 
 # Algorithm
 
-# Split both strings into characters
-# Create a hash to store frequencies of letters in the first string
-# Create a hash to store frequencies of letters in the second string
-# Check if all characters in the second string are found in the first at the same or greater frequency; return true if true and false if false
+# Split both strings into characters as chars1 and chars2 respectively
+# Create a hash to store frequencies of letters in the first string, with a default value of 0
+# Create a hash to store frequencies of letters in the second string, with a default value of 0
+# Iterate through chars1 and chars2 respectively, incrementing the value of frequencies[letter] += 1
+# Check if the count of all characters in the second string are found in the first at the same or greater frequency; return true if true and false if false
 
 # Code
 
 def unscramble(str1, str2)
-  str1 = str1.chars
-  str2 = str2.chars
+  chars1 = str1.chars
+  chars2 = str2.chars
 
   frequencies1 = Hash.new(0)
   frequencies2 = Hash.new(0)
 
-  str1.each do |char|
+  chars1.each do |char|
     frequencies1[char] += 1
   end
 
-  str2.each do |char|
+  chars2.each do |char|
     frequencies2[char] += 1
   end
 
