@@ -76,16 +76,20 @@ p smaller_numbers_than_current(my_array) == result
 
 # Algorithm
 
-# Can return nil if arr.size < 5
-# Transform from index 0 to arr.size < 5
-# Within the method body of map, sum the slice arr[i, 5] (five consecutive elements)
-# Call min on the array that map returns (array of sums) to find minimum sum and return it
+# Create range from 0 to array.length - 5
+# - Range will be empty if arr.length < 5
+# - Will implicitly return nil if arr.length < 5
+# For each index in the range:
+# - Get slice arr[i, 5] (five consecutive elements)
+# - Sum the slice
+# Call min on the array of sums to find and return minimum sum
+# - Will implicitly return nil if arr.length < 5
 
 # Code
 
 def minimum_sum(arr)
-  (0..arr.length - 5).map do |i|
-    arr[i, 5].sum
+  (0..arr.length - 5).map do |idx|
+    arr[idx, 5].sum
   end.min
 end
 
