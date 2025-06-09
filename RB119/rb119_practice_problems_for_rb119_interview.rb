@@ -636,7 +636,7 @@ p count_substrings("bbbaabbbbaabb", "bbbaabb") == 1
 # Understanding the Problem
 
 # Inputs: String (representing a number, but not given as integer)
-# Outputs: Integer (representing count of seven substrings)
+# Outputs: Integer (representing count of even substrings)
 # Implicit: No empty strings given as argument, count will never be less than 0
 # Explicit: Duplicate substrings are counted
 
@@ -644,11 +644,16 @@ p count_substrings("bbbaabbbbaabb", "bbbaabb") == 1
 # Array representing string split into elements, then integer representing count
 
 # Algorithm
-# Split string into characters
-# Initialize an empty array of substrings
-# From the start to the end of the array -1 to avoid going out of bounds
-# add str[start..ending] if str[ending].to_i.even? to substrings
-# count substrings array at the end
+# Split string into array of characters
+# Initialize an empty array to store substrings meeting requirement (ending in an even digit)
+# Outer loop:
+# - For every possible starting position (0 to str.length - 1)
+# Inner loop:
+# - For each possible ending position (from start to str.length - 1)
+# -- Add str[start..ending] if str[ending].to_i.even? (checking of the last digit is even) to substrings
+# --- This check is necessary to ensure that only substrings ending with an even digit are added to substrings
+# --- E.g. '1432' is even, but '143' is not because it ends in an odd number
+# Return count of substrings array
 
 # Code
 
