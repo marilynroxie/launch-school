@@ -1024,7 +1024,8 @@ p distinct_multiples("2718281828459045") == 5  # 2, 1, 8, 4, 5
 # inputs: array of integers
 # outputs: integer (representing closest prime number greater than array.sum)
 # explicit: array will always contain >= 2 integers, all integer elements will be > 0 (positive), same number may occur more than once
-# implicit: argument will not be an empty array, sum may or may not already be prime
+# implicit: argument will not be an empty array, sum may or may not already be prime, 0 and 1 are not prime numbers
+# note: prime numbers are integers > 1 that have two factors (two numbers they are divisible by): 1 and the integer itself
 
 # Data structure
 # Array when working with sums
@@ -1053,13 +1054,24 @@ end
 
 # Examples / Test Cases
 
-p nearest_prime_sum([1, 2, 3]) == 1        # Nearest prime to 6 is 7
-p nearest_prime_sum([5, 2]) == 4           # Nearest prime to 7 is 11
-p nearest_prime_sum([1, 1, 1]) == 2        # Nearest prime to 3 is 5
-p nearest_prime_sum([2, 12, 8, 4, 6]) == 5 # Nearest prime to 32 is 37
+p nearest_prime_sum([1, 2, 3]) == 1
+# Nearest prime to 6 is 7
 
-# Nearest prime to 163 is 167
+p nearest_prime_sum([5, 2]) == 4
+# Nearest prime to 7 is 11
+
+p nearest_prime_sum([1, 1, 1]) == 2
+# Nearest prime to 3 is 5
+
+p nearest_prime_sum([2, 12, 8, 4, 6]) == 5
+# Nearest prime to 32 is 37
+
 p nearest_prime_sum([50, 39, 49, 6, 17, 2]) == 4
+# Nearest prime to 163 is 167
+
+# Algorithm - Manual Solution
+
+# Code - Manual Solution
 
 # Problem 18
 
@@ -1080,13 +1092,17 @@ p nearest_prime_sum([50, 39, 49, 6, 17, 2]) == 4
 # implicit: no empty arrays
 
 # Data structure
-# Working with array to determine sums
+# Working with array slicing in original array
 
 # Algorithm
 
-# 0..(arr.length - 1).each iteration
-# Calculate sums to the left and right of each index and store them without going out of bounds
-# Return first valid index where sums are equal and -1 otherwise
+# 0..(arr.length - 1).each iteration to iterate through every index of the array
+# Gather elements to the left of each index and sum them
+# - arr[0...i] is up to, but not including, the current index
+# Gather elements to the right of each index and sum them
+# - arr[(i + 1)..-1] is the current index + 1 to the end of the array
+# Return first valid index where left and right sums are equal; left to right iteration ensures the smallest one will be returned
+# Return -1 if equal sums aren't found
 
 # Code
 
@@ -1094,7 +1110,6 @@ def equal_sum_index(arr)
   (0..arr.length - 1).each do |i|
     left_sum = arr[0...i].sum
     right_sum = arr[(i + 1)..-1].sum
-
     return i if left_sum == right_sum
   end
   -1
