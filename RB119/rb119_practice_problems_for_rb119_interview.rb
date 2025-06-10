@@ -1144,31 +1144,50 @@ p equal_sum_index([0, 20, 10, -60, 5, 25]) == 0
 # Create a method that takes an array of integers as an argument and returns the integer that appears an odd number of times. There will always be exactly one such integer in the input array.
 
 # Understanding the Problem
-# inputs: array
+
+# inputs: array of 1 element or more
 # outputs: integer (negative, 0, positive) representing the one integer that appears an odd number of times
 # explicit: array will have at least one element, only one integer that appears an odd # of times
 # implicit: no empty arrays, no elements other than integers
 
 # Data structure
+
 # Array for counting occurrences of integer
 
 # Algorithm
-# Iterate through array
-# Return first number that has a count of odd?
+
+# Iterate through unique numbers in array
+# For each unique number:
+# - Count times it appears in original array
+# - Return first number that has a count of odd? (there will always be one number like this)
 
 # Code
 
 def odd_fellow(arr)
-  arr.each do |num|
+  arr.uniq.each do |num|
     return num if arr.count(num).odd?
   end
 end
 
 p odd_fellow([4]) == 4
+
+# Single element; 4 is returned because it is the only element that appears an odd number of times (1)
+
 p odd_fellow([7, 99, 7, 51, 99]) == 51
+
+# 51 is returned because it is the only element that appears an odd number of times (1)
+
 p odd_fellow([7, 99, 7, 51, 99, 7, 51]) == 7
+
+# 7 is returned, because it is the only element that appears an odd number of times (3)
+
 p odd_fellow([25, 10, -6, 10, 25, 10, -6, 10, -6]) == -6
+
+# -6 is returned because it is the only element that appears an odd number of times (3)
+
 p odd_fellow([0, 0, 0]) == 0
+
+# 0 is returned because it is the only element that appears an odd number of times (0)
 
 # Problem 20
 
@@ -1188,19 +1207,39 @@ p odd_fellow([0, 0, 0]) == 0
 
 # Algorithm
 
-# Iterate through array
-# Return num if arr.count(num) == 1
+# Iterate through unique numbers in array
+# Check if arr.count(num) == 1
+# Return num if the number appears exactly one time
 
 # Code
 
 def what_is_different(arr)
-  arr.each do |num|
+  arr.uniq.each do |num|
     return num if arr.count(num) == 1
   end
 end
 
 p what_is_different([0, 1, 0]) == 1
+
+# 1 is the only number that appears once
+# Two 0s and one 1
+
 p what_is_different([7, 7, 7, 7.7, 7]) == 7.7
+
+# 7.7. is the only number that appears once
+# Four 7s and one 7.7
+
 p what_is_different([1, 1, 1, 1, 1, 1, 1, 11, 1, 1, 1, 1]) == 11
+
+# 11 is the only number that appears once
+# Eleven 1s and one 11
+
 p what_is_different([3, 4, 4, 4]) == 3
+
+# 3 is the only number that appears once
+# Three 4s and 1 3
+
 p what_is_different([4, 4, 4, 3]) == 3
+
+# 3 is the only number that appears once
+# Three 4s and 1 3
