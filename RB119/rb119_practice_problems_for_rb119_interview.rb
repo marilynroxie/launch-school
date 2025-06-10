@@ -177,7 +177,7 @@ p to_weird_case(original) == expected
 
 # Understanding the Problem
 # Inputs: array of integers
-# Outputs: array of integers, two numbers representing those that are closest together in value (absolute difference)
+# Outputs: array of integers, two numbers representing those that are closest together in value (smallest absolute difference)
 # Explicit: return first pair with respect to array order if there are multiple equally close pairs
 # Implicit: no negative numbers, no empty arrays, no arr.size < 2 implied, no arr.size < 4 shown in examples, maintain order from original array
 
@@ -186,11 +186,12 @@ p to_weird_case(original) == expected
 
 # Algorithm
 
-# Create an empty pairs array storing all possible pairs
-# Iterate through the input array over elements and indices
+# Create an empty pairs array to store all possible pairs
+# Iterate through the input array over elements and their indices
 # Iterate through the input array again over parameters representing the next number and index that come after the first
 # Add pairs of elements to the pairs array if the second index is greater than the first
-# Return the [first element - the second element] pair with the minimum absolute difference
+# - Preserves original array order
+# Identify and return the [first element - the second element] pair with the minimum absolute difference
 
 # Code
 
