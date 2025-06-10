@@ -1032,8 +1032,8 @@ p distinct_multiples("2718281828459045") == 5  # 2, 1, 8, 4, 5
 
 # Algorithm
 # Require prime module
-# Get sum of array argument
-# Loop through sum += 1
+# Get sum of all elements in array argument
+# Increment sum += 1
 # Break as soon as the sum is prime
 # Return sum - arr.sum
 
@@ -1055,23 +1055,72 @@ end
 # Examples / Test Cases
 
 p nearest_prime_sum([1, 2, 3]) == 1
-# Nearest prime to 6 is 7
+# [1, 2, 3].sum is 6; nearest prime to 6 is 7
 
 p nearest_prime_sum([5, 2]) == 4
-# Nearest prime to 7 is 11
+# [5, 2].sum is 7; nearest prime to 7 is 11
 
 p nearest_prime_sum([1, 1, 1]) == 2
-# Nearest prime to 3 is 5
+# [1, 1, 1].sum is 3; nearest prime to 3 is 5
 
 p nearest_prime_sum([2, 12, 8, 4, 6]) == 5
-# Nearest prime to 32 is 37
+# [2, 12, 8, 4, 6].sum is 32; nearest prime to 32 is 37
 
 p nearest_prime_sum([50, 39, 49, 6, 17, 2]) == 4
-# Nearest prime to 163 is 167
+# [50, 39, 49, 6, 17, 2].sum is 163; nearest prime to 163 is 167
 
 # Algorithm - Manual Solution
 
+# Helper method to determine if an integer is prime:
+# - Return false if num < 2 since these cannot be prime
+# - Check divisibility from 2 up to and including the square root (converted to integer) of the integer
+# -- Square root is relevant because, if it has factors, at least one of them must be less than or equal to the square root
+# - If the number divides evenly, it is not prime
+# - If there are not any divisors found, it is prime
+
+# Nearest prime sum method:
+# - Get sum of all elements in array argument
+# - Increment sum += 1
+# - Break as soon as the sum is prime, determined by helper method being called on sum
+# - Return sum - arr.sum
+
 # Code - Manual Solution
+
+def prime?(num)
+  return false if num < 2
+  (2..Math.sqrt(num).to_i).each do |i|
+    return false if num % i == 0
+  end
+  true
+end
+
+def manual_nearest_prime_sum(arr)
+  sum = arr.sum
+
+  loop do
+    sum += 1
+    break if prime?(sum)
+  end
+
+  sum - arr.sum
+end
+
+# Examples / Test Cases
+
+p manual_nearest_prime_sum([1, 2, 3]) == 1
+# [1, 2, 3].sum is 6; nearest prime to 6 is 7
+
+p manual_nearest_prime_sum([5, 2]) == 4
+# [5, 2].sum is 7; nearest prime to 7 is 11
+
+p manual_nearest_prime_sum([1, 1, 1]) == 2
+# [1, 1, 1].sum is 3; nearest prime to 3 is 5
+
+p manual_nearest_prime_sum([2, 12, 8, 4, 6]) == 5
+# [2, 12, 8, 4, 6].sum is 32; nearest prime to 32 is 37
+
+p manual_nearest_prime_sum([50, 39, 49, 6, 17, 2]) == 4
+# [50, 39, 49, 6, 17, 2].sum is 163; nearest prime to 163 is 167
 
 # Problem 18
 
