@@ -96,9 +96,9 @@ p group_sequential_pairs(sample) == [[1, 2], [3, 4], [5]]
 
 # Initialize array to store subarrays
 # Duplicate array
-# Until the duplicate array is empty
-# If new_arr.size == 1 subarrays << [new_arr.pop]
-# Otherwise subarrays << [new_arr.shift, new_arr.pop]
+# Until the duplicate array is empty:
+# - If new_arr.size == 1 subarrays << [new_arr.pop]
+# - Otherwise subarrays << [new_arr.shift, new_arr.pop]
 # Return array of subarrays
 
 # Code
@@ -139,7 +139,7 @@ p concentric_pairs(sample) == [[1, 5], [2, 4], [3]]
 # Algorithm
 
 # Initialize empty array to store subarrays in
-# Iterate through nested each_with_index to identify first and second elements
+# Iterate through nested each_with_index to identify first and second elements and indices
 # Add [element1, element2] to subarray if their indices are not the same
 # Return array of subarrays
 
