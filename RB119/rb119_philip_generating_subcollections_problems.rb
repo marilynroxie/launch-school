@@ -23,6 +23,7 @@ sample = [1, 2, 3, 4, 5]
 
 # Initialize empty array to store subarrays in
 # Iterate over 0..arr.length - 2 and add [arr[element], arr[element + 1]] to subarrays array
+# - 0..arr.length - 2 ensures stopping at second-to-last element to avoid going out of bounds
 # Return array of subarray
 
 # Code
@@ -52,10 +53,11 @@ p sequential_pairs(sample) == [[1, 2], [2, 3], [3, 4], [4, 5]]
 # Array of subarrays
 
 # Algorithm
-
-# Initialize array of subarrays
-# Iterate over array argument
-# Add [arr[idx], arr[idx + 1]] unless subarrays.flatten.include?(arr[idx]) or arr[idx].nil?
+# Initialize an empty array to store subarrays
+# Initialize a variable with the value of 0 assigned to it
+# While the index is less than the length of the array:
+# Add arr[idx, 2] to subarrays; this automatically takes care of the case where only one element is left and does not go out of bounds
+# Increment idx += 2
 # Return subarrays
 
 # Code
@@ -64,10 +66,11 @@ sample = [1, 2, 3, 4, 5]
 
 def group_sequential_pairs(arr)
   subarrays = []
+  idx = 0
 
-  (0..arr.length).each do |idx|
-    next if subarrays.flatten.include?(arr[idx]) || arr[idx].nil?
-    arr[idx + 1].nil? ? subarrays << [arr[idx]] : subarrays << [arr[idx], arr[idx + 1]]
+  while idx < arr.length
+    subarrays << arr[idx, 2]
+    idx += 2
   end
 
   subarrays
