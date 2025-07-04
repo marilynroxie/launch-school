@@ -173,13 +173,23 @@ p scramble("scriptingjava", "javascript") == true
 
 =begin
 Find length of the longest substring in the given string that is the same in reverse.
-As an example, if the input ws "I like racecars that go fast", the substring ('racecar') length would be 7.
+As an example, if the input was "I like racecars that go fast", the substring ('racecar') length would be 7.
 If the length of the input string is 0, return value must be 0.
 =end
 
 # Problem 8 - My Solution
 
 def longest_palindrome(str)
+  substrings = []
+
+  (0..str.length - 1).map do |start_idx|
+    (start_idx..str.length - 1).map do |end_idx|
+      substrings << str[start_idx..end_idx]
+    end
+  end
+
+  palindromes = substrings.select { |x| x == x.reverse }
+  palindromes.max_by { |x| x.length }.length
 end
 
 p longest_palindrome("a") == 1
