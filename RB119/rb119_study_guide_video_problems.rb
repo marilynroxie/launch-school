@@ -205,6 +205,15 @@ Index 0 is the place where the left side and right side are equal.
 
 # Problem 9 - My Solution
 
+def find_even_index(arr)
+  (0..arr.length - 1).each do |idx|
+    left_sum = arr[0...idx].sum
+    right_sum = arr[(idx + 1)..-1].sum
+    return idx if left_sum == right_sum
+  end
+  -1
+end
+
 p find_even_index([1, 2, 3, 4, 3, 2, 1]) == 3
 p find_even_index([1, 100, 50, -51, 1, 1]) == 1
 p find_even_index([1, 2, 3, 4, 5, 6]) == -1
