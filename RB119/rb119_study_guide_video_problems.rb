@@ -41,7 +41,9 @@ p repeated_substring_pattern("abcabcabcabc") == true
 Given array of strings made only of lowercase letters, return array of all characters that show up in all strings within the given array (including duplicates) For example, if a character occurs 3 times in all strings, but not 4 times, you need to include that character three times in the final answer.
 =end
 
-p common_chars(["bella", "label"]) == ["e", "l", "l"]
+# Problem 2 - My Solution
+
+p common_chars(["bella", "label", "roller"]) == ["e", "l", "l"]
 p common_chars(["cool", "lock", "cook"]) == ["c", "o"]
 p common_chars(["hello", "goodbye", "booya", "random"]) == ["o"]
 p common_chars(%w(aabbaaaa ccdddddd eeffee ggrrrrr yyyzzz)) == []
@@ -61,18 +63,15 @@ examples:
 531 --> -1
 =end
 
-# Problem 32 - My Solution
+# Problem 3 - My Solution
 
-def next_bigger()
-end
-
-p next_bigger(9) == -1
-p next_bigger(12) == 21
-p next_bigger(513) == 531
-p next_bigger(2017) == 2071
-p next_bigger(111) == -1
-p next_bigger(531) == -1
-p next_bigger(123456789) == 123456798
+p next_bigger_num(9) == -1
+p next_bigger_num(12) == 21
+p next_bigger_num(513) == 531
+p next_bigger_num(2017) == 2071
+p next_bigger_num(111) == -1
+p next_bigger_num(531) == -1
+p next_bigger_num(123456789) == 123456798
 
 # 4. (part 4, first problem)
 
@@ -205,9 +204,6 @@ Index 0 is the place where the left side and right side are equal.
 =end
 
 # Problem 9 - My Solution
-
-def find_even_index(arr)
-end
 
 p find_even_index([1, 2, 3, 4, 3, 2, 1]) == 3
 p find_even_index([1, 100, 50, -51, 1, 1]) == 1
