@@ -136,6 +136,18 @@ str1 is 'rkqodlw' and str2 is 'world' the output should return true
 # Problem 7 - My Solution
 
 def scramble(string, substring)
+  frequencies1 = Hash.new(0)
+  frequencies2 = Hash.new(0)
+
+  string.each_char do |char|
+    frequencies1[char] += 1
+  end
+
+  substring.each_char do |char|
+    frequencies2[char] += 1
+  end
+
+  frequencies2.all? { |char, count| frequencies1[char] >= count }
 end
 
 p scramble("javaass", "jjss") == false
