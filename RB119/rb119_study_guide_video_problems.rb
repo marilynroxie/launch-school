@@ -101,6 +101,19 @@ All given inputs are in lowercase letters a-z.
 
 # Problem 5 - My Solution
 
+def common_prefix(arr)
+  prefix = arr[0]
+
+  arr.each do |word|
+    while word.index(prefix) != 0
+      prefix = prefix.chop
+      break if prefix.empty?
+    end
+  end
+
+  prefix
+end
+
 p common_prefix(%w(flower, flow, flight)) == "fl"
 p common_prefix(%w(dog racecar car)) == ""
 p common_prefix(%w(interspecies interstellar interstate)) == "inters"
