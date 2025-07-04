@@ -18,13 +18,22 @@ Explanation: String cannot be constructed from repeating substring.
 # Problem 1 - My Solution
 
 def repeated_substring_pattern(str)
+  (1..str.length / 2).each do |length|
+    substring = str[0, length]
+
+    repeats = str.length / length
+
+    return true if substring * repeats == str
+  end
+
+  false
 end
 
-p repeated_substring_patten("abab") == true
-p repeated_substring_patten("aba") == false
-p repeated_substring_patten("aabaaba") == false
-p repeated_substring_patten("abaababaab") == true
-p repeated_substring_patten("abcabcabcabc") == true
+p repeated_substring_pattern("abab") == true
+p repeated_substring_pattern("aba") == false
+p repeated_substring_pattern("aabaaba") == false
+p repeated_substring_pattern("abaababaab") == true
+p repeated_substring_pattern("abcabcabcabc") == true
 
 # 2. (part 1, second problem)
 
@@ -32,12 +41,7 @@ p repeated_substring_patten("abcabcabcabc") == true
 Given array of strings made only of lowercase letters, return array of all characters that show up in all strings within the given array (including duplicates) For example, if a character occurs 3 times in all strings, but not 4 times, you need to include that character three times in the final answer.
 =end
 
-# Problem 2 - My Solution
-
-def common_chars(arr)
-end
-
-p common_chars("bella", "label", "cook") == ["e", "l", "l"]
+p common_chars(["bella", "label"]) == ["e", "l", "l"]
 p common_chars(["cool", "lock", "cook"]) == ["c", "o"]
 p common_chars(["hello", "goodbye", "booya", "random"]) == ["o"]
 p common_chars(%w(aabbaaaa ccdddddd eeffee ggrrrrr yyyzzz)) == []
@@ -80,9 +84,6 @@ Empty array assumed to have 0 greatest sum. Note the empty array is also a valid
 =end
 
 # Problem 4 - My Solution
-
-def max_sequence(arr)
-end
 
 p max_sequence([-2, 1, -3, 4, -1, 2, 1, -5, 4]) == 6
 p max_sequence([]) == 0
