@@ -84,6 +84,17 @@ Empty array assumed to have 0 greatest sum. Note the empty array is also a valid
 
 # Problem 4 - My Solution
 
+def max_sequence(arr)
+  sums = []
+  (0..arr.length - 1).each do |start_idx|
+    (start_idx..arr.length - 1).each do |end_idx|
+      sums << arr[start_idx..end_idx].sum
+    end
+  end
+
+  arr.all? { |element| element.negative? } ? 0 : sums.max
+end
+
 p max_sequence([-2, 1, -3, 4, -1, 2, 1, -5, 4]) == 6
 p max_sequence([]) == 0
 p max_sequence([11]) == 11
