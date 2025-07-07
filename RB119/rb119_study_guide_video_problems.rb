@@ -43,6 +43,22 @@ Given array of strings made only of lowercase letters, return array of all chara
 
 # Problem 2 - My Solution
 
+def common_chars(strings)
+  first_string_chars = strings[0].chars.uniq
+
+  arr = []
+
+  first_string_chars.each do |char|
+    counts = strings.map { |string| string.count(char) }
+
+    min_count = counts.min
+
+    min_count.times { arr << char }
+  end
+
+  arr
+end
+
 p common_chars(["bella", "label", "roller"]) == ["e", "l", "l"]
 p common_chars(["cool", "lock", "cook"]) == ["c", "o"]
 p common_chars(["hello", "goodbye", "booya", "random"]) == ["o"]
