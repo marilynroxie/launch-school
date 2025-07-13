@@ -67,19 +67,43 @@ p common_chars(%w(aabbaaaa ccdddddd eeffee ggrrrrr yyyzzz)) == []
 # 3. (part 2)
 
 =begin
-You have to create a method that takes a positive integer number and returns the next bigger number formed by the same digits.
+You have to create a method that takes a positive integer number and returns the next bigger number formed by the same nums.
 examples:
 12 --> 21
 513 --> 531
 2017 --> 2071
-If no bigger number can be formed using these digits, return -1.
+If no bigger number can be formed using these nums, return -1.
 examples:
 9 --> -1
 111 --> -1
 531 --> -1
 =end
 
+# Copied from https://www.codewars.com/kata/55983863da40caa2c900004e
+
 # Problem 3 - My Solution
+
+def next_bigger_num(num)
+  nums = num.digits.reverse
+
+  pivot = nums.length - 2
+
+  while pivot >= 0 && nums[pivot] >= nums[pivot + 1]
+    pivot -= 1
+  end
+
+  return -1 if pivot < 0
+
+  swap = nums.length - 1
+
+  while nums[swap] <= nums[pivot]
+    swap -= 1
+  end
+
+  nums[pivot], nums[swap] = nums[swap], nums[pivot]
+
+  (nums[0..pivot] + nums[(pivot + 1)..-1].sort).join.to_i
+end
 
 p next_bigger_num(9) == -1
 p next_bigger_num(12) == 21
