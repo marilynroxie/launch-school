@@ -1,3 +1,56 @@
+class Pet
+  attr_accessor :animal, :name
+
+  def initialize(species, name)
+    @species = species
+    @name = name
+  end
+
+  def to_s
+    "a #{@species} named #{@name}"
+  end
+end
+
+class Owner
+  attr_accessor :name, :pets
+
+  def initialize(name)
+    @name = name
+    @pets = []
+  end
+
+  def pet_add(pet)
+    @pets << pet
+  end
+
+  def number_of_pets
+    pets.size
+  end
+
+  def print_pets
+    puts pets
+  end
+end
+
+class Shelter
+  def initialize
+    @owners = {}
+  end
+
+  def adopt(owner, pet)
+    owner.pet_add(pet)
+    @owners[owner.name] = owner
+  end
+
+  def print_adoptions
+    @owners.each_value do |owner|
+      puts "#{owner.name} has adopted the following pets:"
+      owner.print_pets
+      puts
+    end
+  end
+end
+
 butterscotch = Pet.new("cat", "Butterscotch")
 pudding = Pet.new("cat", "Pudding")
 darwin = Pet.new("bearded dragon", "Darwin")
