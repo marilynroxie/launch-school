@@ -1,3 +1,14 @@
+# Todo
+# Adding a class for each move?
+# - Not sure if this is a good idea
+# - unless I could integrate it with different computer personalities
+# Keeping a history of moves
+# Computer personalities
+
+# Bonus Features Already Done:
+# Keeping score
+# Adding Lizard and Spock
+
 require "yaml"
 
 module Message
