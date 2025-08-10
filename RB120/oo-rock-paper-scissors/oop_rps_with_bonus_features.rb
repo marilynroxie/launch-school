@@ -159,7 +159,7 @@ class Move
 end
 
 module GameRules
-  ROUNDS_TO_WIN = 3
+  ROUNDS_TO_WIN = 10
 
   def win?(winner_move, loser_move)
     winner_move.beats?(loser_move)

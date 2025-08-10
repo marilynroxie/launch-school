@@ -14,14 +14,14 @@ rules: |+
   Spock vaporizes Rock...
   Rock crushes Scissors...
 
-  Win three rounds in this match to become the Grand Winner!
+  Win ten rounds in this match to become the Grand Winner!
 
 enter_name: "Please enter your name: "
 valid_name: "Please enter a valid name."
 welcome: |
   Welcome to Rock Paper Scissors Spock Lizard, %s!
 
-  Whoever wins three rounds this match becomes the Grand Winner!
+  Whoever wins ten rounds this match becomes the Grand Winner!
 selection: |+
   Choose Rock, Paper, Scissors, Spock, or Lizard.
 
