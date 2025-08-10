@@ -32,7 +32,7 @@ module Displayable
   include Message
   include Utilities
 
-  def welcome_player
+  def display_welcome
     starred_message("welcome", human.name)
   end
 
@@ -54,10 +54,9 @@ module Displayable
       return puts messages("no_effect", round.human_move, round.computer_move)
     end
 
-    winning_line = messages("winning_moves_lines")[winner_move.to_s].find do |line|
+    puts(messages("winning_moves_lines")[winner_move.to_s].find do |line|
       line.include?(loser_move.to_s)
-    end
-    puts winning_line
+    end)
   end
 
   def display_round_result(round)
@@ -92,14 +91,16 @@ module Displayable
   end
 
   def display_streak
-    if grand_score.grand_winners[:player_streak] >= 2
-      puts(messages("streak")["player"] % grand_score.grand_winners[:player_streak])
-    elsif grand_score.grand_winners[:computer_streak] >= 2
-      puts(messages("streak")["computer"] % grand_score.grand_winners[:computer_streak])
+    streaks = grand_score.grand_winners
+
+    if streaks[:player_streak] >= 2
+      puts(messages("streak")["player"] % streaks[:player_streak])
+    elsif streaks[:computer_streak] >= 2
+      puts(messages("streak")["computer"] % streaks[:computer_streak])
     end
   end
 
-  def farewell_player
+  def display_farewell
     starred_message("thank_you", human.name)
   end
 end
@@ -110,7 +111,7 @@ class Move
     "P" => "Paper",
     "Sc" => "Scissors",
     "L" => "Lizard",
-    "Sp" => "Spock",
+    "Sp" => "Spock"
   }
 
   WINNING_MOVES = {
@@ -118,7 +119,7 @@ class Move
     "Paper" => ["Rock", "Spock"],
     "Scissors" => ["Paper", "Lizard"],
     "Lizard" => ["Spock", "Paper"],
-    "Spock" => ["Scissors", "Rock"],
+    "Spock" => ["Scissors", "Rock"]
   }
 
   attr_reader :value
@@ -207,15 +208,12 @@ class Human < Player
     loop do
       prompt("play_again")
       answer = gets.chomp.strip.downcase
-      if messages("options_pos").include?(answer)
-        clear_screen
-        return true
-      elsif messages("options_neg").include?(answer)
-        return false
-      else
-        clear_screen
-        prompt("invalid_choice")
-      end
+
+      return true if messages("options_pos").include?(answer)
+      return false if messages("options_neg").include?(answer)
+
+      clear_screen
+      prompt("invalid_choice")
     end
   end
 
@@ -284,7 +282,7 @@ class GrandScore
       player: 0,
       computer: 0,
       player_streak: 0,
-      computer_streak: 0,
+      computer_streak: 0
     }
   end
 
@@ -345,14 +343,14 @@ class RPSGame
   end
 
   def play
-    welcome_player
+    display_welcome
 
     loop do
       play_match
       break unless human.play_again?
     end
 
-    farewell_player
+    display_farewell
   end
 
   private
@@ -360,12 +358,15 @@ class RPSGame
   def play_round
     human.choose_move
     computer.choose_move
-
     round = Round.new(human.move, computer.move)
 
+    round_results(round)
+    score.update(round.winner)
+  end
+
+  def round_results(round)
     display_moves(round.human_move, round.computer_move)
     display_winning_move_message(round)
-    score.update(round.winner)
     display_scoreboard
     display_round_result(round)
   end
@@ -377,6 +378,10 @@ class RPSGame
     end
 
     winner = score.match_winner
+    match_results(winner)
+  end
+
+  def match_results(winner)
     grand_score.update(winner)
     display_grand_winner(winner)
     display_grand_scoreboard
