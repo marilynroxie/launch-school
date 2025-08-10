@@ -29,8 +29,8 @@ module Utilities
 end
 
 module Displayable
-  include Utilities
   include Message
+  include Utilities
 
   def welcome_player
     starred_message("welcome", human.name)
@@ -43,16 +43,15 @@ module Displayable
     end
   end
 
-  def display_moves
-    puts messages("display", @human.move, @computer.move)
+  def display_moves(human_move, computer_move)
+    puts messages("display", human_move, computer_move)
     pause(0.2)
   end
 
-  def display_winning_move_message
-    winner_move, loser_move = determine_winner_loser
+  def display_winning_move_message(round)
+    winner_move, loser_move = round.winner_loser
     unless winner_move
-      return puts messages("no_effect", @human.move,
-                           @computer.move)
+      return puts messages("no_effect", round.human_move, round.computer_move)
     end
 
     winning_line = messages("winning_moves_lines")[winner_move.to_s].find do |line|
@@ -61,19 +60,18 @@ module Displayable
     puts winning_line
   end
 
-  def display_round_result
-    if win?(@human.move, @computer.move)
-      puts messages("round_result")["you_won"]
-    elsif win?(@computer.move, @human.move)
-      puts messages("round_result")["computer_won"]
-    else
-      puts messages("round_result")["tie"]
+  def display_round_result(round)
+    case round.winner
+    when :player then puts messages("round_result")["you_won"]
+    when :computer then puts messages("round_result")["computer_won"]
+    else puts messages("round_result")["tie"]
     end
   end
 
   def display_scoreboard
     starred_message("separator")
-    puts messages("scoreboard", @player_score, @computer_score).center(44)
+    puts messages("scoreboard", score.player_score,
+                  score.computer_score).center(44)
     starred_message("separator")
   end
 
@@ -88,21 +86,21 @@ module Displayable
 
   def display_grand_scoreboard
     starred_message("separator")
-    puts messages("total_grand_winners", @grand_winners[:player],
-                  @grand_winners[:computer]).center(44)
+    puts messages("total_grand_winners", grand_score.grand_winners[:player],
+                  grand_score.grand_winners[:computer]).center(44)
     starred_message("separator")
   end
 
   def display_streak
-    if @grand_winners[:player_streak] >= 2
-      puts(messages("streak")["player"] % @grand_winners[:player_streak])
-    elsif @grand_winners[:computer_streak] >= 2
-      puts(messages("streak")["computer"] % @grand_winners[:computer_streak])
+    if grand_score.grand_winners[:player_streak] >= 2
+      puts(messages("streak")["player"] % grand_score.grand_winners[:player_streak])
+    elsif grand_score.grand_winners[:computer_streak] >= 2
+      puts(messages("streak")["computer"] % grand_score.grand_winners[:computer_streak])
     end
   end
 
   def farewell_player
-    starred_message("thank_you", @human.name)
+    starred_message("thank_you", human.name)
   end
 end
 
@@ -169,7 +167,6 @@ module GameRules
 end
 
 class Player
-  include Displayable
   include GameRules
 
   attr_accessor :move, :name, :score
@@ -187,6 +184,8 @@ class Player
 end
 
 class Human < Player
+  include Displayable
+
   def set_name
     clear_screen
     loop do
@@ -201,6 +200,22 @@ class Human < Player
     loop do
       choice = user_input
       return @move = Move.new(choice) if handle_choice(choice)
+    end
+  end
+
+  def play_again?
+    loop do
+      prompt("play_again")
+      answer = gets.chomp.strip.downcase
+      if messages("options_pos").include?(answer)
+        clear_screen
+        return true
+      elsif messages("options_neg").include?(answer)
+        return false
+      else
+        clear_screen
+        prompt("invalid_choice")
+      end
     end
   end
 
@@ -222,10 +237,8 @@ class Human < Player
 end
 
 class Computer < Player
-  COMPUTER_NAMES = ["R2D2", "HAL", "Number5", "Sonny", "Chappie"]
-
   def set_name
-    @name = COMPUTER_NAMES.sample
+    @name = ["R2D2", "HAL", "Number5", "Sonny", "Chappie"].sample
   end
 
   def choose_move
@@ -234,8 +247,6 @@ class Computer < Player
 end
 
 class Score
-  include Displayable
-
   attr_accessor :player_score, :computer_score
 
   def initialize
@@ -266,7 +277,7 @@ class Score
 end
 
 class GrandScore
-  include Displayable
+  attr_reader :grand_winners
 
   def initialize
     @grand_winners = {
@@ -290,10 +301,39 @@ class GrandScore
   end
 end
 
-class RPSGame
-  include Message
-  include Displayable
+class Round
   include GameRules
+
+  attr_reader :human_move, :computer_move, :winner
+
+  def initialize(human_move, computer_move)
+    @human_move = human_move
+    @computer_move = computer_move
+    @winner = determine_winner
+  end
+
+  def winner_loser
+    case winner
+    when :player
+      [human_move, computer_move]
+    when :computer
+      [computer_move, human_move]
+    else
+      [nil, nil]
+    end
+  end
+
+  private
+
+  def determine_winner
+    return :player if win?(human_move, computer_move)
+    return :computer if win?(computer_move, human_move)
+    nil
+  end
+end
+
+class RPSGame
+  include Displayable
 
   attr_reader :human, :computer, :score, :grand_score
 
@@ -309,8 +349,7 @@ class RPSGame
 
     loop do
       play_match
-      handle_match_end
-      break unless play_again?
+      break unless human.play_again?
     end
 
     farewell_player
@@ -318,75 +357,30 @@ class RPSGame
 
   private
 
-  def play_match
-    score.reset
-
-    until score.match_over?
-      play_round
-    end
-  end
-
   def play_round
     human.choose_move
     computer.choose_move
 
-    display_moves
-    display_winning_move_message
-    update_score
-    score.display_scoreboard
-    display_round_result
+    round = Round.new(human.move, computer.move)
+
+    display_moves(round.human_move, round.computer_move)
+    display_winning_move_message(round)
+    score.update(round.winner)
+    display_scoreboard
+    display_round_result(round)
   end
 
-  def determine_winner_loser
-    if win?(human.move, computer.move)
-      [human.move, computer.move]
-    elsif win?(computer.move, human.move)
-      [computer.move, human.move]
-    else
-      [nil, nil]
+  def play_match
+    score.reset
+    until score.match_over?
+      play_round
     end
-  end
 
-  def update_score
-    if win?(human.move, computer.move)
-      score.update(:player)
-    elsif win?(computer.move, human.move)
-      score.update(:computer)
-    end
-  end
-
-  def handle_match_end
     winner = score.match_winner
     grand_score.update(winner)
-    grand_score.display_grand_winner(winner)
-    grand_score.display_grand_scoreboard
-    grand_score.display_streak
-  end
-
-  def play_again?
-    loop do
-      answer = play_again_input
-      result = play_again_answer(answer)
-      return result unless result.nil?
-    end
-  end
-
-  def play_again_input
-    prompt("play_again")
-    gets.chomp.strip.downcase
-  end
-
-  def play_again_answer(answer)
-    if messages("options_pos").include?(answer)
-      clear_screen
-      true
-    elsif messages("options_neg").include?(answer)
-      false
-    else
-      clear_screen
-      prompt("invalid_choice")
-      nil
-    end
+    display_grand_winner(winner)
+    display_grand_scoreboard
+    display_streak
   end
 end
 
