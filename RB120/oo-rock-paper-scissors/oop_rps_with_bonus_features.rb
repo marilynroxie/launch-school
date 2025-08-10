@@ -366,20 +366,27 @@ class RPSGame
 
   private
 
-  def play_round
-    human.choose_move
-    computer.choose_move
-    round = Round.new(human.move, computer.move)
-
-    round_results(round)
-    score.update(round.winner)
-  end
-
   def round_results(round)
     display_moves(round.human_move, round.computer_move)
     display_winning_move_message(round)
     display_scoreboard
     display_round_result(round)
+  end
+
+  def play_round
+    human.choose_move
+    computer.choose_move
+    round = Round.new(human.move, computer.move)
+
+    score.update(round.winner)
+    round_results(round)
+  end
+
+  def match_results(winner)
+    grand_score.update(winner)
+    display_grand_winner(winner)
+    display_grand_scoreboard
+    display_streak
   end
 
   def play_match
@@ -390,13 +397,6 @@ class RPSGame
 
     winner = score.match_winner
     match_results(winner)
-  end
-
-  def match_results(winner)
-    grand_score.update(winner)
-    display_grand_winner(winner)
-    display_grand_scoreboard
-    display_streak
   end
 end
 
