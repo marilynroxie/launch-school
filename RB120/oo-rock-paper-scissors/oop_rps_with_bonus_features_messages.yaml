@@ -31,6 +31,8 @@ selection: |+
 
   Type rules if you want to see a breakdown of winning moves.
 
+  Type history or h if you want to see the history of moves played by yourself and the computer.
+
 invalid_choice: "That's not a valid choice."
 winning_moves_lines:
   Rock:
