@@ -2,12 +2,13 @@
 # Adding a class for each move?
 # - Not sure if this is a good idea
 # - unless I could integrate it with different computer personalities
-# Keeping a history of moves
+# Need to move some move history stuff to YAML
 # Computer personalities
 
 # Bonus Features Already Done:
 # Keeping score
 # Adding Lizard and Spock
+# Start of move history
 
 require "yaml"
 
@@ -114,6 +115,70 @@ module Displayable
   def display_farewell
     starred_message("thank_you", human.name)
   end
+
+  def display_history
+    if move_history.current_match_empty? && move_history.total_matches_played == 0
+      puts "\nNo moves have been played yet.\n\n"
+      return
+    end
+
+    display_current_match_history
+    display_overall_statistics if move_history.total_matches_played > 0
+  end
+
+  def display_current_match_history
+    return if move_history.current_match_empty?
+
+    puts "\n#{("=" * 60)}"
+    puts "CURRENT MATCH HISTORY".center(60)
+    puts "=" * 60
+
+    move_history.current_match_each_with_index do |round_data, index|
+      puts "Round #{index + 1}:"
+      puts "  #{@game.human.name}: #{round_data[:human_move]}"
+      puts "  #{@game.computer.name}: #{round_data[:computer_move]}"
+      puts "  Winner: #{format_winner(round_data[:winner])}"
+      puts ""
+    end
+
+    puts "Current Match - Rounds Played: #{move_history.current_match_size}"
+    puts "Current Score - #{@game.human.name}: #{score.player_score}, #{@game.computer.name}: #{score.computer_score}"
+    puts "=" * 60
+    puts ""
+  end
+
+  def display_overall_statistics
+    puts "=" * 60
+    puts "OVERALL GAME STATISTICS".center(60)
+    puts "=" * 60
+
+    puts "Total Matches Played: #{move_history.total_matches_played}"
+    puts "#{@game.human.name} Match Wins: #{move_history.overall_wins(:player)}"
+    puts "#{@game.computer.name} Match Wins: #{move_history.overall_wins(:computer)}"
+    puts ""
+
+    puts "MATCH HISTORY SUMMARY:"
+    puts "-" * 30
+
+    move_history.all_matches.each do |match_data|
+      winner_name = format_winner(match_data[:winner])
+      score = match_data[:final_score]
+      puts "Match #{match_data[:match_number]}: #{winner_name} won (#{score[:player]}-#{score[:computer]})"
+    end
+
+    puts "=" * 60
+    puts ""
+  end
+
+  private
+
+  def format_winner(winner)
+    case winner
+    when :player then @game.human.name
+    when :computer then @game.computer.name
+    else "Tie"
+    end
+  end
 end
 
 class Move
@@ -122,7 +187,7 @@ class Move
     "P" => "Paper",
     "Sc" => "Scissors",
     "L" => "Lizard",
-    "Sp" => "Spock"
+    "Sp" => "Spock",
   }
 
   WINNING_MOVES = {
@@ -130,7 +195,7 @@ class Move
     "Paper" => ["Rock", "Spock"],
     "Scissors" => ["Paper", "Lizard"],
     "Lizard" => ["Spock", "Paper"],
-    "Spock" => ["Scissors", "Rock"]
+    "Spock" => ["Scissors", "Rock"],
   }
 
   attr_reader :value
@@ -198,6 +263,8 @@ end
 class Human < Player
   include Displayable
 
+  attr_writer :game
+
   def set_name
     clear_screen
     loop do
@@ -238,10 +305,55 @@ class Human < Player
   def handle_choice(choice)
     clear_screen
     return display_rules && false if choice == "Rules"
+    return display_history && false if choice == "History" || choice == "H"
+    return display_detailed_history && false if choice == "Fullhistory" || choice == "Fh"
     return true if valid_move?(choice)
 
     prompt("invalid_choice")
     false
+  end
+
+  def display_detailed_history
+    if move_history.total_matches_played == 0 && move_history.current_match_empty?
+      puts "\nNo games have been played yet.\n\n"
+      return
+    end
+
+    puts "\n#{("=" * 70)}"
+    puts "COMPLETE GAME HISTORY".center(70)
+    puts "=" * 70
+
+    move_history.all_matches.each do |match_data|
+      puts "\nMATCH #{match_data[:match_number]} - Winner: #{format_winner(match_data[:winner])}"
+      puts "Final Score: #{@game.human.name} #{match_data[:final_score][:player]} - #{match_data[:final_score][:computer]} #{@game.computer.name}"
+      puts "-" * 40
+
+      match_data[:rounds].each_with_index do |round_data, index|
+        puts "  Round #{index + 1}: #{@game.human.name}(#{round_data[:human_move]}) vs #{@game.computer.name}(#{round_data[:computer_move]}) - #{format_winner(round_data[:winner])}"
+      end
+    end
+
+    unless move_history.current_match_empty?
+      puts "\nCURRENT MATCH (In Progress)"
+      puts "-" * 40
+      move_history.current_match_each_with_index do |round_data, index|
+        puts "  Round #{index + 1}: #{@game.human.name}(#{round_data[:human_move]}) vs #{@game.computer.name}(#{round_data[:computer_move]}) - #{format_winner(round_data[:winner])}"
+      end
+    end
+
+    display_overall_statistics if move_history.total_matches_played > 0
+  end
+
+  def move_history
+    @game&.move_history || []
+  end
+
+  def score
+    @game&.score
+  end
+
+  def computer
+    @game&.computer
   end
 end
 
@@ -293,7 +405,7 @@ class GrandScore
       player: 0,
       computer: 0,
       player_streak: 0,
-      computer_streak: 0
+      computer_streak: 0,
     }
   end
 
@@ -307,6 +419,70 @@ class GrandScore
       @grand_winners[:computer_streak] += 1
       @grand_winners[:player_streak] = 0
     end
+  end
+end
+
+class MoveHistory
+  def initialize
+    @current_match = []
+    @all_matches = []
+    @current_match_number = 1
+  end
+
+  def add_round(human_move, computer_move, winner)
+    round_data = {
+      human_move: human_move.to_s,
+      computer_move: computer_move.to_s,
+      winner: winner,
+      match_number: @current_match_number,
+    }
+    @current_match << round_data
+  end
+
+  def finish_match(match_winner)
+    return if @current_match.empty?
+
+    match_data = {
+      match_number: @current_match_number,
+      rounds: @current_match.dup,
+      winner: match_winner,
+      final_score: calculate_final_score,
+    }
+    @all_matches << match_data
+    @current_match.clear
+    @current_match_number += 1
+  end
+
+  def current_match_empty?
+    @current_match.empty?
+  end
+
+  def current_match_each_with_index(&block)
+    @current_match.each_with_index(&block)
+  end
+
+  def current_match_size
+    @current_match.size
+  end
+
+  attr_reader :all_matches
+
+  def total_matches_played
+    @all_matches.size
+  end
+
+  def overall_wins(player_type)
+    @all_matches.count { |match| match[:winner] == player_type }
+  end
+
+  private
+
+  def calculate_final_score
+    player_score = @current_match.count { |round| round[:winner] == :player }
+    computer_score = @current_match.count do |round|
+      round[:winner] == :computer
+    end
+    { player: player_score, computer: computer_score }
   end
 end
 
@@ -344,13 +520,16 @@ end
 class RPSGame
   include Displayable
 
-  attr_reader :human, :computer, :score, :grand_score
+  attr_reader :human, :computer, :score, :grand_score, :move_history
 
   def initialize
     @human = Human.new
     @computer = Computer.new
     @score = Score.new
     @grand_score = GrandScore.new
+    @move_history = MoveHistory.new
+
+    @human.game = self
   end
 
   def play
@@ -379,6 +558,7 @@ class RPSGame
     round = Round.new(human.move, computer.move)
 
     score.update(round.winner)
+    move_history.add_round(round.human_move, round.computer_move, round.winner)
     round_results(round)
   end
 
@@ -396,6 +576,7 @@ class RPSGame
     end
 
     winner = score.match_winner
+    move_history.finish_match(winner)
     match_results(winner)
   end
 end

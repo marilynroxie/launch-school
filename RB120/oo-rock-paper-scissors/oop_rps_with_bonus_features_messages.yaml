@@ -31,7 +31,9 @@ selection: |+
 
   Type rules if you want to see a breakdown of winning moves.
 
-  Type history or h if you want to see the history of moves played by yourself and the computer.
+  Type history or h if you want to see the history of moves played by yourself and the computer in this round.
+
+  Type fullhistory or fh if you want to see detailed move-by-move history across all games.
 
 invalid_choice: "That's not a valid choice."
 winning_moves_lines:
