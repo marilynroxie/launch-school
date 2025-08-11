@@ -444,7 +444,9 @@ class Score
     @computer_score = 0
   end
 
-  def update(winner)
+  def update(round)
+    winner = round.winner
+
     case winner
     when :player then self.player_score += 1
     when :computer then self.computer_score += 1
@@ -494,11 +496,12 @@ class MoveHistory
     @current_match_number = 1
   end
 
-  def add_round(human_move, computer_move, winner)
+  def add_round(round)
     round_data = {
-      human_move: human_move.to_s,
-      computer_move: computer_move.to_s,
-      winner: winner,
+
+      human_move: round.human_move.to_s,
+      computer_move: round.computer_move.to_s,
+      winner: round.winner,
       match_number: @current_match_number
     }
     @current_match << round_data
@@ -622,8 +625,8 @@ class RPSGame
     computer.choose_move
     round = Round.new(human.move, computer.move)
 
-    score.update(round.winner)
-    move_hist.add_round(round.human_move, round.computer_move, round.winner)
+    score.update(round)
+    move_hist.add_round(round)
     round_results(round)
   end
 
