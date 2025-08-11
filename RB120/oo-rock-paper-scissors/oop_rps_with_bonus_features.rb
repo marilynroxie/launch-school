@@ -77,17 +77,35 @@ module DisplayableHistory
     display_overall_statistics if move_hist.total_matches_played > 0
   end
 
-  private
-
   def display_current_match_rounds
     move_hist.current_match_each_with_index do |round_data, index|
-      puts messages("hist")["round_display"] % (index + 1)
-      puts format(messages("hist")["player_move"], @game.human.name,
-                  round_data[:human_move])
-      puts format(messages("hist")["player_move"], @game.computer.name,
-                  round_data[:computer_move])
-      puts messages("hist")["win_display"] % format_winner(round_data[:winner])
+      display_single_round(round_data, index)
     end
+  end
+
+  private
+
+  def display_single_round(round_data, index)
+    display_round_number(index + 1)
+    display_player_moves(round_data)
+    display_round_winner(round_data[:winner])
+  end
+
+  def display_round_number(round_num)
+    puts messages("hist")["round_display"] % round_num
+  end
+
+  def display_player_moves(round_data)
+    display_player_move(@game.human.name, round_data[:human_move])
+    display_player_move(@game.computer.name, round_data[:computer_move])
+  end
+
+  def display_player_move(player_name, move)
+    puts format(messages("hist")["player_move"], player_name, move)
+  end
+
+  def display_round_winner(winner)
+    puts messages("hist")["win_display"] % format_winner(winner)
   end
 
   def display_current_match_summary
