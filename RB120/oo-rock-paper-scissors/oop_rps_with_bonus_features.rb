@@ -69,7 +69,7 @@ module DisplayableHistory
   end
 
   def display_detailed_history
-    return display_no_games_message if no_games_played?
+    puts messages("hist")["no_games"] if no_games_played?
 
     puts messages("hist")["complete_history_header"]
     display_all_completed_matches
@@ -131,10 +131,6 @@ module DisplayableHistory
     move_hist.total_matches_played == 0 && move_hist.current_match_empty?
   end
 
-  def display_no_games_message
-    puts messages("hist")["no_games"]
-  end
-
   def display_all_completed_matches
     move_hist.all_matches.each do |match_data|
       display_match_header(match_data)
@@ -166,16 +162,16 @@ module DisplayableHistory
     return if move_hist.current_match_empty?
 
     puts messages("hist")["current_match_in_progress"]
-    current_rounds = move_hist.current_match.map.with_index do |round_data, index|
-      [round_data, index]
+    move_hist.current_match.each_with_index do |round_data, index|
+      display_round(round_data, index)
     end
+  end
 
-    current_rounds.each do |round_data, index|
-      puts format(messages("hist")["round_vs_display"],
-                  index + 1, @game.human.name, round_data[:human_move],
-                  @game.computer.name, round_data[:computer_move],
-                  format_winner(round_data[:winner]))
-    end
+  def display_round(round_data, index)
+    puts format(messages("hist")["round_vs_display"],
+                index + 1, @game.human.name, round_data[:human_move],
+                @game.computer.name, round_data[:computer_move],
+                format_winner(round_data[:winner]))
   end
 
   def format_winner(winner)
