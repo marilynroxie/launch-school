@@ -112,13 +112,9 @@ module Displayable
     end
   end
 
-  def display_farewell
-    starred_message("thank_you", human.name)
-  end
-
   def display_history
     if move_history.current_match_empty? && move_history.total_matches_played == 0
-      puts "\nNo moves have been played yet.\n\n"
+      puts messages("history")["no_moves"]
       return
     end
 
@@ -129,45 +125,89 @@ module Displayable
   def display_current_match_history
     return if move_history.current_match_empty?
 
-    puts "\n#{("=" * 60)}"
-    puts "CURRENT MATCH HISTORY".center(60)
-    puts "=" * 60
+    puts messages("history")["history_separator"]
+    puts messages("history")["current_match_header"].center(60)
+    puts messages("history")["history_separator"]
 
     move_history.current_match_each_with_index do |round_data, index|
-      puts "Round #{index + 1}:"
-      puts "  #{@game.human.name}: #{round_data[:human_move]}"
-      puts "  #{@game.computer.name}: #{round_data[:computer_move]}"
-      puts "  Winner: #{format_winner(round_data[:winner])}"
+      puts messages("history")["round_display"] % (index + 1)
+      puts format(messages("history")["player_move"], @game.human.name,
+                  round_data[:human_move])
+      puts format(messages("history")["player_move"], @game.computer.name,
+                  round_data[:computer_move])
+      puts messages("history")["winner_display"] % format_winner(round_data[:winner])
       puts ""
     end
 
-    puts "Current Match - Rounds Played: #{move_history.current_match_size}"
-    puts "Current Score - #{@game.human.name}: #{score.player_score}, #{@game.computer.name}: #{score.computer_score}"
-    puts "=" * 60
+    puts messages("history")["current_match_played"] % move_history.current_match_size
+    puts format(messages("history")["current_score"], @game.human.name,
+                score.player_score, @game.computer.name, score.computer_score)
+    puts messages("history")["history_separator"]
     puts ""
   end
 
   def display_overall_statistics
-    puts "=" * 60
-    puts "OVERALL GAME STATISTICS".center(60)
-    puts "=" * 60
+    puts messages("history")["history_separator"]
+    puts messages("history")["overall_stats_header"].center(60)
+    puts messages("history")["history_separator"]
 
-    puts "Total Matches Played: #{move_history.total_matches_played}"
-    puts "#{@game.human.name} Match Wins: #{move_history.overall_wins(:player)}"
-    puts "#{@game.computer.name} Match Wins: #{move_history.overall_wins(:computer)}"
+    puts messages("history")["total_matches"] % move_history.total_matches_played
+    puts format(messages("history")["match_wins"], @game.human.name,
+                move_history.overall_wins(:player))
+    puts format(messages("history")["match_wins"], @game.computer.name,
+                move_history.overall_wins(:computer))
     puts ""
 
-    puts "MATCH HISTORY SUMMARY:"
-    puts "-" * 30
+    puts messages("history")["match_history_summary"]
+    puts messages("history")["history_separator_small"]
 
     move_history.all_matches.each do |match_data|
       winner_name = format_winner(match_data[:winner])
       score = match_data[:final_score]
-      puts "Match #{match_data[:match_number]}: #{winner_name} won (#{score[:player]}-#{score[:computer]})"
+      puts format(messages("history")["match_summary"],
+                  match_data[:match_number], winner_name, score[:player], score[:computer])
     end
 
-    puts "=" * 60
+    puts messages("history")["history_separator"]
     puts ""
+  end
+
+  def display_detailed_history
+    if move_history.total_matches_played == 0 && move_history.current_match_empty?
+      puts messages("history")["no_games"]
+      return
+    end
+
+    puts messages("history")["history_separator"]
+    puts messages("history")["complete_history_header"].center(70)
+    puts messages("history")["history_separator"]
+
+    move_history.all_matches.each do |match_data|
+      puts "\nMATCH #{match_data[:match_number]} - Winner: #{format_winner(match_data[:winner])}"
+      puts format(messages("history")["final_score_display"], @game.human.name,
+                  match_data[:final_score][:player], match_data[:final_score][:computer], @game.computer.name)
+      puts messages("history")["history_separator_small"]
+
+      match_data[:rounds].each_with_index do |round_data, index|
+        puts format(messages("history")["round_vs_display"], index + 1,
+                    @game.human.name, round_data[:human_move], @game.computer.name, round_data[:computer_move], format_winner(round_data[:winner]))
+      end
+    end
+
+    unless move_history.current_match_empty?
+      puts "\n#{messages('history')['current_match_in_progress']}"
+      puts messages("history")["history_separator"]
+      move_history.current_match_each_with_index do |round_data, index|
+        puts format(messages("history")["round_vs_display"], index + 1,
+                    @game.human.name, round_data[:human_move], @game.computer.name, round_data[:computer_move], format_winner(round_data[:winner]))
+      end
+    end
+
+    display_overall_statistics if move_history.total_matches_played > 0
+
+    def display_farewell
+      starred_message("thank_you", human.name)
+    end
   end
 
   private
@@ -187,7 +227,7 @@ class Move
     "P" => "Paper",
     "Sc" => "Scissors",
     "L" => "Lizard",
-    "Sp" => "Spock",
+    "Sp" => "Spock"
   }
 
   WINNING_MOVES = {
@@ -195,7 +235,7 @@ class Move
     "Paper" => ["Rock", "Spock"],
     "Scissors" => ["Paper", "Lizard"],
     "Lizard" => ["Spock", "Paper"],
-    "Spock" => ["Scissors", "Rock"],
+    "Spock" => ["Scissors", "Rock"]
   }
 
   attr_reader :value
@@ -319,7 +359,7 @@ class Human < Player
       return
     end
 
-    puts "\n#{("=" * 70)}"
+    puts "\n#{('=' * 70)}"
     puts "COMPLETE GAME HISTORY".center(70)
     puts "=" * 70
 
@@ -405,7 +445,7 @@ class GrandScore
       player: 0,
       computer: 0,
       player_streak: 0,
-      computer_streak: 0,
+      computer_streak: 0
     }
   end
 
@@ -434,7 +474,7 @@ class MoveHistory
       human_move: human_move.to_s,
       computer_move: computer_move.to_s,
       winner: winner,
-      match_number: @current_match_number,
+      match_number: @current_match_number
     }
     @current_match << round_data
   end
@@ -446,7 +486,7 @@ class MoveHistory
       match_number: @current_match_number,
       rounds: @current_match.dup,
       winner: match_winner,
-      final_score: calculate_final_score,
+      final_score: calculate_final_score
     }
     @all_matches << match_data
     @current_match.clear
