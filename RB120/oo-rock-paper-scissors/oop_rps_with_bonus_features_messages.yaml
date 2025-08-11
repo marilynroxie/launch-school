@@ -36,17 +36,27 @@ selection: |+
   Type fullhistory or fh if you want to see detailed move-by-move history across all games.
 
 invalid_choice: "That's not a valid choice."
-history:
-  history_separator: "============================================================"
-  history_separator_small: "----------------------------------------"
+hist:
+  hist_separator: "============================================================"
+  hist_separator_small: "----------------------------------------"
   no_moves: "No moves have been played yet."
   no_games: "No games have been played yet."
-  current_match_header: "CURRENT MATCH HISTORY"
-  overall_stats_header: "OVERALL GAME STATISTICS"
-  complete_history_header: "COMPLETE GAME HISTORY"
-  match_history_summary: "MATCH HISTORY SUMMARY:"
+  current_match_header: |+
+    ============================================================
+    CURRENT MATCH HISTORY
+    ============================================================
+  overall_stats_header: |+
+    ============================================================
+    OVERALL GAME STATISTICS
+    ============================================================
+  complete_history_header: |+
+    ============================================================
+    COMPLETE GAME HISTORY
+    ============================================================
+  match_history_summary: |+
+    MATCH HISTORY SUMMARY:
+    ----------------------------------------
   current_match_in_progress: "CURRENT MATCH (In Progress)"
-
   current_match_played: "Current Match - Rounds Played: %s"
   current_score: "Current Score - %s: %s, %s: %s"
   total_matches: "Total Matches Played: %s"
