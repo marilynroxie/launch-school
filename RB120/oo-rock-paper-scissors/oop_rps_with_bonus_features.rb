@@ -2,13 +2,12 @@
 # Adding a class for each move?
 # - Not sure if this is a good idea
 # - unless I could integrate it with different computer personalities
-# Need to move some move history stuff to YAML
 # Computer personalities
 
 # Bonus Features Already Done:
 # Keeping score
 # Adding Lizard and Spock
-# Start of move history
+# Move history
 
 require "yaml"
 
@@ -40,19 +39,9 @@ module Utilities
   end
 end
 
-module DisplayableHistory
+module CurrentMatchDisplay
   include Message
   include Utilities
-
-  def display_history
-    if move_hist.current_match_empty? && move_hist.total_matches_played == 0
-      puts messages("hist")["no_moves"]
-      return
-    end
-
-    display_current_match_history
-    display_overall_statistics if move_hist.total_matches_played > 0
-  end
 
   def display_current_match_history
     return if move_hist.current_match_empty?
@@ -60,21 +49,6 @@ module DisplayableHistory
     puts messages("hist")["current_match_header"]
     display_current_match_rounds
     display_current_match_summary
-  end
-
-  def display_overall_statistics
-    display_overall_stats_header
-    display_match_statistics
-    display_match_history_summary
-  end
-
-  def display_detailed_history
-    puts messages("hist")["no_games"] if no_games_played?
-
-    puts messages("hist")["complete_history_header"]
-    display_all_completed_matches
-    display_current_match_if_in_progress
-    display_overall_statistics if move_hist.total_matches_played > 0
   end
 
   def display_current_match_rounds
@@ -114,6 +88,26 @@ module DisplayableHistory
                 score.player_score, @game.computer.name, score.computer_score)
   end
 
+  def format_winner(winner)
+    case winner
+    when :player then @game.human.name
+    when :computer then @game.computer.name
+    else "Tie"
+    end
+  end
+end
+
+module OverallStatsDisplay
+  include Message
+
+  def display_overall_statistics
+    display_overall_stats_header
+    display_match_statistics
+    display_match_history_summary
+  end
+
+  private
+
   def display_overall_stats_header
     puts messages("hist")["overall_stats_header"].center(60)
     puts messages("hist")["total_matches"] % move_hist.total_matches_played
@@ -143,6 +137,21 @@ module DisplayableHistory
                 match_data[:match_number], winner_name,
                 score[:player], score[:computer])
   end
+end
+
+module DetailedHistoryDisplay
+  include Message
+
+  def display_detailed_history
+    puts messages("hist")["no_games"] if no_games_played?
+
+    puts messages("hist")["complete_history_header"]
+    display_all_completed_matches
+    display_current_match_if_in_progress
+    display_overall_statistics if move_hist.total_matches_played > 0
+  end
+
+  private
 
   def no_games_played?
     move_hist.total_matches_played == 0 && move_hist.current_match_empty?
@@ -189,13 +198,21 @@ module DisplayableHistory
                 @game.computer.name, round_data[:computer_move],
                 format_winner(round_data[:winner]))
   end
+end
 
-  def format_winner(winner)
-    case winner
-    when :player then @game.human.name
-    when :computer then @game.computer.name
-    else "Tie"
+module DisplayableHistory
+  include CurrentMatchDisplay
+  include OverallStatsDisplay
+  include DetailedHistoryDisplay
+
+  def display_history
+    if move_hist.current_match_empty? && move_hist.total_matches_played == 0
+      puts messages("hist")["no_moves"]
+      return
     end
+
+    display_current_match_history
+    display_overall_statistics if move_hist.total_matches_played > 0
   end
 end
 
