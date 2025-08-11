@@ -1,7 +1,4 @@
 # Todo
-# Adding a class for each move?
-# - Not sure if this is a good idea
-# - unless I could integrate it with different computer personalities
 # Computer personalities
 
 # Bonus Features Already Done:
@@ -46,7 +43,7 @@ module CurrentMatchDisplay
   def display_current_match_history
     return if move_hist.current_match_empty?
 
-    puts messages("hist")["current_match_header"]
+    puts messages("hist")["headers"]["current_match"]
     display_current_match_rounds
     display_current_match_summary
   end
@@ -92,7 +89,7 @@ module CurrentMatchDisplay
     case winner
     when :player then @game.human.name
     when :computer then @game.computer.name
-    else "Tie"
+    else messages("match")["winner_names"]["tie"]
     end
   end
 end
@@ -109,7 +106,7 @@ module OverallStatsDisplay
   private
 
   def display_overall_stats_header
-    puts messages("hist")["overall_stats_header"].center(60)
+    puts messages("hist")["headers"]["overall_stats"].center(60)
     puts messages("hist")["total_matches"] % move_hist.total_matches_played
   end
 
@@ -121,7 +118,7 @@ module OverallStatsDisplay
   end
 
   def display_match_history_summary
-    puts messages("hist")["match_history_summary"]
+    puts messages("hist")["headers"]["match_history_summary"]
 
     move_hist.all_matches.each do |match_data|
       display_single_match_summary(match_data)
@@ -137,6 +134,14 @@ module OverallStatsDisplay
                 match_data[:match_number], winner_name,
                 score[:player], score[:computer])
   end
+
+  def format_winner(winner)
+    case winner
+    when :player then @game.human.name
+    when :computer then @game.computer.name
+    else messages("match")["winner_names"]["tie"]
+    end
+  end
 end
 
 module DetailedHistoryDisplay
@@ -145,7 +150,7 @@ module DetailedHistoryDisplay
   def display_detailed_history
     puts messages("hist")["no_games"] if no_games_played?
 
-    puts messages("hist")["complete_history_header"]
+    puts messages("hist")["headers"]["complete_history"]
     display_all_completed_matches
     display_current_match_if_in_progress
     display_overall_statistics if move_hist.total_matches_played > 0
@@ -165,10 +170,16 @@ module DetailedHistoryDisplay
   end
 
   def display_match_header(match_data)
-    winner = format_winner(match_data[:winner])
-    puts "\nMATCH #{match_data[:match_number]} - Winner: #{winner}"
+    display_match_title(match_data)
+    display_final_score(match_data[:final_score])
+  end
 
-    final_score = match_data[:final_score]
+  def display_match_title(match_data)
+    winner = format_winner(match_data[:winner])
+    puts format(messages("match")["header"], match_data[:match_number], winner)
+  end
+
+  def display_final_score(final_score)
     puts format(messages("hist")["final_score_display"],
                 @game.human.name, final_score[:player],
                 final_score[:computer], @game.computer.name)
@@ -186,7 +197,7 @@ module DetailedHistoryDisplay
   def display_current_match_if_in_progress
     return if move_hist.current_match_empty?
 
-    puts messages("hist")["current_match_in_progress"]
+    puts messages("hist")["headers"]["current_match_in_progress"]
     move_hist.current_match.each_with_index do |round_data, index|
       display_round(round_data, index)
     end
@@ -197,6 +208,14 @@ module DetailedHistoryDisplay
                 index + 1, @game.human.name, round_data[:human_move],
                 @game.computer.name, round_data[:computer_move],
                 format_winner(round_data[:winner]))
+  end
+
+  def format_winner(winner)
+    case winner
+    when :player then @game.human.name
+    when :computer then @game.computer.name
+    else messages("match")["winner_names"]["tie"]
+    end
   end
 end
 
@@ -441,14 +460,13 @@ class Human < Player
   end
 
   def special_command(choice)
-    if choice == "Rules"
-      display_rules
-    elsif ["History", "H"].include?(choice)
-      display_history
-    elsif ["Fullhistory", "Fh"].include?(choice)
-      display_detailed_history
-    else
-      return false
+    commands = messages("special_commands")
+
+    case choice
+    when commands["rules"] then display_rules
+    when *commands["history"] then display_history
+    when *commands["full_history"] then display_detailed_history
+    else return false
     end
 
     true
@@ -456,8 +474,10 @@ class Human < Player
 end
 
 class Computer < Player
+  include Message
+
   def set_name
-    @name = ["R2D2", "HAL", "Number5", "Sonny", "Chappie"].sample
+    @name = messages("computer_names").sample
   end
 
   def choose_move
@@ -531,7 +551,6 @@ class MoveHistory
 
   def add_round(round)
     round_data = {
-
       human_move: round.human_move.to_s,
       computer_move: round.computer_move.to_s,
       winner: round.winner,

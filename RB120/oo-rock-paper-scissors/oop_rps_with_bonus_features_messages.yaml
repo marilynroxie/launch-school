@@ -22,6 +22,7 @@ welcome: |
   Welcome to Rock Paper Scissors Spock Lizard, %s!
 
   Whoever wins ten rounds this match becomes the Grand Winner!
+
 selection: |+
   Choose Rock, Paper, Scissors, Spock, or Lizard.
 
@@ -36,30 +37,53 @@ selection: |+
   Type fullhistory or fh if you want to see detailed move-by-move history across all games.
 
 invalid_choice: "That's not a valid choice."
+# Computer names for random selection
+computer_names:
+  - "R2D2"
+  - "HAL"
+  - "Number5"
+  - "Sonny"
+  - "Chappie"
+
+# Special commands that users can enter
+special_commands:
+  rules: "Rules"
+  history: ["History", "H"]
+  full_history: ["Fullhistory", "Fh"]
+
+# Match formatting templates
+match:
+  header: "\nMATCH %s - Winner: %s"
+  winner_names:
+    tie: "Tie"
+
 hist:
   hist_separator: |+
     ============================================================
 
   no_moves: "No moves have been played yet."
   no_games: "No games have been played yet."
-  current_match_header: |+
-    ============================================================
-    CURRENT MATCH HISTORY
-    ============================================================
-  overall_stats_header: |+
-    ============================================================
-    OVERALL GAME STATISTICS
-    ============================================================
-  complete_history_header: |+
-    ============================================================
-    COMPLETE GAME HISTORY
-    ============================================================
-  match_history_summary: |+
-    MATCH HISTORY SUMMARY:
-    ----------------------------------------
-  current_match_in_progress: |+
-    CURRENT MATCH (In Progress)
-    ============================================================
+
+  headers:
+    current_match: |+
+      ============================================================
+      CURRENT MATCH HISTORY
+      ============================================================
+    overall_stats: |+
+      ============================================================
+      OVERALL GAME STATISTICS
+      ============================================================
+    complete_history: |+
+      ============================================================
+      COMPLETE GAME HISTORY
+      ============================================================
+    match_history_summary: |+
+      MATCH HISTORY SUMMARY:
+      ----------------------------------------
+    current_match_in_progress: |+
+      CURRENT MATCH (In Progress)
+      ============================================================
+
   current_match_played: "Current Match - Rounds Played: %s"
   current_score: |+
     Current Score - %s: %s, %s: %s
@@ -77,6 +101,7 @@ hist:
     Final Score: %s %s - %s %s
     ----------------------------------------
   round_vs_display: "  Round %s: %s(%s) vs %s(%s) - %s"
+
 winning_moves_lines:
   Rock:
     - Rock crushes Scissors
@@ -93,6 +118,7 @@ winning_moves_lines:
   Spock:
     - Spock vaporizes Rock
     - Spock smashes Scissors
+
 no_effect: "%s does nothing to %s!"
 display: |+
   You chose %s. Computer chose %s.
@@ -112,6 +138,7 @@ scoreboard: "Match Scoreboard: Player: %s | Computer: %s"
 grand_winner:
   player: "You are the Grand Winner!"
   computer: "The computer is the Grand Winner!"
+
 streak:
   player: |+
     You've been the Grand Winner %s times in a row!
@@ -129,4 +156,5 @@ options_pos:
 options_neg:
   - "no"
   - "n"
+
 thank_you: "Thank you for playing, %s. Goodbye!"
