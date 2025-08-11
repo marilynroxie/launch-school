@@ -40,7 +40,6 @@ hist:
   hist_separator: |+
     ============================================================
 
-  hist_separator_small: "----------------------------------------"
   no_moves: "No moves have been played yet."
   no_games: "No games have been played yet."
   current_match_header: |+
@@ -62,7 +61,9 @@ hist:
     CURRENT MATCH (In Progress)
     ============================================================
   current_match_played: "Current Match - Rounds Played: %s"
-  current_score: "Current Score - %s: %s, %s: %s"
+  current_score: |+
+    Current Score - %s: %s, %s: %s
+    ============================================================
   total_matches: "Total Matches Played: %s"
   match_wins: "%s Match Wins: %s"
 
@@ -72,7 +73,9 @@ hist:
     Winner: %s
 
   match_summary: "Match %s: %s won (%s-%s)"
-  final_score_display: "Final Score: %s %s - %s %s"
+  final_score_display: |+
+    Final Score: %s %s - %s %s
+    ----------------------------------------
   round_vs_display: "  Round %s: %s(%s) vs %s(%s) - %s"
 winning_moves_lines:
   Rock:

@@ -94,7 +94,6 @@ module DisplayableHistory
     puts messages("hist")["current_match_played"] % move_hist.current_match_size
     puts format(messages("hist")["current_score"], @game.human.name,
                 score.player_score, @game.computer.name, score.computer_score)
-    puts messages("hist")["hist_separator"]
   end
 
   def display_overall_stats_header
@@ -146,7 +145,6 @@ module DisplayableHistory
     puts format(messages("hist")["final_score_display"],
                 @game.human.name, final_score[:player],
                 final_score[:computer], @game.computer.name)
-    puts messages("hist")["hist_separator_small"]
   end
 
   def display_match_rounds(rounds)
