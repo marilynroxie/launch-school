@@ -37,7 +37,9 @@ selection: |+
 
 invalid_choice: "That's not a valid choice."
 hist:
-  hist_separator: "============================================================"
+  hist_separator: |+
+    ============================================================
+
   hist_separator_small: "----------------------------------------"
   no_moves: "No moves have been played yet."
   no_games: "No games have been played yet."
@@ -56,7 +58,9 @@ hist:
   match_history_summary: |+
     MATCH HISTORY SUMMARY:
     ----------------------------------------
-  current_match_in_progress: "CURRENT MATCH (In Progress)"
+  current_match_in_progress: |+
+    CURRENT MATCH (In Progress)
+    ============================================================
   current_match_played: "Current Match - Rounds Played: %s"
   current_score: "Current Score - %s: %s, %s: %s"
   total_matches: "Total Matches Played: %s"
@@ -64,9 +68,10 @@ hist:
 
   round_display: "Round %s:"
   player_move: "  %s: %s"
-  winner_display: "  Winner: %s"
-  match_summary: "Match %s: %s won (%s-%s)"
+  win_display: |+
+    Winner: %s
 
+  match_summary: "Match %s: %s won (%s-%s)"
   final_score_display: "Final Score: %s %s - %s %s"
   round_vs_display: "  Round %s: %s(%s) vs %s(%s) - %s"
 winning_moves_lines:
