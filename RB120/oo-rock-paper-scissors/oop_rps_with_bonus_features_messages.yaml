@@ -90,7 +90,7 @@ hist:
   final_score_display: |+
     Final Score: %s %s - %s %s
     ----------------------------------------
-  round_vs_display: "  Round %s: %s(%s) vs %s(%s) - %s"
+  round_vs_display: "  Round %s: %s (%s) vs %s (%s) - %s"
 
 winning_moves_lines:
   Rock:
@@ -111,7 +111,7 @@ winning_moves_lines:
 
 no_effect: "%s does nothing to %s!"
 display: |+
-  You chose %s. Computer chose %s.
+  You chose %s. %s chose %s.
 
 separator: "---------------------------------------"
 round_result:
@@ -119,12 +119,12 @@ round_result:
     You won this round!
 
   computer_won: |+
-    Computer won this round!
+    %s won this round!
 
   tie: |+
     It's a tie!
 
-scoreboard: "Match Scoreboard: Player: %s | Computer: %s"
+scoreboard: "Match Scoreboard: %s: %s | %s: %s"
 grand_winner:
   player: "You are the Grand Winner!"
   computer: "The computer is the Grand Winner!"
@@ -134,9 +134,9 @@ streak:
     You've been the Grand Winner %s times in a row!
 
   computer: |+
-    The computer has been the Grand Winner %s times in a row!
+    %s has been the Grand Winner %s times in a row!
 
-total_grand_winners: "Grand Scoreboard: Player: %s | Computer: %s"
+total_grand_winners: "Grand Scoreboard: %s: %s | %s: %s"
 play_again: |+
   Do you want to play again? (Y to play again, N to stop playing)
 

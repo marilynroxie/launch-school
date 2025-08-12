@@ -119,7 +119,7 @@ module OverallStatsDisplay
       display_single_match_summary(match_data)
     end
 
-    puts messages("hist")["hist_separator"]
+    puts messages("separator")
   end
 
   def display_single_match_summary(match_data)
@@ -247,7 +247,7 @@ module Displayable
   end
 
   def display_moves(human_move, computer_move)
-    puts messages("display", human_move, computer_move)
+    puts messages("display", human_move, computer.name, computer_move)
     pause(0.2)
   end
 
@@ -264,15 +264,17 @@ module Displayable
 
   def display_round_result(round)
     case round.winner
-    when :player then puts messages("round_result")["you_won"]
-    when :computer then puts messages("round_result")["computer_won"]
+    when :player
+      puts messages("round_result")["you_won"]
+    when :computer
+      puts messages("round_result")["computer_won"] % computer.name
     else puts messages("round_result")["tie"]
     end
   end
 
   def display_scoreboard
     starred_message("separator")
-    puts messages("scoreboard", score.player_score,
+    puts messages("scoreboard", human.name, score.player_score, computer.name,
                   score.computer_score).center(44)
     starred_message("separator")
   end
@@ -282,13 +284,15 @@ module Displayable
     if winner == :player
       puts messages("grand_winner")["player"]
     else
-      puts messages("grand_winner")["computer"]
+      puts messages("grand_winner")["computer"] % computer.name
     end
   end
 
   def display_grand_scoreboard
     starred_message("separator")
-    puts messages("total_grand_winners", grand_score.grand_winners[:player],
+    puts messages("total_grand_winners", human.name,
+                  grand_score.grand_winners[:player],
+                  computer.name,
                   grand_score.grand_winners[:computer]).center(44)
     starred_message("separator")
   end
@@ -299,7 +303,8 @@ module Displayable
     if streaks[:player_streak] >= 2
       puts(messages("streak")["player"] % streaks[:player_streak])
     elsif streaks[:computer_streak] >= 2
-      puts(messages("streak")["computer"] % streaks[:computer_streak])
+      puts(format(messages("streak")["computer"], computer.name,
+                  streaks[:computer_streak]))
     end
   end
 
