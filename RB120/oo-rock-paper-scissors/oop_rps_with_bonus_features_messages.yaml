@@ -37,7 +37,6 @@ selection: |+
   Type fullhistory or fh if you want to see detailed move-by-move history across all games.
 
 invalid_choice: "That's not a valid choice."
-# Computer names for random selection
 computer_names:
   - "R2D2"
   - "HAL"
@@ -45,13 +44,11 @@ computer_names:
   - "Sonny"
   - "Chappie"
 
-# Special commands that users can enter
 special_commands:
   rules: "Rules"
   history: ["History", "H"]
   full_history: ["Fullhistory", "Fh"]
 
-# Match formatting templates
 match:
   header: "\nMATCH %s - Winner: %s"
   winner_names:

@@ -1,11 +1,6 @@
 # Todo
 # Computer personalities
 
-# Bonus Features Already Done:
-# Keeping score
-# Adding Lizard and Spock
-# Move history
-
 require "yaml"
 
 module Message
