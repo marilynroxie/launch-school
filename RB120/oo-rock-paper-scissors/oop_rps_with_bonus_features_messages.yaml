@@ -37,13 +37,6 @@ selection: |+
   Type fullhistory or fh if you want to see detailed move-by-move history across all games.
 
 invalid_choice: "That's not a valid choice."
-computer_names:
-  - "R2D2"
-  - "HAL"
-  - "Number5"
-  - "Sonny"
-  - "Chappie"
-
 special_commands:
   rules: "Rules"
   history: ["History", "H"]

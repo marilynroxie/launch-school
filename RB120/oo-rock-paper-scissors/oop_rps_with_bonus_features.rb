@@ -469,10 +469,8 @@ class Human < Player
 end
 
 class Computer < Player
-  include Message
-
   def set_name
-    @name = messages("computer_names").sample
+    @name = ["R2D2", "HAL", "Number5", "Sonny", "Chappie"].sample
   end
 
   def choose_move
