@@ -1,6 +1,3 @@
-# Todo
-# Computer personalities
-
 require "yaml"
 
 module Message
