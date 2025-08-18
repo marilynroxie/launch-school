@@ -382,7 +382,7 @@ class Player
     set_name
   end
 
-  protected
+  private
 
   def set_name
     @name = "Player"
@@ -393,16 +393,6 @@ class Human < Player
   include Displayable
 
   attr_writer :game
-
-  def set_name
-    clear_screen
-    loop do
-      prompt("enter_name")
-      name = gets.chomp.strip.split.map(&:capitalize).join(" ")
-      break @name = name unless name.empty?
-      prompt("valid_name")
-    end
-  end
 
   def choose_move
     loop do
@@ -425,6 +415,16 @@ class Human < Player
   end
 
   private
+
+  def set_name
+    clear_screen
+    loop do
+      prompt("enter_name")
+      name = gets.chomp.strip.split.map(&:capitalize).join(" ")
+      break @name = name unless name.empty?
+      prompt("valid_name")
+    end
+  end
 
   def user_input
     prompt("selection")
@@ -471,12 +471,14 @@ class Human < Player
 end
 
 class Computer < Player
-  def set_name
-    @name = ["R2D2", "HAL", "Number5", "Sonny", "Chappie"].sample
-  end
-
   def choose_move
     @move = Move.new(available_moves.sample)
+  end
+
+  private
+
+  def set_name
+    @name = ["R2D2", "HAL", "Number5", "Sonny", "Chappie"].sample
   end
 end
 
@@ -538,6 +540,8 @@ class GrandScore
 end
 
 class MoveHistory
+  attr_reader :current_match, :all_matches
+
   def initialize
     @current_match = []
     @all_matches = []
@@ -579,8 +583,6 @@ class MoveHistory
   def current_match_size
     @current_match.size
   end
-
-  attr_reader :current_match, :all_matches
 
   def total_matches_played
     @all_matches.size
