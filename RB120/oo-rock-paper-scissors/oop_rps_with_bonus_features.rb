@@ -445,15 +445,15 @@ class Human < Player
   end
 
   def move_hist
-    @game&.move_hist
+    @game.move_hist
   end
 
   def score
-    @game&.score
+    @game.score
   end
 
   def computer
-    @game&.computer
+    @game.computer
   end
 
   def special_command(choice)
