@@ -1,12 +1,11 @@
 # Todo
 # Further separation of concerns for handle_choice and special_command
-# format_winner could be in a separate module inherited by
-# CurrentMatchDisplay, OverallStatsDisplay, and DetailedHistoryDisplay.
 # Separate player character from user interface regarding Human
 
 # Done
 # Message and Utilities as container modules
 # clear_screen as class method
+# format_winner moved to WinnerFormattable module
 
 require "yaml"
 
@@ -38,7 +37,21 @@ module Utilities
   end
 end
 
+module WinnerFormattable
+  private
+
+  def format_winner(winner)
+    case winner
+    when :player then @game.human.name
+    when :computer then @game.computer.name
+    else Message["match"]["winner_names"]["tie"]
+    end
+  end
+end
+
 module CurrentMatchDisplay
+  include WinnerFormattable
+
   def display_current_match_history
     return if move_hist.current_match_empty?
 
@@ -83,17 +96,11 @@ module CurrentMatchDisplay
     puts format(Message["hist"]["current_score"], @game.human.name,
                 score.player_score, @game.computer.name, score.computer_score)
   end
-
-  def format_winner(winner)
-    case winner
-    when :player then @game.human.name
-    when :computer then @game.computer.name
-    else Message["match"]["winner_names"]["tie"]
-    end
-  end
 end
 
 module OverallStatsDisplay
+  include WinnerFormattable
+
   def display_overall_statistics
     display_overall_stats_header
     display_match_statistics
@@ -131,17 +138,11 @@ module OverallStatsDisplay
                 match_data[:match_number], winner_name,
                 score[:player], score[:computer])
   end
-
-  def format_winner(winner)
-    case winner
-    when :player then @game.human.name
-    when :computer then @game.computer.name
-    else Message["match"]["winner_names"]["tie"]
-    end
-  end
 end
 
 module DetailedHistoryDisplay
+  include WinnerFormattable
+
   def display_detailed_history
     puts Message["hist"]["no_games"] if no_games_played?
 
@@ -203,14 +204,6 @@ module DetailedHistoryDisplay
                 index + 1, @game.human.name, round_data[:human_move],
                 @game.computer.name, round_data[:computer_move],
                 format_winner(round_data[:winner]))
-  end
-
-  def format_winner(winner)
-    case winner
-    when :player then @game.human.name
-    when :computer then @game.computer.name
-    else Message["match"]["winner_names"]["tie"]
-    end
   end
 end
 
@@ -570,6 +563,7 @@ class MoveHistory
       winner: match_winner,
       final_score: calculate_final_score
     }
+
     @all_matches << match_data
     @current_match.clear
     @current_match_number += 1
