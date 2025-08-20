@@ -1,7 +1,9 @@
 # Todo
-# Let player pick X or O
+# Have a Human class and the Computer class
+# subclass from Player class
 
 # Done
+# Let player pick X or O
 # Get name for player
 # Give name to computer
 
@@ -39,7 +41,8 @@ module CurrentMatchDisplay
   def display_game_state(score, board)
     Utilities.clear_screen
     score.display
-    puts format(Message["markers"], @computer.name)
+    puts format(Message["markers"], @player.marker, @computer.name,
+                @computer.marker)
     board.display
     puts ""
   end
@@ -85,14 +88,10 @@ module Displayable
     input = gets.chomp
     Utilities.clear_screen
     return unless input.downcase == "rules"
-    display_rules_text
-  end
 
-  def display_rules_text
-    format(Message["rules"], @computer.name).each_line do |rule|
-      Utilities.pause
-      puts rule
-    end
+    puts Message["rules"]
+    gets
+    Utilities.clear_screen
   end
 
   def display_starting_player_options
@@ -110,8 +109,9 @@ module Displayable
 
   def display_total_scores(grand_winners)
     Message.starred("separator")
-    puts format(Message["total_grand_winners"], grand_winners[:player],
-                @computer.name, grand_winners[:computer])
+    puts format(Message["total_grand_winners"], @player.marker,
+                grand_winners[:player], @computer.name, @computer.marker,
+                grand_winners[:computer])
     Message.starred("separator")
   end
 
@@ -164,7 +164,7 @@ class TicTacToeGame
 
   def initialize
     @player = nil
-    @computer = Computer.new
+    @computer = nil
     @board = nil
     @score = nil
     @grand_winners = initialize_grand_winners
@@ -189,9 +189,16 @@ class TicTacToeGame
 
   def setup_game
     Utilities.clear_screen
-    @player = Player.new(name)
-    display_welcome(@player.name)
+    player_name = name
+
+    display_welcome(player_name)
     display_rules_prompt
+
+    player_marker = choose_player_marker
+    computer_marker = player_marker == "X" ? "O" : "X"
+
+    @player = Player.new(player_name, player_marker)
+    @computer = Computer.new(computer_marker, player_marker)
   end
 
   def main_game_loop
@@ -207,7 +214,7 @@ class TicTacToeGame
   def play_match
     @current_player = choose_starting_player
     until @score.match_over?
-      @board = Board.new
+      @board = Board.new(@player.marker, @computer.marker)
       play_round
       update_round_score
     end
@@ -237,6 +244,30 @@ class TicTacToeGame
       return name unless name.empty?
       Message.prompt("invalid_name")
     end
+  end
+
+  def choose_player_marker
+    loop do
+      Message.prompt("marker_choice")
+      choice = gets.chomp.upcase
+      return choice if valid_marker?(choice)
+      display_invalid_marker_choice
+    end
+  end
+
+  def valid_marker?(choice)
+    if ["X", "O"].include?(choice)
+      Utilities.clear_screen
+      true
+    else
+      false
+    end
+  end
+
+  def display_invalid_marker_choice
+    puts Message["invalid_choice"]
+    Utilities.pause(0.5)
+    Utilities.clear_screen
   end
 
   def choose_starting_player
@@ -318,13 +349,11 @@ end
 class Player
   include CurrentMatchDisplay
 
-  MARKER = "X"
-
   attr_reader :name, :marker
 
-  def initialize(name)
+  def initialize(name, marker)
     @name = name
-    @marker = MARKER
+    @marker = marker
   end
 
   def make_move(board)
@@ -345,12 +374,11 @@ class Player
 end
 
 class Computer
-  MARKER = "O"
-
   attr_reader :marker, :name
 
-  def initialize
-    @marker = MARKER
+  def initialize(marker, player_marker)
+    @marker = marker
+    @player_marker = player_marker
     @name = set_name
   end
 
@@ -373,11 +401,11 @@ class Computer
   end
 
   def offensive_square(board)
-    find_at_risk_square(board, MARKER)
+    find_at_risk_square(board, @marker)
   end
 
   def defensive_square(board)
-    find_at_risk_square(board, Player::MARKER)
+    find_at_risk_square(board, @player_marker)
   end
 
   def find_at_risk_square(board, marker)
@@ -402,9 +430,11 @@ end
 class Board
   include Displayable
 
-  def initialize
+  def initialize(player_marker, computer_marker)
     @squares = {}
     (1..9).each { |num| @squares[num] = num.to_s }
+    @player_marker = player_marker
+    @computer_marker = computer_marker
   end
 
   def display
@@ -437,9 +467,9 @@ class Board
 
   def winner
     TicTacToeGame::WINNING_LINES.each do |line|
-      if line_complete?(line, Player::MARKER)
+      if line_complete?(line, @player_marker)
         return "Player"
-      elsif line_complete?(line, Computer::MARKER)
+      elsif line_complete?(line, @computer_marker)
         return "Computer"
       end
     end
@@ -507,8 +537,8 @@ class Score
   def display
     message = "* #{Message['separator']} *"
     puts message
-    puts format(Message["scoreboard"], @player_wins, @computer.name,
-                @computer_wins)
+    puts format(Message["scoreboard"], @player.marker, @player_wins,
+                @computer.name, @computer.marker, @computer_wins)
     puts message
   end
 end
