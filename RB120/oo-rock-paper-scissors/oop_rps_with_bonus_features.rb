@@ -1,3 +1,11 @@
+# Todo
+# Further separation of concerns for handle_choice and special_command
+# Message and Utilities as container modules
+# clear_screen as class method
+# format_winner could be in a separate module inherited by
+# CurrentMatchDisplay, OverallStatsDisplay, and DetailedHistoryDisplay.
+# Separate player character from user interface regarding Human
+
 require "yaml"
 
 module Message
@@ -434,6 +442,7 @@ class Human < Player
     clear_screen
 
     if special_command?(choice)
+      execute_special_command(choice)
       return false
     end
 
@@ -457,15 +466,17 @@ class Human < Player
 
   def special_command?(choice)
     commands = messages("special_commands")
+    [commands["rules"], *commands["history"],
+     *commands["full_history"]].include?(choice)
+  end
 
+  def execute_special_command(choice)
+    commands = messages("special_commands")
     case choice
     when commands["rules"] then display_rules
     when *commands["history"] then display_history
     when *commands["full_history"] then display_detailed_history
-    else return false
     end
-
-    true
   end
 end
 
