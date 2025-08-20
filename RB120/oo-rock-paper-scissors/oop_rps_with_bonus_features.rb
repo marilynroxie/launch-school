@@ -378,7 +378,6 @@ class Player
   attr_accessor :move, :name, :score
 
   def initialize
-    @score = 0
     set_name
   end
 
@@ -397,7 +396,7 @@ class Human < Player
   def choose_move
     loop do
       choice = user_input
-      return @move = Move.new(choice) if handle_choice(choice)
+      return @move = Move.new(choice) if handle_choice?(choice)
     end
   end
 
@@ -431,10 +430,10 @@ class Human < Player
     gets.chomp.strip.capitalize
   end
 
-  def handle_choice(choice)
+  def handle_choice?(choice)
     clear_screen
 
-    if special_command(choice)
+    if special_command?(choice)
       return false
     end
 
@@ -456,7 +455,7 @@ class Human < Player
     @game.computer
   end
 
-  def special_command(choice)
+  def special_command?(choice)
     commands = messages("special_commands")
 
     case choice
