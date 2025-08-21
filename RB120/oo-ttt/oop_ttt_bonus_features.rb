@@ -71,11 +71,6 @@ module CurrentMatchDisplay
     puts "=> #{format(Message['choose_square'],
                       squares: board.available_squares_formatted)}"
   end
-
-  def display_invalid_move
-    puts Message["invalid_choice"]
-    Utilities.pause(0.5)
-  end
 end
 
 module Displayable
@@ -108,7 +103,16 @@ module Displayable
   def display_invalid_choice_with_pause
     puts Message["invalid_choice"]
     Utilities.pause(0.5)
+  end
+
+  def display_invalid_choice_with_clear
+    display_invalid_choice_with_pause
     Utilities.clear_screen
+  end
+
+  def display_invalid_play_again_choice
+    Utilities.clear_screen
+    puts Message["invalid_choice"]
   end
 
   def display_total_scores(grand_winners)
@@ -269,9 +273,7 @@ class TicTacToeGame
   end
 
   def display_invalid_marker_choice
-    puts Message["invalid_choice"]
-    Utilities.pause(0.5)
-    Utilities.clear_screen
+    display_invalid_choice_with_clear
   end
 
   def choose_starting_player
@@ -285,7 +287,7 @@ class TicTacToeGame
       display_starting_player_options
       input = gets.chomp.downcase
       return input if ["player", "computer", "random"].include?(input)
-      display_invalid_choice_with_pause
+      display_invalid_choice_with_clear
     end
   end
 
@@ -372,7 +374,7 @@ class Player
       display_square_prompt(board)
       input = gets.chomp
       return input.to_i if board.valid_move?(input.to_i)
-      display_invalid_move
+      display_invalid_choice_with_pause
     end
   end
 end
