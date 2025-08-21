@@ -89,7 +89,11 @@ module Displayable
     Utilities.clear_screen
     return unless input.downcase == "rules"
 
-    puts Message["rules"]
+    Message["rules"].each_line do |rule|
+      Utilities.pause(0.2)
+      puts rule
+    end
+
     gets
     Utilities.clear_screen
   end
