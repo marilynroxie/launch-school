@@ -79,6 +79,7 @@ hist:
   current_score: |+
     Current Score - %s: %s, %s: %s
     ============================================================
+
   total_matches: "Total Matches Played: %s"
   match_wins: "%s Match Wins: %s"
 
@@ -91,7 +92,8 @@ hist:
   final_score_display: |+
     Final Score: %s %s - %s %s
     ----------------------------------------
-  round_vs_display: "  Round %s: %s (%s) vs %s (%s) - %s"
+  round_vs_display: |+
+    Round %s: %s (%s) vs %s (%s) - %s
 
 winning_moves_lines:
   Rock:

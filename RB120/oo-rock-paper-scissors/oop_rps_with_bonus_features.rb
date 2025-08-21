@@ -1,12 +1,3 @@
-# Todo
-# Further separation of concerns for handle_choice and special_command
-# Separate player character from user interface regarding Human
-
-# Done
-# Message and Utilities as container modules
-# clear_screen as class method
-# format_winner moved to WinnerFormattable module
-
 require "yaml"
 
 module Message
@@ -265,8 +256,8 @@ module Displayable
 
   def display_scoreboard
     Message.starred_message("separator")
-    puts Message["scoreboard", human.name, score.player_score, computer.name,
-                 score.computer_score].center(44)
+    puts Message["scoreboard", human.name, score.player_score,
+                 computer.name, score.computer_score].center(44)
     Message.starred_message("separator")
   end
 
@@ -366,31 +357,18 @@ module GameRules
   end
 end
 
-class Player
+class UserInterface
   include GameRules
-
-  attr_accessor :move, :name, :score
-
-  def initialize
-    set_name
-  end
-
-  private
-
-  def set_name
-    @name = "Player"
-  end
-end
-
-class Human < Player
   include Displayable
 
-  attr_writer :game
+  def initialize(game)
+    @game = game
+  end
 
-  def choose_move
+  def player_move
     loop do
       choice = user_input
-      return @move = Move.new(choice) if handle_choice?(choice)
+      return Move.new(choice) if handle_choice?(choice)
     end
   end
 
@@ -408,16 +386,6 @@ class Human < Player
   end
 
   private
-
-  def set_name
-    Utilities.clear_screen
-    loop do
-      Message.prompt("enter_name")
-      name = gets.chomp.strip.split.map(&:capitalize).join(" ")
-      break @name = name unless name.empty?
-      Message.prompt("valid_name")
-    end
-  end
 
   def user_input
     Message.prompt("selection")
@@ -438,18 +406,6 @@ class Human < Player
     false
   end
 
-  def move_hist
-    @game.move_hist
-  end
-
-  def score
-    @game.score
-  end
-
-  def computer
-    @game.computer
-  end
-
   def special_command?(choice)
     commands = Message["special_commands"]
     [commands["rules"], *commands["history"],
@@ -464,9 +420,59 @@ class Human < Player
     when *commands["full_history"] then display_detailed_history
     end
   end
+
+  def move_hist
+    @game.move_hist
+  end
+
+  def score
+    @game.score
+  end
+
+  def human
+    @game.human
+  end
+
+  def computer
+    @game.computer
+  end
+
+  def grand_score
+    @game.grand_score
+  end
+end
+
+class Player
+  attr_accessor :move, :name
+
+  def initialize
+    set_name
+  end
+
+  private
+
+  def set_name
+    @name = "Player"
+  end
+end
+
+class Human < Player
+  private
+
+  def set_name
+    Utilities.clear_screen
+    loop do
+      Message.prompt("enter_name")
+      name = gets.chomp.strip.split.map(&:capitalize).join(" ")
+      break @name = name unless name.empty?
+      Message.prompt("valid_name")
+    end
+  end
 end
 
 class Computer < Player
+  include GameRules
+
   def choose_move
     @move = Move.new(available_moves.sample)
   end
@@ -632,8 +638,6 @@ class Round
 end
 
 class RPSGame
-  include Displayable
-
   attr_reader :human, :computer, :score, :grand_score, :move_hist
 
   def initialize
@@ -642,55 +646,54 @@ class RPSGame
     @score = Score.new
     @grand_score = GrandScore.new
     @move_hist = MoveHistory.new
-
-    @human.game = self
+    @ui = UserInterface.new(self)
   end
 
   def play
-    display_welcome
+    @ui.display_welcome
 
     loop do
       play_match
-      break unless human.play_again?
+      break unless @ui.play_again?
     end
 
-    display_farewell
+    @ui.display_farewell
   end
 
   private
 
   def round_results(round)
-    display_moves(round.human_move, round.computer_move)
-    display_winning_move_message(round)
-    display_scoreboard
-    display_round_result(round)
+    @ui.display_moves(round.human_move, round.computer_move)
+    @ui.display_winning_move_message(round)
+    @ui.display_scoreboard
+    @ui.display_round_result(round)
   end
 
   def play_round
-    human.choose_move
-    computer.choose_move
-    round = Round.new(human.move, computer.move)
+    @human.move = @ui.player_move
+    @computer.choose_move
+    round = Round.new(@human.move, @computer.move)
 
-    score.update(round)
-    move_hist.add_round(round)
+    @score.update(round)
+    @move_hist.add_round(round)
     round_results(round)
   end
 
   def match_results(winner)
-    grand_score.update(winner)
-    display_grand_winner(winner)
-    display_grand_scoreboard
-    display_streak
+    @grand_score.update(winner)
+    @ui.display_grand_winner(winner)
+    @ui.display_grand_scoreboard
+    @ui.display_streak
   end
 
   def play_match
-    score.reset
-    until score.match_over?
+    @score.reset
+    until @score.match_over?
       play_round
     end
 
-    winner = score.match_winner
-    move_hist.finish_match(winner)
+    winner = @score.match_winner
+    @move_hist.finish_match(winner)
     match_results(winner)
   end
 end
