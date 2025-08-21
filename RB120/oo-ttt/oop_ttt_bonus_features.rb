@@ -443,7 +443,7 @@ class TicTacToeGame
       @score = Score.new(@player, @computer)
       play_match
       winner = determine_match_winner
-      update_grand_score(winner)
+      @grand_score.update(winner)
       display_grand_results(@score, @grand_score.grand_winners)
       break unless play_again?
     end
@@ -482,10 +482,6 @@ class TicTacToeGame
     end
   end
 
-  def update_grand_score(winner)
-    @grand_score.update(winner)
-  end
-
   def name
     loop do
       Message.prompt("enter_name")
@@ -501,7 +497,7 @@ class TicTacToeGame
       Message.prompt("marker_choice")
       choice = gets.chomp.upcase
       return choice if valid_marker?(choice)
-      display_invalid_marker_choice
+      display_invalid_choice_with_clear
     end
   end
 
@@ -512,10 +508,6 @@ class TicTacToeGame
     else
       false
     end
-  end
-
-  def display_invalid_marker_choice
-    display_invalid_choice_with_clear
   end
 
   def choose_starting_player
