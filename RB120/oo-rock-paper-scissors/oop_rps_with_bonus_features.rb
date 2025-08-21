@@ -33,8 +33,8 @@ module WinnerFormattable
 
   def format_winner(winner)
     case winner
-    when :player then @game.human.name
-    when :computer then @game.computer.name
+    when :player then @human.name
+    when :computer then @computer.name
     else Message["match"]["winner_names"]["tie"]
     end
   end
@@ -44,7 +44,7 @@ module CurrentMatchDisplay
   include WinnerFormattable
 
   def display_current_match_history
-    return if move_hist.current_match_empty?
+    return if @move_hist.current_match_empty?
 
     puts Message["hist"]["headers"]["current_match"]
     display_current_match_rounds
@@ -52,7 +52,7 @@ module CurrentMatchDisplay
   end
 
   def display_current_match_rounds
-    move_hist.current_match_each_with_index do |round_data, index|
+    @move_hist.current_match_each_with_index do |round_data, index|
       display_single_round(round_data, index)
     end
   end
@@ -70,8 +70,8 @@ module CurrentMatchDisplay
   end
 
   def display_player_moves(round_data)
-    display_player_move(@game.human.name, round_data[:human_move])
-    display_player_move(@game.computer.name, round_data[:computer_move])
+    display_player_move(@human.name, round_data[:human_move])
+    display_player_move(@computer.name, round_data[:computer_move])
   end
 
   def display_player_move(player_name, move)
@@ -83,9 +83,9 @@ module CurrentMatchDisplay
   end
 
   def display_current_match_summary
-    puts Message["hist"]["current_match_played"] % move_hist.current_match_size
-    puts format(Message["hist"]["current_score"], @game.human.name,
-                score.player_score, @game.computer.name, score.computer_score)
+    puts Message["hist"]["current_match_played"] % @move_hist.current_match_size
+    puts format(Message["hist"]["current_score"], @human.name,
+                @score.player_score, @computer.name, @score.computer_score)
   end
 end
 
@@ -102,20 +102,20 @@ module OverallStatsDisplay
 
   def display_overall_stats_header
     puts Message["hist"]["headers"]["overall_stats"].center(60)
-    puts Message["hist"]["total_matches"] % move_hist.total_matches_played
+    puts Message["hist"]["total_matches"] % @move_hist.total_matches_played
   end
 
   def display_match_statistics
-    puts format(Message["hist"]["match_wins"], @game.human.name,
-                move_hist.overall_wins(:player))
-    puts format(Message["hist"]["match_wins"], @game.computer.name,
-                move_hist.overall_wins(:computer))
+    puts format(Message["hist"]["match_wins"], @human.name,
+                @move_hist.overall_wins(:player))
+    puts format(Message["hist"]["match_wins"], @computer.name,
+                @move_hist.overall_wins(:computer))
   end
 
   def display_match_history_summary
     puts Message["hist"]["headers"]["match_history_summary"]
 
-    move_hist.all_matches.each do |match_data|
+    @move_hist.all_matches.each do |match_data|
       display_single_match_summary(match_data)
     end
 
@@ -140,17 +140,17 @@ module DetailedHistoryDisplay
     puts Message["hist"]["headers"]["complete_history"]
     display_all_completed_matches
     display_current_match_if_in_progress
-    display_overall_statistics if move_hist.total_matches_played > 0
+    display_overall_statistics if @move_hist.total_matches_played > 0
   end
 
   private
 
   def no_games_played?
-    move_hist.total_matches_played == 0 && move_hist.current_match_empty?
+    @move_hist.total_matches_played == 0 && @move_hist.current_match_empty?
   end
 
   def display_all_completed_matches
-    move_hist.all_matches.each do |match_data|
+    @move_hist.all_matches.each do |match_data|
       display_match_header(match_data)
       display_match_rounds(match_data[:rounds])
     end
@@ -168,32 +168,32 @@ module DetailedHistoryDisplay
 
   def display_final_score(final_score)
     puts format(Message["hist"]["final_score_display"],
-                @game.human.name, final_score[:player],
-                final_score[:computer], @game.computer.name)
+                @human.name, final_score[:player],
+                final_score[:computer], @computer.name)
   end
 
   def display_match_rounds(rounds)
     rounds.each_with_index do |round_data, index|
       puts format(Message["hist"]["round_vs_display"],
-                  index + 1, @game.human.name, round_data[:human_move],
-                  @game.computer.name, round_data[:computer_move],
+                  index + 1, @human.name, round_data[:human_move],
+                  @computer.name, round_data[:computer_move],
                   format_winner(round_data[:winner]))
     end
   end
 
   def display_current_match_if_in_progress
-    return if move_hist.current_match_empty?
+    return if @move_hist.current_match_empty?
 
     puts Message["hist"]["headers"]["current_match_in_progress"]
-    move_hist.current_match.each_with_index do |round_data, index|
+    @move_hist.current_match.each_with_index do |round_data, index|
       display_round(round_data, index)
     end
   end
 
   def display_round(round_data, index)
     puts format(Message["hist"]["round_vs_display"],
-                index + 1, @game.human.name, round_data[:human_move],
-                @game.computer.name, round_data[:computer_move],
+                index + 1, @human.name, round_data[:human_move],
+                @computer.name, round_data[:computer_move],
                 format_winner(round_data[:winner]))
   end
 end
@@ -204,13 +204,13 @@ module DisplayableHistory
   include DetailedHistoryDisplay
 
   def display_history
-    if move_hist.current_match_empty? && move_hist.total_matches_played == 0
+    if @move_hist.current_match_empty? && @move_hist.total_matches_played == 0
       puts Message["hist"]["no_moves"]
       return
     end
 
     display_current_match_history
-    display_overall_statistics if move_hist.total_matches_played > 0
+    display_overall_statistics if @move_hist.total_matches_played > 0
   end
 end
 
@@ -218,7 +218,7 @@ module Displayable
   include DisplayableHistory
 
   def display_welcome
-    Message.starred_message("welcome", human.name)
+    Message.starred_message("welcome", @human.name)
   end
 
   def display_rules
@@ -229,7 +229,7 @@ module Displayable
   end
 
   def display_moves(human_move, computer_move)
-    puts Message["display", human_move, computer.name, computer_move]
+    puts Message["display", human_move, @computer.name, computer_move]
     Utilities.pause(0.2)
   end
 
@@ -249,15 +249,15 @@ module Displayable
     when :player
       puts Message["round_result"]["you_won"]
     when :computer
-      puts Message["round_result"]["computer_won"] % computer.name
+      puts Message["round_result"]["computer_won"] % @computer.name
     else puts Message["round_result"]["tie"]
     end
   end
 
   def display_scoreboard
     Message.starred_message("separator")
-    puts Message["scoreboard", human.name, score.player_score,
-                 computer.name, score.computer_score].center(44)
+    puts Message["scoreboard", @human.name, @score.player_score,
+                 @computer.name, @score.computer_score].center(44)
     Message.starred_message("separator")
   end
 
@@ -266,32 +266,32 @@ module Displayable
     if winner == :player
       puts Message["grand_winner"]["player"]
     else
-      puts Message["grand_winner"]["computer"] % computer.name
+      puts Message["grand_winner"]["computer"] % @computer.name
     end
   end
 
   def display_grand_scoreboard
     Message.starred_message("separator")
-    puts Message["total_grand_winners", human.name,
-                 grand_score.grand_winners[:player],
-                 computer.name,
-                 grand_score.grand_winners[:computer]].center(44)
+    puts Message["total_grand_winners", @human.name,
+                 @grand_score.grand_winners[:player],
+                 @computer.name,
+                 @grand_score.grand_winners[:computer]].center(44)
     Message.starred_message("separator")
   end
 
   def display_streak
-    streaks = grand_score.grand_winners
+    streaks = @grand_score.grand_winners
 
     if streaks[:player_streak] >= 2
       puts(Message["streak"]["player"] % streaks[:player_streak])
     elsif streaks[:computer_streak] >= 2
-      puts(format(Message["streak"]["computer"], computer.name,
+      puts(format(Message["streak"]["computer"], @computer.name,
                   streaks[:computer_streak]))
     end
   end
 
   def display_farewell
-    Message.starred_message("thank_you", human.name)
+    Message.starred_message("thank_you", @human.name)
   end
 end
 
@@ -361,8 +361,12 @@ class UserInterface
   include GameRules
   include Displayable
 
-  def initialize(game)
-    @game = game
+  def initialize(human, computer, score, grand_score, move_hist)
+    @human = human
+    @computer = computer
+    @score = score
+    @grand_score = grand_score
+    @move_hist = move_hist
   end
 
   def player_move
@@ -427,26 +431,6 @@ class UserInterface
     when *commands["full_history"]
       display_detailed_history
     end
-  end
-
-  def move_hist
-    @game.move_hist
-  end
-
-  def score
-    @game.score
-  end
-
-  def human
-    @game.human
-  end
-
-  def computer
-    @game.computer
-  end
-
-  def grand_score
-    @game.grand_score
   end
 end
 
@@ -654,7 +638,7 @@ class RPSGame
     @score = Score.new
     @grand_score = GrandScore.new
     @move_hist = MoveHistory.new
-    @ui = UserInterface.new(self)
+    @ui = UserInterface.new(@human, @computer, @score, @grand_score, @move_hist)
   end
 
   def play
