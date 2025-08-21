@@ -76,7 +76,7 @@ module Displayable
     Message.starred("welcome", name)
   end
 
-  def display_rules_prompt
+  def display_rules
     Message.prompt("rules_question")
     input = gets.chomp
     Utilities.clear_screen
@@ -429,7 +429,7 @@ class TicTacToeGame
     player_name = name
 
     display_welcome(player_name)
-    display_rules_prompt
+    display_rules
 
     player_marker = choose_player_marker
     computer_marker = player_marker == "X" ? "O" : "X"
