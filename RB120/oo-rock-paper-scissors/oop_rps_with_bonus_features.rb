@@ -368,7 +368,7 @@ class UserInterface
   def player_move
     loop do
       choice = user_input
-      return Move.new(choice) if handle_choice?(choice)
+      return Move.new(choice) if handle_choice(choice)
     end
   end
 
@@ -392,33 +392,35 @@ class UserInterface
     gets.chomp.strip.capitalize
   end
 
-  def handle_choice?(choice)
-    Utilities.clear_screen
+  def special_command(choice)
+    commands = Message["special_commands"]
 
-    if special_command?(choice)
-      execute_special_command(choice)
-      return false
+    case choice
+    when commands["rules"]
+      display_rules
+    when *commands["history"]
+      display_history
+    when *commands["full_history"]
+      display_detailed_history
     end
-
-    return true if valid_move?(choice)
-
-    Message.prompt("invalid_choice")
-    false
   end
 
-  def special_command?(choice)
+  def special_command_executed?(choice)
     commands = Message["special_commands"]
     [commands["rules"], *commands["history"],
      *commands["full_history"]].include?(choice)
   end
 
-  def execute_special_command(choice)
-    commands = Message["special_commands"]
-    case choice
-    when commands["rules"] then display_rules
-    when *commands["history"] then display_history
-    when *commands["full_history"] then display_detailed_history
+  def handle_choice(choice)
+    Utilities.clear_screen
+
+    unless special_command(choice).nil? && !special_command_executed?(choice)
+      return false
     end
+    return true if valid_move?(choice)
+
+    Message.prompt("invalid_choice")
+    false
   end
 
   def move_hist
