@@ -392,9 +392,33 @@ class UserInterface
     gets.chomp.strip.capitalize
   end
 
-  def special_command(choice)
+  def special_command?(choice)
     commands = Message["special_commands"]
+    special_commands_list = [
+      commands["rules"],
+      *commands["history"],
+      *commands["full_history"]
+    ]
 
+    special_commands_list.include?(choice)
+  end
+
+  def handle_choice(choice)
+    Utilities.clear_screen
+
+    if special_command?(choice)
+      execute_special_command(choice)
+      false
+    elsif valid_move?(choice)
+      true
+    else
+      Message.prompt("invalid_choice")
+      false
+    end
+  end
+
+  def execute_special_command(choice)
+    commands = Message["special_commands"]
     case choice
     when commands["rules"]
       display_rules
@@ -403,24 +427,6 @@ class UserInterface
     when *commands["full_history"]
       display_detailed_history
     end
-  end
-
-  def special_command_executed?(choice)
-    commands = Message["special_commands"]
-    [commands["rules"], *commands["history"],
-     *commands["full_history"]].include?(choice)
-  end
-
-  def handle_choice(choice)
-    Utilities.clear_screen
-
-    unless special_command(choice).nil? && !special_command_executed?(choice)
-      return false
-    end
-    return true if valid_move?(choice)
-
-    Message.prompt("invalid_choice")
-    false
   end
 
   def move_hist
