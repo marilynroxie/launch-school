@@ -28,6 +28,13 @@ module Utilities
   end
 end
 
+module GameRules
+  WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
+                  [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
+                  [[1, 5, 9], [3, 5, 7]] # diagonals
+  ROUNDS_TO_WIN = 5
+end
+
 module CurrentMatchDisplay
   def display_game_state(score, board)
     Utilities.clear_screen
@@ -51,9 +58,9 @@ module CurrentMatchDisplay
   end
 
   def display_match_winner(score)
-    if score.player_wins == TicTacToeGame::ROUNDS_TO_WIN
+    if score.player_wins == GameRules::ROUNDS_TO_WIN
       puts Message["grand_winner"]["player"]
-    elsif score.computer_wins == TicTacToeGame::ROUNDS_TO_WIN
+    elsif score.computer_wins == GameRules::ROUNDS_TO_WIN
       puts format(Message["grand_winner"]["computer"], @computer.name)
     end
   end
@@ -152,27 +159,221 @@ module Displayable
   end
 end
 
-class TicTacToeGame
-  include Displayable
+class Player
+  attr_reader :name, :marker
+
+  def initialize(name, marker)
+    @name = name
+    @marker = marker
+  end
+end
+
+class Human < Player
   include CurrentMatchDisplay
+  include Displayable
 
-  WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
-                  [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
-                  [[1, 5, 9], [3, 5, 7]] # diagonals
-  ROUNDS_TO_WIN = 5
-
-  def initialize
-    @player = nil
-    @computer = nil
-    @board = nil
-    @score = nil
-    @grand_winners = initialize_grand_winners
-    @current_player = nil
+  def make_move(board)
+    square = get_valid_square(board)
+    board.place_marker(square, @marker)
   end
 
-  def play
-    setup_game
-    main_game_loop
+  private
+
+  def get_valid_square(board)
+    loop do
+      display_square_prompt(board)
+      input = gets.chomp
+      return input.to_i if board.valid_move?(input.to_i)
+      display_invalid_choice_with_pause
+    end
+  end
+end
+
+class Computer < Player
+  include GameRules
+
+  def initialize(marker, player_marker)
+    name = set_name
+    super(name, marker)
+    @player_marker = player_marker
+  end
+
+  def make_move(board)
+    square = find_best_move(board)
+    board.place_marker(square, @marker) if square
+  end
+
+  private
+
+  def set_name
+    ["R2D2", "HAL", "Number5", "Sonny", "Chappie"].sample
+  end
+
+  def find_best_move(board)
+    offensive_square(board) ||
+      defensive_square(board) ||
+      center_square(board) ||
+      random_square(board)
+  end
+
+  def offensive_square(board)
+    find_at_risk_square(board, @marker)
+  end
+
+  def defensive_square(board)
+    find_at_risk_square(board, @player_marker)
+  end
+
+  def find_at_risk_square(board, marker)
+    WINNING_LINES.each do |line|
+      if board.line_has_two_markers?(line, marker)
+        empty_square = board.find_empty_square_in_line(line)
+        return empty_square if empty_square
+      end
+    end
+    nil
+  end
+
+  def center_square(board)
+    5 if board.square_empty?(5)
+  end
+
+  def random_square(board)
+    board.available_squares.sample
+  end
+end
+
+class Board
+  include Displayable
+  include GameRules
+
+  def initialize(player_marker, computer_marker)
+    @squares = {}
+    (1..9).each { |num| @squares[num] = num.to_s }
+    @player_marker = player_marker
+    @computer_marker = computer_marker
+  end
+
+  def display
+    display_board_line(@squares)
+  end
+
+  def place_marker(square, marker)
+    @squares[square] = marker
+  end
+
+  def square_empty?(square)
+    @squares[square] == square.to_s
+  end
+
+  def available_squares
+    @squares.keys.select { |num| square_empty?(num) }
+  end
+
+  def available_squares_formatted
+    joinor(available_squares)
+  end
+
+  def valid_move?(square)
+    available_squares.include?(square)
+  end
+
+  def game_over?
+    winner || board_full?
+  end
+
+  def winner
+    WINNING_LINES.each do |line|
+      if line_complete?(line, @player_marker)
+        return "Player"
+      elsif line_complete?(line, @computer_marker)
+        return "Computer"
+      end
+    end
+    nil
+  end
+
+  def line_has_two_markers?(line, marker)
+    @squares.values_at(*line).count(marker) == 2
+  end
+
+  def find_empty_square_in_line(line)
+    line.each do |square|
+      return square if square_empty?(square)
+    end
+    nil
+  end
+
+  private
+
+  def board_full?
+    available_squares.empty?
+  end
+
+  def line_complete?(line, marker)
+    @squares.values_at(*line).count(marker) == 3
+  end
+
+  def joinor(arr, delimiter = ", ", word = "or")
+    case arr.size
+    when 0 then ""
+    when 1 then arr.first.to_s
+    when 2 then arr.join(" #{word} ")
+    else
+      "#{arr[0...-1].join(delimiter)}#{delimiter}#{word} #{arr.last}"
+    end
+  end
+end
+
+class Score
+  include Displayable
+  include GameRules
+
+  attr_reader :player_wins, :computer_wins
+
+  def initialize(player, computer)
+    @player_wins = 0
+    @computer_wins = 0
+    @player = player
+    @computer = computer
+  end
+
+  def update(winner)
+    case winner
+    when "Player"
+      @player_wins += 1
+    when "Computer"
+      @computer_wins += 1
+    end
+  end
+
+  def match_over?
+    @player_wins == ROUNDS_TO_WIN ||
+      @computer_wins == ROUNDS_TO_WIN
+  end
+
+  def display
+    Message.starred("separator")
+    puts format(Message["scoreboard"], @player.name, @player.marker,
+                @player_wins, @computer.name, @computer.marker,
+                @computer_wins)
+    Message.starred("separator")
+  end
+end
+
+class GrandScore
+  attr_reader :grand_winners
+
+  def initialize
+    @grand_winners = initialize_grand_winners
+  end
+
+  def update(winner)
+    if winner == :player
+      update_player_grand_win
+    elsif winner == :computer
+      update_computer_grand_win
+    end
   end
 
   private
@@ -185,6 +386,43 @@ class TicTacToeGame
       computer_streak: 0
     }
   end
+
+  def update_player_grand_win
+    @grand_winners[:player] += 1
+    @grand_winners[:player_streak] += 1
+    @grand_winners[:computer_streak] = 0
+  end
+
+  def update_computer_grand_win
+    @grand_winners[:computer] += 1
+    @grand_winners[:computer_streak] += 1
+    @grand_winners[:player_streak] = 0
+  end
+end
+
+class TicTacToeGame
+  include Displayable
+  include CurrentMatchDisplay
+  include GameRules
+
+  attr_reader :player, :computer, :score, :grand_score
+
+  def initialize
+    @player = nil
+    @computer = nil
+    @board = nil
+    @score = nil
+    @grand_score = GrandScore.new
+    @current_player = nil
+  end
+
+  def play
+    setup_game
+    main_game_loop
+    display_thank_you(@player.name)
+  end
+
+  private
 
   def setup_game
     Utilities.clear_screen
@@ -204,8 +442,9 @@ class TicTacToeGame
     loop do
       @score = Score.new(@player, @computer)
       play_match
-      update_grand_winners
-      display_grand_results(@score, @grand_winners)
+      winner = determine_match_winner
+      update_grand_score(winner)
+      display_grand_results(@score, @grand_score.grand_winners)
       break unless play_again?
     end
   end
@@ -233,6 +472,18 @@ class TicTacToeGame
     display_round_result(@board.winner)
     Utilities.pause(0.5)
     @score.update(@board.winner)
+  end
+
+  def determine_match_winner
+    if @score.player_wins == ROUNDS_TO_WIN
+      :player
+    elsif @score.computer_wins == ROUNDS_TO_WIN
+      :computer
+    end
+  end
+
+  def update_grand_score(winner)
+    @grand_score.update(winner)
   end
 
   def name
@@ -286,26 +537,6 @@ class TicTacToeGame
     @current_player = @current_player == @player ? @computer : @player
   end
 
-  def update_grand_winners
-    if @score.player_wins == ROUNDS_TO_WIN
-      update_player_grand_win
-    elsif @score.computer_wins == ROUNDS_TO_WIN
-      update_computer_grand_win
-    end
-  end
-
-  def update_player_grand_win
-    @grand_winners[:player] += 1
-    @grand_winners[:player_streak] += 1
-    @grand_winners[:computer_streak] = 0
-  end
-
-  def update_computer_grand_win
-    @grand_winners[:computer] += 1
-    @grand_winners[:computer_streak] += 1
-    @grand_winners[:player_streak] = 0
-  end
-
   def play_again?
     loop do
       Message.prompt("play_again")
@@ -329,217 +560,12 @@ class TicTacToeGame
       Utilities.clear_screen
       true
     elsif valid_negative_answer?(answer)
-      display_thank_you(@player.name)
       false
     else
       display_invalid_play_again_choice
       nil
     end
   end
-
-  def display_invalid_play_again_choice
-    Utilities.clear_screen
-    puts Message["invalid_choice"]
-  end
 end
 
-class Player
-  attr_reader :name, :marker
-
-  def initialize(name, marker)
-    @name = name
-    @marker = marker
-  end
-end
-
-class Human < Player
-  include CurrentMatchDisplay
-  include Displayable
-
-  def make_move(board)
-    square = get_valid_square(board)
-    board.place_marker(square, @marker)
-  end
-
-  private
-
-  def get_valid_square(board)
-    loop do
-      display_square_prompt(board)
-      input = gets.chomp
-      return input.to_i if board.valid_move?(input.to_i)
-      display_invalid_choice_with_pause
-    end
-  end
-end
-
-class Computer < Player
-  def initialize(marker, player_marker)
-    name = set_name
-    super(name, marker)
-    @player_marker = player_marker
-  end
-
-  def make_move(board)
-    square = find_best_move(board)
-    board.place_marker(square, @marker) if square
-  end
-
-  private
-
-  def set_name
-    ["R2D2", "HAL", "Number5", "Sonny", "Chappie"].sample
-  end
-
-  def find_best_move(board)
-    offensive_square(board) ||
-      defensive_square(board) ||
-      center_square(board) ||
-      random_square(board)
-  end
-
-  def offensive_square(board)
-    find_at_risk_square(board, @marker)
-  end
-
-  def defensive_square(board)
-    find_at_risk_square(board, @player_marker)
-  end
-
-  def find_at_risk_square(board, marker)
-    TicTacToeGame::WINNING_LINES.each do |line|
-      if board.line_has_two_markers?(line, marker)
-        empty_square = board.find_empty_square_in_line(line)
-        return empty_square if empty_square
-      end
-    end
-    nil
-  end
-
-  def center_square(board)
-    5 if board.square_empty?(5)
-  end
-
-  def random_square(board)
-    board.available_squares.sample
-  end
-end
-
-class Board
-  include Displayable
-
-  def initialize(player_marker, computer_marker)
-    @squares = {}
-    (1..9).each { |num| @squares[num] = num.to_s }
-    @player_marker = player_marker
-    @computer_marker = computer_marker
-  end
-
-  def display
-    display_board_line(@squares)
-  end
-
-  def place_marker(square, marker)
-    @squares[square] = marker
-  end
-
-  def square_empty?(square)
-    @squares[square] == square.to_s
-  end
-
-  def available_squares
-    @squares.keys.select { |num| square_empty?(num) }
-  end
-
-  def available_squares_formatted
-    joinor(available_squares)
-  end
-
-  def valid_move?(square)
-    available_squares.include?(square)
-  end
-
-  def game_over?
-    winner || board_full?
-  end
-
-  def winner
-    TicTacToeGame::WINNING_LINES.each do |line|
-      if line_complete?(line, @player_marker)
-        return "Player"
-      elsif line_complete?(line, @computer_marker)
-        return "Computer"
-      end
-    end
-    nil
-  end
-
-  def line_has_two_markers?(line, marker)
-    @squares.values_at(*line).count(marker) == 2
-  end
-
-  def find_empty_square_in_line(line)
-    line.each do |square|
-      return square if square_empty?(square)
-    end
-    nil
-  end
-
-  private
-
-  def board_full?
-    available_squares.empty?
-  end
-
-  def line_complete?(line, marker)
-    @squares.values_at(*line).count(marker) == 3
-  end
-
-  def joinor(arr, delimiter = ", ", word = "or")
-    case arr.size
-    when 0 then ""
-    when 1 then arr.first.to_s
-    when 2 then arr.join(" #{word} ")
-    else
-      "#{arr[0...-1].join(delimiter)}#{delimiter}#{word} #{arr.last}"
-    end
-  end
-end
-
-class Score
-  include Displayable
-
-  attr_reader :player_wins, :computer_wins
-
-  def initialize(player, computer)
-    @player_wins = 0
-    @computer_wins = 0
-    @player = player
-    @computer = computer
-  end
-
-  def update(winner)
-    case winner
-    when "Player"
-      @player_wins += 1
-    when "Computer"
-      @computer_wins += 1
-    end
-  end
-
-  def match_over?
-    @player_wins == TicTacToeGame::ROUNDS_TO_WIN ||
-      @computer_wins == TicTacToeGame::ROUNDS_TO_WIN
-  end
-
-  def display
-    Message.starred("separator")
-    puts format(Message["scoreboard"], @player.name, @player.marker,
-                @player_wins, @computer.name, @computer.marker,
-                @computer_wins)
-    Message.starred("separator")
-  end
-end
-
-game = TicTacToeGame.new
-game.play
+TicTacToeGame.new.play
