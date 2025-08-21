@@ -41,7 +41,7 @@ round_result:
   computer_won: "%s won this round!"
   draw: "It's a draw!"
 
-scoreboard: "Match Scoreboard: Player (%s): %s | %s (%s): %s"
+scoreboard: "Match Scoreboard: Player %s (%s): %s | %s (%s): %s"
 grand_winner:
   player: |+
 

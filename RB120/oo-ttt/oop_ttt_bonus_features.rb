@@ -1,12 +1,3 @@
-# Todo
-# Have a Human class and the Computer class
-# subclass from Player class
-
-# Done
-# Let player pick X or O
-# Get name for player
-# Give name to computer
-
 require "yaml"
 
 module Message
@@ -205,7 +196,7 @@ class TicTacToeGame
     player_marker = choose_player_marker
     computer_marker = player_marker == "X" ? "O" : "X"
 
-    @player = Player.new(player_name, player_marker)
+    @player = Human.new(player_name, player_marker)
     @computer = Computer.new(computer_marker, player_marker)
   end
 
@@ -353,14 +344,17 @@ class TicTacToeGame
 end
 
 class Player
-  include CurrentMatchDisplay
-
   attr_reader :name, :marker
 
   def initialize(name, marker)
     @name = name
     @marker = marker
   end
+end
+
+class Human < Player
+  include CurrentMatchDisplay
+  include Displayable
 
   def make_move(board)
     square = get_valid_square(board)
@@ -379,13 +373,11 @@ class Player
   end
 end
 
-class Computer
-  attr_reader :marker, :name
-
+class Computer < Player
   def initialize(marker, player_marker)
-    @marker = marker
+    name = set_name
+    super(name, marker)
     @player_marker = player_marker
-    @name = set_name
   end
 
   def make_move(board)
@@ -541,11 +533,11 @@ class Score
   end
 
   def display
-    message = "* #{Message['separator']} *"
-    puts message
-    puts format(Message["scoreboard"], @player.marker, @player_wins,
-                @computer.name, @computer.marker, @computer_wins)
-    puts message
+    Message.starred("separator")
+    puts format(Message["scoreboard"], @player.name, @player.marker,
+                @player_wins, @computer.name, @computer.marker,
+                @computer_wins)
+    Message.starred("separator")
   end
 end
 
