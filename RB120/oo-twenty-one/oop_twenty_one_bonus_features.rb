@@ -56,7 +56,7 @@ module CurrentMatchDisplay
     card_lines = cards.map(&:display_lines)
 
     if display_hidden
-      hidden_lines = cards.first.hidden_card_lines
+      hidden_lines = Message['hidden_card'].split("\n")
       card_lines << hidden_lines
     end
 
@@ -99,6 +99,7 @@ module CurrentMatchDisplay
     Utilities.pause(0.4)
 
     display_match_winner_message
+    display_streak_info
     display_grand_winner_totals
   end
 
@@ -120,6 +121,14 @@ module CurrentMatchDisplay
       puts Message['grand_winner']['player']
     elsif @score.dealer_wins == TwentyOne::ROUNDS_TO_WIN
       puts Message['grand_winner']['dealer']
+    end
+  end
+
+  def display_streak_info
+    if @grand_winners[:player_streak] > 1
+      puts Message['streak']['player'] % @grand_winners[:player_streak]
+    elsif @grand_winners[:dealer_streak] > 1
+      puts Message['streak']['dealer'] % @grand_winners[:dealer_streak]
     end
   end
 
@@ -248,16 +257,6 @@ class Card
     ]
   end
 
-  def hidden_card_lines
-    [
-      '┌─────┐',
-      '│?    │',
-      '│  ?  │',
-      '│    ?│',
-      '└─────┘'
-    ]
-  end
-
   private
 
   def display_value
@@ -321,7 +320,7 @@ class Player < Participant
     loop do
       Message.prompt('hit_or_stay')
       decision = gets.chomp.strip.downcase
-      return decision if ['h', 'hit', 's', 'stay'].include?(decision)
+      return decision if Message['hit_stay_options'].include?(decision)
       puts Message['invalid_hit_or_stay']
     end
   end
@@ -447,8 +446,8 @@ class TwentyOne
     Message.prompt('game_start')
     loop do
       choice = gets.chomp.strip.downcase
-      return display_farewell if ['no', 'n'].include?(choice)
-      if ['yes', 'y'].include?(choice)
+      return display_farewell if Message['options_neg'].include?(choice)
+      if Message['options_pos'].include?(choice)
         return (Utilities.clear_screen
                 true)
       end
@@ -623,9 +622,9 @@ class TwentyOne
   def ask_choice
     loop do
       choice = gets.chomp.strip.downcase
-      if ['no', 'n'].include?(choice)
+      if Message['options_neg'].include?(choice)
         return false
-      elsif ['yes', 'y'].include?(choice)
+      elsif Message['options_pos'].include?(choice)
         return true
       else
         puts Message['invalid_choice']
