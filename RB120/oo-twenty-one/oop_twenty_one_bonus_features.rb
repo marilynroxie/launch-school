@@ -88,11 +88,6 @@ module CurrentMatchDisplay
                  @player.total(@goal_score)]
   end
 
-  def display_round_info
-    puts Message['round', display_game_name, @round]
-    @score.display
-  end
-
   def display_round_result(result)
     Utilities.pause
     puts Message['round_result'][RESULT_MESSAGES[result]]
