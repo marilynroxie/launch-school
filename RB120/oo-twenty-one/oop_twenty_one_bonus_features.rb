@@ -36,6 +36,14 @@ class Utilities
 end
 
 module CurrentMatchDisplay
+  RESULT_MESSAGES = {
+    player_busted: 'you_busted',
+    dealer_busted: 'dealer_busted',
+    player: 'you_win',
+    dealer: 'dealer_wins',
+    tie: 'tie'
+  }
+
   def display_cards_visually(cards, display_hidden: false)
     card_lines = cards.map(&:display_lines)
 
@@ -79,18 +87,7 @@ module CurrentMatchDisplay
 
   def display_round_result(result)
     Utilities.pause
-    case result
-    when :player_busted
-      puts Message['round_result']['you_busted']
-    when :dealer_busted
-      puts Message['round_result']['dealer_busted']
-    when :player
-      puts Message['round_result']['you_win']
-    when :dealer
-      puts Message['round_result']['dealer_wins']
-    when :tie
-      puts Message['round_result']['tie']
-    end
+    puts Message['round_result'][RESULT_MESSAGES[result]]
     Utilities.pause
   end
 
