@@ -1,0 +1,159 @@
+enter_name: "Please enter your name: "
+invalid_name: "Please enter a valid name."
+
+welcome: "Welcome to Twenty-One, %s!"
+
+small_rules: |+
+
+  The goal of Twenty-One is to try to get as close to 21 as possible, without going over.
+
+  You win the round either if you have a higher total than the dealer without "busting", or if the dealer busts.
+
+  If you go over 21, it's a "bust" and you lose!
+
+  If the dealer goes over 21, they "bust" and you win!
+
+  Win five rounds in this match to become the Grand Winner!
+
+  => Type 'rules' to read the full rules. Press any other key to skip rules and start the game.
+
+full_rules: |+
+
+  Rules:
+
+    The Deck and Scoring:
+
+      You are dealt cards from a 52-card deck consisting of Hearts, Diamonds, Clubs, and Spades.
+
+      The suits each have 13 values: 2 through 10, Jack, Queen, King, and Ace.
+
+      2 through 10 are worth their face values.
+
+      Jack, Queen, and King are each worth 10.
+
+      The Ace is worth 11, or worth 1 if counting it as 11 would cause the total to exceed 21.
+
+    Game Play:
+
+      You are facing an opponent, the dealer. Both you and the dealer are initially dealt 2 cards.
+
+      You can see the 2 cards you have been dealt, but can only see one of the dealer's cards.
+
+      On your turn, you can choose to either "hit" (be dealt another card) or "Stay" (keep your hand and move on to the dealer's turn).
+
+    Winning:
+
+      The goal of Twenty-One is to try to get as close to 21 as possible, without going over.
+
+      You win the round either if you have a higher total than the dealer without "busting", or if the dealer busts.
+
+      If you go over 21, it's a "bust" and you lose!
+
+      If the dealer goes over 21, they "bust" and you win!
+
+      Win five rounds in this match to become the Grand Winner!
+
+game_start: "Start the game? (Y to start, N to exit)"
+change_goal_score:
+  Do you want to change the goal score to a number other than 21?
+  (Y to change, N to have the goal as 21)
+enter_goal_score: "Enter the goal score as 21, 31, 41, or 51:"
+round: "%s - Round %s"
+dealer_hand: "DEALER'S HAND"
+initial_dealer: |+
+
+  Dealer has %s and ?
+
+hidden_card: |+
+  ┌─────┐
+  │?    │
+  │  ?  │
+  │    ?│
+  └─────┘
+player_hand: |+
+  -------------
+  PLAYER'S HAND
+
+initial_player: |+
+  You have %s, for a total of %s.
+
+hit_or_stay: "Would you like to (h)it or (s)tay?"
+hit_stay_options:
+  - "h"
+  - "hit"
+  - "s"
+  - "stay"
+
+invalid_hit_or_stay: "Sorry, must enter 'h' or 's'."
+
+you_hit: "You chose to hit!"
+you_stayed: "You stayed at %s"
+updated_player: |+
+  Your cards are now: %s
+
+  Your total is now: %s
+
+updated_dealer_cards: "Dealer's cards are now: %s"
+dealer_total: "Dealer's total is now: %s"
+dealer_stay: |+
+  Dealer stays at %s
+
+dealer_turn: "Dealer turn..."
+dealer_hit: |+
+  Dealer hits!
+
+final_dealer_hand: |+
+
+  DEALER'S FINAL HAND
+
+final_player_hand: |+
+
+  -------------------
+  PLAYER'S FINAL HAND
+
+final_dealer_total: "Dealer has %s, for a total of: %s"
+final_player_total: |+
+  Player has %s, for a total of: %s
+  -------------------
+round_result:
+  you_busted: "You busted! Dealer wins!"
+  dealer_busted: "Dealer busted! You win!"
+  you_win: "You win!"
+  dealer_wins: "Dealer wins!"
+  tie: "It's a tie!"
+
+continue: "Continue? (Press enter to continue. Type 'quit' or 'q' to exit the game entirely)"
+invalid_choice: "Sorry, that's not a valid choice."
+
+scoreboard: "Match Scoreboard: Player: %s | Dealer: %s"
+separator: "-------------"
+grand_winner:
+  player: |+
+
+    You won five rounds! You are the Grand Winner!
+
+  dealer: |+
+
+    The dealer is the Grand Winner!
+
+streak:
+  player: |+
+
+    You've been the Grand Winner %s times in a row!
+
+  dealer: |+
+
+    The dealer has been the Grand Winner %s times in a row!
+
+total_grand_winners: "Grand Scoreboard: Player: %s | Dealer: %s"
+play_again: |+
+
+  Do you want to play again? (Y to play again, N to stop playing)
+
+options_pos:
+  - "yes"
+  - "y"
+options_neg:
+  - "no"
+  - "n"
+thank_you: "Thank you for playing %s, %s! Good bye!"
