@@ -1,3 +1,11 @@
+# Todo
+# - Extracting more methods from TwentyOne class to make it smaller
+# e.g. GameFlow or MatchOrchestrator
+# - Split handle_continue_choice into smaller methods
+# - DEFAULT_GRAND_WINNERS constant initialization using Hash.new(0)?
+# investigate this suggestion
+# Pause before displaying final result?
+
 require 'yaml'
 
 module Message
