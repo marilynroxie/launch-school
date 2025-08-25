@@ -223,7 +223,7 @@ module Displayable
 
   def display_rules
     Message["rules"].each_line do |rule|
-      Utilities.pause(0.4)
+      Utilities.pause
       puts rule
     end
   end
@@ -262,7 +262,7 @@ module Displayable
   end
 
   def display_grand_winner(winner)
-    Utilities.pause(0.4)
+    Utilities.pause
     if winner == :player
       puts Message["grand_winner"]["player"]
     else
