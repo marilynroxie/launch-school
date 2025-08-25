@@ -1,7 +1,7 @@
 require 'yaml'
 
 module Message
-  MESSAGES = YAML.load_file('oop_twenty_one_bonus_features_messages.yml')
+  MESSAGES = YAML.load_file('oop_twenty_one_bonus_features.yml')
 
   def self.[](key, *args)
     args.empty? ? MESSAGES[key] : MESSAGES[key] % args
@@ -31,7 +31,7 @@ class Utilities
   end
 end
 
-module Displayable
+module CurrentMatchDisplay
   def display_cards_visually(cards, display_hidden: false)
     card_lines = cards.map(&:display_lines)
 
@@ -57,7 +57,7 @@ module Displayable
   end
 
   def display_final_results
-    display_scoreboard
+    @score.display
     puts Message['final_dealer_hand']
     display_cards_visually(@dealer.cards)
     puts Message['final_dealer_total', @dealer.show_cards,
@@ -70,33 +70,10 @@ module Displayable
 
   def display_round_info
     puts Message['round', display_game_name, @round]
-    display_scoreboard
+    @score.display
   end
 
-  def display_scoreboard
-    Message.starred('separator')
-    puts Message['scoreboard', @score[:player], @score[:dealer]]
-    Message.starred('separator')
-  end
-
-  def display_grand_winner_info
-    update_grand_winners
-    sleep 0.4
-
-    if @score[:player] == TwentyOne::ROUNDS_TO_WIN
-      puts Message['grand_winner']['player']
-    elsif @score[:dealer] == TwentyOne::ROUNDS_TO_WIN
-      puts Message['grand_winner']['dealer']
-    end
-
-    Message.starred('separator')
-    puts Message['total_grand_winners',
-                 @grand_winners[:player],
-                 @grand_winners[:dealer]]
-    Message.starred('separator')
-  end
-
-  def display_result(result)
+  def display_round_result(result)
     sleep 0.7
     case result
     when :player_busted
@@ -113,6 +90,31 @@ module Displayable
     sleep 0.7
   end
 
+  def display_grand_winner_info
+    update_grand_winners
+    sleep 0.4
+
+    if @score.player_wins == TwentyOne::ROUNDS_TO_WIN
+      puts Message['grand_winner']['player']
+    elsif @score.dealer_wins == TwentyOne::ROUNDS_TO_WIN
+      puts Message['grand_winner']['dealer']
+    end
+
+    Message.starred('separator')
+    puts Message['total_grand_winners',
+                 @grand_winners[:player],
+                 @grand_winners[:dealer]]
+    Message.starred('separator')
+  end
+
+  def display_game_state
+    Utilities.clear_screen
+    @score.display
+    puts Message['round', display_game_name, @round]
+  end
+end
+
+module Displayable
   def display_full_rules
     Message['full_rules'].each_line do |rule|
       sleep 0.7
@@ -305,8 +307,44 @@ class Dealer < Participant
   end
 end
 
+class Score
+  attr_reader :player_wins, :dealer_wins
+
+  def initialize(player_name)
+    @player_wins = 0
+    @dealer_wins = 0
+    @player_name = player_name
+  end
+
+  def update(result)
+    case result
+    when :player, :dealer_busted
+      @player_wins += 1
+    when :dealer, :player_busted
+      @dealer_wins += 1
+    end
+  end
+
+  def match_over?
+    @player_wins == TwentyOne::ROUNDS_TO_WIN ||
+      @dealer_wins == TwentyOne::ROUNDS_TO_WIN
+  end
+
+  def display
+    Message.starred('separator')
+    puts Message['scoreboard', @player_wins, @dealer_wins]
+    Message.starred('separator')
+  end
+
+  def reset
+    @player_wins = 0
+    @dealer_wins = 0
+  end
+end
+
 class TwentyOne
   include Displayable
+  include CurrentMatchDisplay
 
   ROUNDS_TO_WIN = 5
   GOAL_SCORE_DEFAULT = 21
@@ -317,6 +355,7 @@ class TwentyOne
     @dealer = Dealer.new
     @goal_score = GOAL_SCORE_DEFAULT
     @dealer_stays = Dealer::DEALER_STAYS_DEFAULT
+    @score = Score.new(@player_name)
     @grand_winners = {
       player: 0,
       dealer: 0,
@@ -376,18 +415,18 @@ class TwentyOne
   def setup_match
     update_goal_score
     @round = 0
-    @score = { player: 0, dealer: 0 }
+    @score.reset
   end
 
   def play_match
-    until match_over?
+    until @score.match_over?
       play_round
       break unless continue_round?
     end
   end
 
   def play_round
-    Utilities.clear_screen
+    display_game_state
     @round += 1
     display_round_info
 
@@ -456,8 +495,8 @@ class TwentyOne
     dealer_total = @dealer.total(@goal_score)
 
     result = detect_result(dealer_total, player_total)
-    update_score(result)
-    display_result(result)
+    @score.update(result)
+    display_round_result(result)
   end
 
   def detect_result(dealer_total, player_total)
@@ -472,16 +511,8 @@ class TwentyOne
     end
   end
 
-  def update_score(result)
-    if [:player, :dealer_busted].include?(result)
-      @score[:player] += 1
-    elsif [:dealer, :player_busted].include?(result)
-      @score[:dealer] += 1
-    end
-  end
-
   def continue_round?
-    return false if match_over?
+    return false if @score.match_over?
 
     loop do
       Message.prompt('continue')
@@ -497,16 +528,12 @@ class TwentyOne
     end
   end
 
-  def match_over?
-    @score[:player] == ROUNDS_TO_WIN || @score[:dealer] == ROUNDS_TO_WIN
-  end
-
   def update_grand_winners
-    if @score[:player] == ROUNDS_TO_WIN
+    if @score.player_wins == ROUNDS_TO_WIN
       @grand_winners[:player] += 1
       @grand_winners[:player_streak] += 1
       @grand_winners[:dealer_streak] = 0
-    elsif @score[:dealer] == ROUNDS_TO_WIN
+    elsif @score.dealer_wins == ROUNDS_TO_WIN
       @grand_winners[:dealer] += 1
       @grand_winners[:dealer_streak] += 1
       @grand_winners[:player_streak] = 0
