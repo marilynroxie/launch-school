@@ -94,23 +94,32 @@ module CurrentMatchDisplay
     update_grand_winners
     sleep 0.4
 
-    if @score.player_wins == TwentyOne::ROUNDS_TO_WIN
-      puts Message['grand_winner']['player']
-    elsif @score.dealer_wins == TwentyOne::ROUNDS_TO_WIN
-      puts Message['grand_winner']['dealer']
-    end
-
-    Message.starred('separator')
-    puts Message['total_grand_winners',
-                 @grand_winners[:player],
-                 @grand_winners[:dealer]]
-    Message.starred('separator')
+    display_match_winner_message
+    display_grand_winner_totals
   end
 
   def display_game_state
     Utilities.clear_screen
     @score.display
     puts Message['round', display_game_name, @round]
+  end
+
+  private
+
+  def display_match_winner_message
+    if @score.player_wins == TwentyOne::ROUNDS_TO_WIN
+      puts Message['grand_winner']['player']
+    elsif @score.dealer_wins == TwentyOne::ROUNDS_TO_WIN
+      puts Message['grand_winner']['dealer']
+    end
+  end
+
+  def display_grand_winner_totals
+    Message.starred('separator')
+    puts Message['total_grand_winners',
+                 @grand_winners[:player],
+                 @grand_winners[:dealer]]
+    Message.starred('separator')
   end
 end
 
@@ -426,9 +435,8 @@ class TwentyOne
   end
 
   def play_round
-    display_game_state
     @round += 1
-    display_round_info
+    display_game_state
 
     @deck = Deck.new
     reset_hands
@@ -459,7 +467,6 @@ class TwentyOne
   def player_turn
     loop do
       break unless @player.wants_to_hit?
-
       puts Message['you_hit']
       @player.add_card(@deck.deal_card)
       puts Message['updated_player', @player.show_cards,
