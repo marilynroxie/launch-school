@@ -175,24 +175,8 @@ module Hand
   end
 
   def total(goal_score)
-    values = cards.map(&:value)
-
-    sum = 0
-    values.each do |value|
-      sum += if value == 'A'
-               11
-             elsif value.to_i.zero?
-               10
-             else
-               value.to_i
-             end
-    end
-
-    values.count('A').times do
-      sum -= 10 if sum > goal_score
-    end
-
-    sum
+    sum = calculate_initial_sum
+    adjust_for_aces(sum, goal_score)
   end
 
   def busted?(goal_score)
@@ -205,6 +189,37 @@ module Hand
 
   def show_cards
     cards.map(&:to_s).join(', ')
+  end
+
+  private
+
+  def calculate_initial_sum
+    card_values.sum do |value|
+      numeric_value(value)
+    end
+  end
+
+  def adjust_for_aces(sum, goal_score)
+    ace_count.times do
+      sum -= 10 if sum > goal_score
+    end
+    sum
+  end
+
+  def card_values
+    cards.map(&:value)
+  end
+
+  def numeric_value(value)
+    case value
+    when 'A' then 11
+    when /\A\d+\z/ then value.to_i
+    else 10
+    end
+  end
+
+  def ace_count
+    card_values.count('A')
   end
 end
 
