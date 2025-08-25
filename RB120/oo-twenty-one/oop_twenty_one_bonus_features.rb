@@ -104,6 +104,11 @@ module CurrentMatchDisplay
     puts Message['round', display_game_name, @round]
   end
 
+  def display_dealer_card_update
+    puts Message['updated_dealer_cards', @dealer.show_cards]
+    puts Message['dealer_total', @dealer.total(@goal_score)]
+  end
+
   private
 
   def display_match_winner_message
@@ -146,6 +151,15 @@ module Displayable
     when 51 then 'Fifty-One'
     else 'Whatever-One'
     end
+  end
+
+  def display_dealer_turn_start
+    puts Message['dealer_turn']
+    Utilities.add_suspense
+  end
+
+  def display_dealer_final_status
+    puts Message['dealer_stay', @dealer.total(@goal_score)]
   end
 end
 
@@ -483,18 +497,21 @@ class TwentyOne
   def dealer_turn
     return if @player.busted?(@goal_score)
 
-    puts Message['dealer_turn']
-    Utilities.add_suspense
+    display_dealer_turn_start
+    execute_dealer_hitting_phase
+    display_dealer_final_status unless @dealer.busted?(@goal_score)
+  end
 
+  def execute_dealer_hitting_phase
     while @dealer.should_hit?(@goal_score, @dealer_stays)
-      puts Message['dealer_hit']
-      @dealer.add_card(@deck.deal_card)
-      puts Message['updated_dealer_cards', @dealer.show_cards]
-      puts Message['dealer_total', @dealer.total(@goal_score)]
+      process_dealer_hit
     end
+  end
 
-    return if @dealer.busted?(@goal_score)
-    puts Message['dealer_stay', @dealer.total(@goal_score)]
+  def process_dealer_hit
+    puts Message['dealer_hit']
+    @dealer.add_card(@deck.deal_card)
+    display_dealer_card_update
   end
 
   def determine_winner
