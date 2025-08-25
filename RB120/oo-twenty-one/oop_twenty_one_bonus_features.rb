@@ -432,14 +432,12 @@ class TwentyOne
     Message.prompt('game_start')
     loop do
       choice = gets.chomp.strip.downcase
-      if ['no', 'n'].include?(choice)
-        display_farewell
-      elsif ['yes', 'y'].include?(choice)
-        Utilities.clear_screen
-        return true
-      else
-        puts Message['invalid_choice']
+      return display_farewell if ['no', 'n'].include?(choice)
+      if ['yes', 'y'].include?(choice)
+        return (Utilities.clear_screen
+                true)
       end
+      puts Message['invalid_choice']
     end
   end
 
@@ -457,19 +455,26 @@ class TwentyOne
   end
 
   def play_round
+    setup_round
+    execute_round
+    conclude_round
+  end
+
+  def setup_round
     @round += 1
     display_game_state
-
     @deck = Deck.new
     reset_hands
+  end
+
+  def execute_round
     deal_initial_cards
     display_initial_cards
-
     player_turn
-    return if @player.busted?(@goal_score)
+    dealer_turn unless @player.busted?(@goal_score)
+  end
 
-    dealer_turn
-
+  def conclude_round
     determine_winner
     display_final_results
   end
