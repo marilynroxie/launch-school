@@ -569,15 +569,22 @@ class TwentyOne
     loop do
       Message.prompt('continue')
       choice = gets.chomp.strip.downcase
-      if choice.empty?
-        return true
-      elsif choice == 'quit' || choice == 'q'
-        display_farewell
-      else
-        Utilities.clear_screen
-        puts Message['invalid_choice']
-      end
+      result = handle_continue_choice(choice)
+      return result unless result.nil?
     end
+  end
+
+  def handle_continue_choice(choice)
+    return true if choice.empty?
+    return display_farewell if quit_choice?(choice)
+
+    Utilities.clear_screen
+    puts Message['invalid_choice']
+    nil
+  end
+
+  def quit_choice?(choice)
+    choice == 'quit' || choice == 'q'
   end
 
   def update_grand_winners
