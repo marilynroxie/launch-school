@@ -504,6 +504,12 @@ class TwentyOne
   end
 
   def player_turn
+    execute_hitting_phase
+    return if @player.busted?(@goal_score)
+    puts Message['you_stayed', @player.total(@goal_score)]
+  end
+
+  def execute_hitting_phase
     loop do
       break unless @player.wants_to_hit?
       puts Message['you_hit']
@@ -514,9 +520,6 @@ class TwentyOne
 
       break if @player.busted?(@goal_score)
     end
-
-    return if @player.busted?(@goal_score)
-    puts Message['you_stayed', @player.total(@goal_score)]
   end
 
   def dealer_turn
