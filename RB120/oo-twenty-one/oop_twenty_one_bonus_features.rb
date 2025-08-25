@@ -21,13 +21,17 @@ end
 class Utilities
   def self.add_suspense
     3.times do
-      sleep 0.5
+      Utilities.pause(0.5)
       puts '.'
     end
   end
 
   def self.clear_screen
     system('clear') || system('cls')
+  end
+
+  def self.pause(duration = 0.7)
+    sleep duration
   end
 end
 
@@ -46,7 +50,7 @@ module CurrentMatchDisplay
   end
 
   def display_initial_cards
-    sleep 0.3
+    Utilities.pause(0.3)
     puts Message['dealer_hand']
     display_cards_visually([@dealer.cards.first], display_hidden: true)
     puts Message['initial_dealer', @dealer.show_initial_cards.first]
@@ -74,7 +78,7 @@ module CurrentMatchDisplay
   end
 
   def display_round_result(result)
-    sleep 0.7
+    Utilities.pause
     case result
     when :player_busted
       puts Message['round_result']['you_busted']
@@ -87,12 +91,12 @@ module CurrentMatchDisplay
     when :tie
       puts Message['round_result']['tie']
     end
-    sleep 0.7
+    Utilities.pause
   end
 
   def display_grand_winner_info
     update_grand_winners
-    sleep 0.4
+    Utilities.pause(0.4)
 
     display_match_winner_message
     display_grand_winner_totals
@@ -131,7 +135,7 @@ end
 module Displayable
   def display_full_rules
     Message['full_rules'].each_line do |rule|
-      sleep 0.7
+      Utilities.pause
       puts rule
     end
     ask_start
