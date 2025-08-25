@@ -371,6 +371,15 @@ class TwentyOne
 
   ROUNDS_TO_WIN = 5
   GOAL_SCORE_DEFAULT = 21
+  DEFAULT_GRAND_WINNERS = {
+    player: 0,
+    dealer: 0,
+    player_streak: 0,
+    dealer_streak: 0
+  }
+
+  attr_reader :player, :dealer, :score, :goal_score, :dealer_stays,
+              :grand_winners
 
   def initialize
     @player_name = ask_name
@@ -379,12 +388,7 @@ class TwentyOne
     @goal_score = GOAL_SCORE_DEFAULT
     @dealer_stays = Dealer::DEALER_STAYS_DEFAULT
     @score = Score.new(@player_name)
-    @grand_winners = {
-      player: 0,
-      dealer: 0,
-      player_streak: 0,
-      dealer_streak: 0
-    }
+    @grand_winners = DEFAULT_GRAND_WINNERS.dup
   end
 
   def start
