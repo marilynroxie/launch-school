@@ -44,7 +44,7 @@ module CurrentMatchDisplay
     tie: 'tie'
   }
 
-  def display_cards_visually(cards, display_hidden: false)
+  def display_visually(cards, display_hidden: false)
     card_lines = cards.map(&:display_lines)
 
     if display_hidden
@@ -60,10 +60,10 @@ module CurrentMatchDisplay
   def display_initial_cards
     Utilities.pause(0.3)
     puts Message['dealer_hand']
-    display_cards_visually([@dealer.cards.first], display_hidden: true)
+    display_visually([@dealer.cards.first], display_hidden: true)
     puts Message['initial_dealer', @dealer.show_initial_cards.first]
     puts Message['player_hand']
-    display_cards_visually(@player.cards)
+    display_visually(@player.cards)
     puts Message['initial_player', @player.show_cards,
                  @player.total(@goal_score)]
   end
@@ -71,11 +71,11 @@ module CurrentMatchDisplay
   def display_final_results
     @score.display
     puts Message['final_dealer_hand']
-    display_cards_visually(@dealer.cards)
+    display_visually(@dealer.cards)
     puts Message['final_dealer_total', @dealer.show_cards,
                  @dealer.total(@goal_score)]
     puts Message['final_player_hand']
-    display_cards_visually(@player.cards)
+    display_visually(@player.cards)
     puts Message['final_player_total', @player.show_cards,
                  @player.total(@goal_score)]
   end
@@ -510,7 +510,7 @@ class TwentyOne
       @player.add_card(@deck.deal_card)
       puts Message['updated_player', @player.show_cards,
                    @player.total(@goal_score)]
-      display_cards_visually(@player.cards)
+      display_visually(@player.cards)
 
       break if @player.busted?(@goal_score)
     end
