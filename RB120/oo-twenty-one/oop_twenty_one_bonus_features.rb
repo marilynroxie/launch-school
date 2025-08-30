@@ -1,6 +1,3 @@
-# Todo
-# - Extracting more methods from TwentyOne class to make it smaller
-# e.g. GameFlow or MatchOrchestrator
 require 'yaml'
 
 module Message
@@ -113,9 +110,9 @@ module CurrentMatchDisplay
   private
 
   def display_match_winner_message
-    if @score.player_wins == TwentyOne::ROUNDS_TO_WIN
+    if @score.player_wins == GameRules::ROUNDS_TO_WIN
       puts Message['grand_winner']['player']
-    elsif @score.dealer_wins == TwentyOne::ROUNDS_TO_WIN
+    elsif @score.dealer_wins == GameRules::ROUNDS_TO_WIN
       puts Message['grand_winner']['dealer']
     end
   end
@@ -228,6 +225,255 @@ module Hand
   end
 end
 
+module GameRules
+  ROUNDS_TO_WIN = 5
+  GOAL_SCORE_DEFAULT = 21
+  DEALER_STAYS_DEFAULT = 17
+  VALID_GOAL_SCORES = [21, 31, 41, 51].freeze
+
+  def valid_goal_score?(score)
+    VALID_GOAL_SCORES.include?(score)
+  end
+
+  def player_busted?
+    @player.busted?(@goal_score)
+  end
+
+  def dealer_busted?
+    @dealer.busted?(@goal_score)
+  end
+
+  def dealer_should_hit?
+    @dealer.should_hit?(@goal_score, @dealer_stays)
+  end
+
+  def match_over?
+    @score.match_over?
+  end
+
+  def determine_round_result
+    player_total = @player.total(@goal_score)
+    dealer_total = @dealer.total(@goal_score)
+
+    detect_result(dealer_total, player_total)
+  end
+
+  private
+
+  def detect_result(dealer_total, player_total)
+    if player_busted?
+      :player_busted
+    elsif dealer_busted?
+      :dealer_busted
+    elsif dealer_total == player_total
+      :tie
+    else
+      dealer_total > player_total ? :dealer : :player
+    end
+  end
+end
+
+module MatchOrchestrator
+  def setup_match
+    update_goal_score
+    @round = 0
+    @score.reset
+  end
+
+  def play_match
+    until match_over?
+      play_round
+      break unless continue_round?
+    end
+  end
+
+  def update_grand_winners
+    if @score.player_wins == GameRules::ROUNDS_TO_WIN
+      @grand_winners[:player] += 1
+      @grand_winners[:player_streak] += 1
+      @grand_winners[:dealer_streak] = 0
+    elsif @score.dealer_wins == GameRules::ROUNDS_TO_WIN
+      @grand_winners[:dealer] += 1
+      @grand_winners[:dealer_streak] += 1
+      @grand_winners[:player_streak] = 0
+    end
+  end
+end
+
+module RoundFlow
+  def play_round
+    setup_round
+    execute_round
+    conclude_round
+  end
+
+  def setup_round
+    @round += 1
+    display_game_state
+    @deck = Deck.new
+    reset_hands
+  end
+
+  def execute_round
+    deal_initial_cards
+    display_initial_cards
+    player_turn
+    dealer_turn unless player_busted?
+  end
+
+  def conclude_round
+    determine_winner
+    display_final_results
+  end
+
+  def reset_hands
+    @player.reset_hand
+    @dealer.reset_hand
+  end
+
+  def deal_initial_cards
+    2.times do
+      @player.add_card(@deck.deal_card)
+      @dealer.add_card(@deck.deal_card)
+    end
+  end
+
+  def determine_winner
+    result = determine_round_result
+    @score.update(result)
+    display_round_result(result)
+  end
+end
+
+module TurnManager
+  def player_turn
+    execute_hitting_phase
+    return if player_busted?
+    puts Message['you_stayed', @player.total(@goal_score)]
+  end
+
+  def execute_hitting_phase
+    loop do
+      break unless @player.wants_to_hit?
+      puts Message['you_hit']
+      @player.add_card(@deck.deal_card)
+      puts Message['updated_player', @player.show_cards,
+                   @player.total(@goal_score)]
+      display_visually(@player.cards)
+
+      break if player_busted?
+    end
+  end
+
+  def dealer_turn
+    return if player_busted?
+
+    display_dealer_turn_start
+    execute_dealer_hitting_phase
+    display_dealer_final_status unless dealer_busted?
+  end
+
+  def execute_dealer_hitting_phase
+    while dealer_should_hit?
+      process_dealer_hit
+    end
+  end
+
+  def process_dealer_hit
+    puts Message['dealer_hit']
+    @dealer.add_card(@deck.deal_card)
+    display_dealer_card_update
+  end
+end
+
+module UserInteractionManager
+  def continue_round?
+    return false if match_over?
+
+    loop do
+      choice_result = user_continue_choice
+      return true if choice_result == :continue_game
+      display_farewell if choice_result == :quit_game
+    end
+  end
+
+  def user_continue_choice
+    Message.prompt('continue')
+    choice = gets.chomp.strip.downcase
+    choice_type = choice_type(choice)
+    handle_continue_choice(choice_type)
+  end
+
+  def handle_continue_choice(choice_type)
+    case choice_type
+    when :continue
+      :continue_game
+    when :quit
+      :quit_game
+    when :invalid
+      display_invalid_choice
+      :invalid_input
+    end
+  end
+
+  def choice_type(choice)
+    if choice == '' || choice == 'continue' || choice == 'c'
+      :continue
+    elsif quit_choice?(choice)
+      :quit
+    else
+      :invalid
+    end
+  end
+
+  def display_invalid_choice
+    Utilities.clear_screen
+    puts Message['invalid_choice']
+  end
+
+  def quit_choice?(choice)
+    choice == 'quit' || choice == 'q'
+  end
+
+  def update_goal_score
+    Utilities.clear_screen
+    puts Message['change_goal_score']
+    return unless ask_choice
+
+    @goal_score = ask_goal_score
+    @dealer_stays = @goal_score - 4
+  end
+
+  def ask_goal_score
+    loop do
+      Utilities.clear_screen
+      Message.prompt('enter_goal_score')
+      choice = gets.chomp.to_i
+      return choice if valid_goal_score?(choice)
+    end
+  end
+
+  def ask_choice
+    loop do
+      choice = gets.chomp.strip.downcase
+      if Message['options_neg'].include?(choice)
+        return false
+      elsif Message['options_pos'].include?(choice)
+        return true
+      else
+        puts Message['invalid_choice']
+      end
+    end
+  end
+
+  def play_again?
+    Message.prompt('play_again')
+    choice = ask_choice
+    display_farewell unless choice
+    choice
+  end
+end
+
 class Card
   SUITS = ["♥", "♠", "♦", "♣"]
   VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
@@ -328,8 +574,6 @@ class Player < Participant
 end
 
 class Dealer < Participant
-  DEALER_STAYS_DEFAULT = 17
-
   def initialize
     super("Dealer")
   end
@@ -363,8 +607,8 @@ class Score
   end
 
   def match_over?
-    @player_wins == TwentyOne::ROUNDS_TO_WIN ||
-      @dealer_wins == TwentyOne::ROUNDS_TO_WIN
+    @player_wins == GameRules::ROUNDS_TO_WIN ||
+      @dealer_wins == GameRules::ROUNDS_TO_WIN
   end
 
   def display
@@ -382,9 +626,12 @@ end
 class TwentyOne
   include Displayable
   include CurrentMatchDisplay
+  include GameRules
+  include MatchOrchestrator
+  include RoundFlow
+  include TurnManager
+  include UserInteractionManager
 
-  ROUNDS_TO_WIN = 5
-  GOAL_SCORE_DEFAULT = 21
   DEFAULT_GRAND_WINNERS = {
     player: 0,
     dealer: 0,
@@ -400,7 +647,7 @@ class TwentyOne
     @player = Player.new(@player_name)
     @dealer = Dealer.new
     @goal_score = GOAL_SCORE_DEFAULT
-    @dealer_stays = Dealer::DEALER_STAYS_DEFAULT
+    @dealer_stays = DEALER_STAYS_DEFAULT
     @score = Score.new(@player_name)
     @grand_winners = DEFAULT_GRAND_WINNERS.dup
   end
@@ -449,214 +696,6 @@ class TwentyOne
       end
       puts Message['invalid_choice']
     end
-  end
-
-  def setup_match
-    update_goal_score
-    @round = 0
-    @score.reset
-  end
-
-  def play_match
-    until @score.match_over?
-      play_round
-      break unless continue_round?
-    end
-  end
-
-  def play_round
-    setup_round
-    execute_round
-    conclude_round
-  end
-
-  def setup_round
-    @round += 1
-    display_game_state
-    @deck = Deck.new
-    reset_hands
-  end
-
-  def execute_round
-    deal_initial_cards
-    display_initial_cards
-    player_turn
-    dealer_turn unless @player.busted?(@goal_score)
-  end
-
-  def conclude_round
-    determine_winner
-    display_final_results
-  end
-
-  def reset_hands
-    @player.reset_hand
-    @dealer.reset_hand
-  end
-
-  def deal_initial_cards
-    2.times do
-      @player.add_card(@deck.deal_card)
-      @dealer.add_card(@deck.deal_card)
-    end
-  end
-
-  def player_turn
-    execute_hitting_phase
-    return if @player.busted?(@goal_score)
-    puts Message['you_stayed', @player.total(@goal_score)]
-  end
-
-  def execute_hitting_phase
-    loop do
-      break unless @player.wants_to_hit?
-      puts Message['you_hit']
-      @player.add_card(@deck.deal_card)
-      puts Message['updated_player', @player.show_cards,
-                   @player.total(@goal_score)]
-      display_visually(@player.cards)
-
-      break if @player.busted?(@goal_score)
-    end
-  end
-
-  def dealer_turn
-    return if @player.busted?(@goal_score)
-
-    display_dealer_turn_start
-    execute_dealer_hitting_phase
-    display_dealer_final_status unless @dealer.busted?(@goal_score)
-  end
-
-  def execute_dealer_hitting_phase
-    while @dealer.should_hit?(@goal_score, @dealer_stays)
-      process_dealer_hit
-    end
-  end
-
-  def process_dealer_hit
-    puts Message['dealer_hit']
-    @dealer.add_card(@deck.deal_card)
-    display_dealer_card_update
-  end
-
-  def determine_winner
-    player_total = @player.total(@goal_score)
-    dealer_total = @dealer.total(@goal_score)
-
-    result = detect_result(dealer_total, player_total)
-    @score.update(result)
-    display_round_result(result)
-  end
-
-  def detect_result(dealer_total, player_total)
-    if @player.busted?(@goal_score)
-      :player_busted
-    elsif @dealer.busted?(@goal_score)
-      :dealer_busted
-    elsif dealer_total == player_total
-      :tie
-    else
-      dealer_total > player_total ? :dealer : :player
-    end
-  end
-
-  def continue_round?
-    return false if @score.match_over?
-
-    loop do
-      choice_result = user_continue_choice
-      return true if choice_result == :continue_game
-      display_farewell if choice_result == :quit_game
-    end
-  end
-
-  def user_continue_choice
-    Message.prompt('continue')
-    choice = gets.chomp.strip.downcase
-    choice_type = choice_type(choice)
-    handle_continue_choice(choice_type)
-  end
-
-  def handle_continue_choice(choice_type)
-    case choice_type
-    when :continue
-      :continue_game
-    when :quit
-      :quit_game
-    when :invalid
-      display_invalid_choice
-      :invalid_input
-    end
-  end
-
-  def choice_type(choice)
-    if choice == '' || choice == 'continue' || choice == 'c'
-      :continue
-    elsif quit_choice?(choice)
-      :quit
-    else
-      :invalid
-    end
-  end
-
-  def display_invalid_choice
-    Utilities.clear_screen
-    puts Message['invalid_choice']
-  end
-
-  def quit_choice?(choice)
-    choice == 'quit' || choice == 'q'
-  end
-
-  def update_grand_winners
-    if @score.player_wins == ROUNDS_TO_WIN
-      @grand_winners[:player] += 1
-      @grand_winners[:player_streak] += 1
-      @grand_winners[:dealer_streak] = 0
-    elsif @score.dealer_wins == ROUNDS_TO_WIN
-      @grand_winners[:dealer] += 1
-      @grand_winners[:dealer_streak] += 1
-      @grand_winners[:player_streak] = 0
-    end
-  end
-
-  def update_goal_score
-    Utilities.clear_screen
-    puts Message['change_goal_score']
-    return unless ask_choice
-
-    @goal_score = ask_goal_score
-    @dealer_stays = @goal_score - 4
-  end
-
-  def ask_goal_score
-    loop do
-      Utilities.clear_screen
-      Message.prompt('enter_goal_score')
-      choice = gets.chomp.to_i
-      return choice if [21, 31, 41, 51].include?(choice)
-    end
-  end
-
-  def ask_choice
-    loop do
-      choice = gets.chomp.strip.downcase
-      if Message['options_neg'].include?(choice)
-        return false
-      elsif Message['options_pos'].include?(choice)
-        return true
-      else
-        puts Message['invalid_choice']
-      end
-    end
-  end
-
-  def play_again?
-    Message.prompt('play_again')
-    choice = ask_choice
-    display_farewell unless choice
-    choice
   end
 end
 
