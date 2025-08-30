@@ -1,11 +1,6 @@
 # Todo
 # - Extracting more methods from TwentyOne class to make it smaller
 # e.g. GameFlow or MatchOrchestrator
-# - Split handle_continue_choice into smaller methods
-# - DEFAULT_GRAND_WINNERS constant initialization using Hash.new(0)?
-# investigate this suggestion
-# Pause before displaying final result?
-
 require 'yaml'
 
 module Message
@@ -77,6 +72,7 @@ module CurrentMatchDisplay
   end
 
   def display_final_results
+    Utilities.pause(1.0)
     @score.display
     puts Message['final_dealer_hand']
     display_visually(@dealer.cards)
@@ -569,20 +565,44 @@ class TwentyOne
     return false if @score.match_over?
 
     loop do
-      Message.prompt('continue')
-      choice = gets.chomp.strip.downcase
-      result = handle_continue_choice(choice)
-      return result unless result.nil?
+      choice_result = user_continue_choice
+      return true if choice_result == :continue_game
+      display_farewell if choice_result == :quit_game
     end
   end
 
-  def handle_continue_choice(choice)
-    return true if choice.empty?
-    return display_farewell if quit_choice?(choice)
+  def user_continue_choice
+    Message.prompt('continue')
+    choice = gets.chomp.strip.downcase
+    choice_type = choice_type(choice)
+    handle_continue_choice(choice_type)
+  end
 
+  def handle_continue_choice(choice_type)
+    case choice_type
+    when :continue
+      :continue_game
+    when :quit
+      :quit_game
+    when :invalid
+      display_invalid_choice
+      :invalid_input
+    end
+  end
+
+  def choice_type(choice)
+    if choice == '' || choice == 'continue' || choice == 'c'
+      :continue
+    elsif quit_choice?(choice)
+      :quit
+    else
+      :invalid
+    end
+  end
+
+  def display_invalid_choice
     Utilities.clear_screen
     puts Message['invalid_choice']
-    nil
   end
 
   def quit_choice?(choice)
