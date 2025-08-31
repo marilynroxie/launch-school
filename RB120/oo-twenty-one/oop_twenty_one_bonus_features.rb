@@ -229,7 +229,7 @@ module GameRules
   ROUNDS_TO_WIN = 5
   GOAL_SCORE_DEFAULT = 21
   DEALER_STAYS_DEFAULT = 17
-  VALID_GOAL_SCORES = [21, 31, 41, 51].freeze
+  VALID_GOAL_SCORES = [21, 31, 41, 51]
 
   def valid_goal_score?(score)
     VALID_GOAL_SCORES.include?(score)
