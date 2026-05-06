@@ -1,6 +1,18 @@
-missing([-3, -2, 1, 5]) == [-1, 0, 2, 3, 4]
-missing([1, 2, 3, 4]) == []
-missing([1, 5]) == [2, 3, 4]
-missing([6]) == []
+def missing(arr)
+  new_arr = []
 
-# Write a method that takes a sorted array of integers as an argument, and returns an array that includes all of the missing integers (in order) between the first and last elements of the argument.
+  arr.each_with_index do |element, idx|
+    next if idx == arr.length - 1
+    count = 1
+    until element + count == arr[idx + 1]
+      new_arr << element + count
+      count += 1
+    end
+  end
+  new_arr
+end
+
+p missing([-3, -2, 1, 5]) == [-1, 0, 2, 3, 4]
+p missing([1, 2, 3, 4]) == []
+p missing([1, 5]) == [2, 3, 4]
+p missing([6]) == []
