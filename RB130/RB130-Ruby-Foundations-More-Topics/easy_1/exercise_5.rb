@@ -1,23 +1,23 @@
-# The following list contains the names of individuals who are pioneers in the field of computing or that have had a significant influence on the field. The names are in an encrypted form, though, using a simple (and incredibly weak) form of encryption called Rot13.
+def rot_unscramble(name)
+  name.downcase.tr("abcdefghijklmnopqrstuvwxyz", "nopqrstuvwxyzabcdefghijklm").capitalize.split(" ").map(&:capitalize).join(" ")
+end
 
-# Nqn Ybirynpr
-# Tenpr Ubccre
-# Nqryr Tbyqfgvar
-# Nyna Ghevat
-# Puneyrf Onoontr
-# Noqhyynu Zhunzznq ova Zhfn ny-Xujnevmzv
-# Wbua Ngnanfbss
-# Ybvf Unvog
-# Pynhqr Funaaba
-# Fgrir Wbof
-# Ovyy Tngrf
-# Gvz Orearef-Yrr
-# Fgrir Jbmavnx
-# Xbaenq Mhfr
-# Fve Nagbal Ubner
-# Zneiva Zvafxl
-# Lhxvuveb Zngfhzbgb
-# Unllvz Fybavzfxv
-# Tregehqr Oynapu
-
-# Write a program that deciphers and prints each of these names .
+p rot_unscramble("Nqn Ybirynpr")
+p rot_unscramble("Tenpr Ubccre")
+p rot_unscramble("Nqryr Tbyqfgvar")
+p rot_unscramble("Nyna Ghevat")
+p rot_unscramble("Puneyrf Onoontr")
+p rot_unscramble("Noqhyynu Zhunzznq ova Zhfn ny-Xujnevmzv")
+p rot_unscramble("Wbua Ngnanfbss")
+p rot_unscramble("Ybvf Unvog")
+p rot_unscramble("Pynhqr Funaaba")
+p rot_unscramble("Fgrir Wbof")
+p rot_unscramble("Ovyy Tngrf")
+p rot_unscramble("Gvz Orearef - Yrr")
+p rot_unscramble("Fgrir Jbmavnx")
+p rot_unscramble("Xbaenq Mhfr")
+p rot_unscramble("Fve Nagbal Ubner")
+p rot_unscramble("Zneiva Zvafxl")
+p rot_unscramble("Lhxvuveb Zngfhzbgb")
+p rot_unscramble("Unllvz Fybavzfxv")
+p rot_unscramble("Tregehqr Oynapu")
